@@ -1,0 +1,15 @@
+FRONTEND
+- <Dropdown/> components are only selectors, the form submits the value of the hidden inputs below each of the dropdowns
+    - exercise in AddSet
+    - muscleGroup in AddExercise
+- AddSet: date field is not a date picker, just a text input 
+
+BACKEND
+- consider: refactor so that there are as little database connections as possible
+    - i.e. move all calls to client.query() to one file
+
+DATABASE
+- no whitespaces pls, only underscores because Postgres puts double quotes around anything with whitespace
+- enums values are all in lowercase
+- Exercise enum is stored as “exercise:muscleGroup” e.g. “bench_press:chest”
+- There is still a separate muscleGroup enum, stored simply as “muscleGroup” e.g. “chest”
