@@ -33,7 +33,8 @@ router.get('/viewData', (req, res) => {
 
 // Add a new set
 router.post("/add", async (req, res) => {
-    let { reps, weight, date, exercise, comments = '' } = req.body;
+    const { reps, weight, comments = '' } = req.body;
+    let { date, exercise } = req.body;
 
     // Format exercise data to work with the database
     exercise = exercise.toLowerCase(); // because enum is all in lower case

@@ -30,7 +30,7 @@ router.get('/viewData', (req, res) => {
     res.send(`${map}`);
 })
 
-// GET TOTAL NUMBER OF SETS PERFORMED ACROSS ALL MUSCLE GROUPS
+// Get total number of sets performed for given date range across all muscle groups
 router.get("/setsPerMuscle/all", async (req, res) => {
     const { fromDate, toDate } = req.body;
     let numSets = {};
@@ -47,8 +47,8 @@ router.get("/setsPerMuscle/all", async (req, res) => {
     res.send(numSets);
 })
 
-// TODO: Request will be invoked by a dropdown box's onChange property; maybe on change of dates for all "stat" routes too?
-
+// Get total number of sets performed for given muscleGroup and date range
+// Request will be invoked by a dropdown box's onChange property; maybe on change of dates for all "stat" routes too?
 router.get('/setsPerMuscle', async (req, res) => {
     const { fromDate, toDate, muscleGroup } = req.body;
     let numSets = {};
@@ -64,6 +64,7 @@ router.get('/setsPerMuscle', async (req, res) => {
     res.send(numSets);
 })
 
+// Get total number of sets performed for given Exercise and date range
 router.get('/setsPerExercise', async (req, res) => {
     const { fromDate, toDate, exercise } = req.body;
     let numSets = {};
