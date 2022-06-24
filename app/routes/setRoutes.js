@@ -1,20 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { Client } = require('pg');
+const { performQuery } = require('../utils/dbModule');
 const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('../utils/fetchEnums');
 
-const client = new Client({
-    host: "localhost",
-    port: "",
-    user: "",
-    database: ""
-})
-
-client.connect();
-
 let map = {};
-let exercises = [];
-let muscleGroups = [];
+let exercises, muscleGroups = [];
 
 const getEnums = async () => {
     map = await getExerciseMap();
@@ -34,7 +24,7 @@ router.get('/viewData', (req, res) => {
 // Add a new set
 router.post("/add", async (req, res) => {
     const { reps, weight, comments = '' } = req.body;
-    let { date, exercise } = req.body;
+    let { date, exercise } = req.body; // FIX: date is currently assumed to come as a string in the format 'yyyy-mm-dd' 
 
     // Format exercise data to work with the database
     exercise = exercise.toLowerCase(); // because enum is all in lower case
@@ -55,15 +45,15 @@ router.post("/add", async (req, res) => {
     exercise = `${exercise}:${muscleGroup}`; // more formatting
     const query = `INSERT INTO set1(reps, weight, date, exercise, musclegroup, comments) VALUES (${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${comments}')`;
     console.log(query);
-    await client.query(query);
+    await performQuery(query);
 
-    const all = await client.query('select * from set1');
+    const all = await performQuery('select * from set1');
     res.send(all.rows);
 })
 
 router.get('/all', async (req, res) => {
     const query = 'SELECT * FROM set1;'
-    const all = await client.query(query);
+    const all = await performQuery(query);
     res.send(all.rows);
 })
 

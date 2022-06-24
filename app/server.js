@@ -1,11 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const { Client } = require('pg');
+const session = require('express-session');
 const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
-
-const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+const { performQuery } = require('./utils/dbModule');
 
 const homeUrl = process.env.HOMEPAGE_URL || 'http://localhost:3000';
 const whitelist = [homeUrl, 'http://localhost:3000', 'http://localhost:5000'];
@@ -19,28 +16,22 @@ const corsConfig = {
     },
     credentials: true
 }
+
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors(corsConfig));
 
-const client = new Client({
-    host: "localhost",
-    port: "",
-    user: "",
-    database: ""
-})
-
-client.connect();
-
 let map = {};
-let exercises = [];
-let muscleGroups = [];
+let exercises, muscleGroups = [];
 
 const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    console.log(map);
-    console.log(exercises);
-    console.log(muscleGroups);
+    // console.log(map);
+    // console.log(exercises);
+    // console.log(muscleGroups);
 }
 getEnums();
 
@@ -48,7 +39,6 @@ const setRoutes = require('./routes/setRoutes');
 const statRoutes = require('./routes/statRoutes');
 app.use('/api/sets', setRoutes);
 app.use('/api/stats', statRoutes);
-
 
 app.get('/', (req, res) => {
     res.send('whatuppppp');
@@ -78,8 +68,8 @@ app.post("/api/exercises/add", async (req, res) => {
     const query = `ALTER TYPE exercise ADD VALUE '${entry}';
                    ALTER TABLE set1 ALTER COLUMN exercise TYPE exercise;`;
     console.log(query);
-    await client.query(query);
-    const enumAfterQuery = await client.query('SELECT enum_range(NULL::exercise)');
+    await performQuery(query);
+    const enumAfterQuery = await performQuery('SELECT enum_range(NULL::exercise)');
     getEnums();
     res.send(enumAfterQuery.rows);
 })

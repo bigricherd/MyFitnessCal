@@ -1,20 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { Client } = require('pg');
+const { performQuery } = require('../utils/dbModule');
 const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('../utils/fetchEnums');
 
-const client = new Client({
-    host: "localhost",
-    port: "",
-    user: "",
-    database: ""
-})
-
-client.connect();
-
 let map = {};
-let exercises = [];
-let muscleGroups = [];
+let exercises, muscleGroups = [];
 
 const getEnums = async () => {
     map = await getExerciseMap();
@@ -37,7 +27,7 @@ router.get("/setsPerMuscle/all", async (req, res) => {
 
     for (let muscleGroup of muscleGroups) {
         const query = `SELECT COUNT(*) FROM set1 WHERE (date >= ${fromDate} AND date <= ${toDate}) AND muscleGroup = '${muscleGroup}'`;
-        const data = await client.query(query);
+        const data = await performQuery(query);
         const count = data.rows[0].count;
         numSets[muscleGroup] = count;
 
@@ -54,7 +44,7 @@ router.get('/setsPerMuscle', async (req, res) => {
     let numSets = {};
 
     const query = `SELECT COUNT(*) FROM set1 WHERE (date >= ${fromDate} AND date <= ${toDate}) AND muscleGroup='${muscleGroup}'`;
-    const data = await client.query(query);
+    const data = await performQuery(query);
     const count = data.rows[0].count;
 
     numSets[muscleGroup] = count;
@@ -71,7 +61,7 @@ router.get('/setsPerExercise', async (req, res) => {
     let exerciseF = `${exercise}:${map.get(exercise)}`;
 
     const query = `SELECT COUNT(*) FROM set1 WHERE (date >= ${fromDate} AND date <= ${toDate}) AND exercise='${exerciseF}'`;
-    const data = await client.query(query);
+    const data = await performQuery(query);
     const count = data.rows[0].count;
 
     numSets[exercise] = count;

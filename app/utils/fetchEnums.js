@@ -1,16 +1,8 @@
-const { Client } = require('pg');
-const client = new Client({
-    host: "localhost",
-    port: "",
-    user: "",
-    database: ""
-})
-
-client.connect();
+const { performQuery } = require('../utils/dbModule');
 
 // Returns an array that represents the muscleGroup enum.
 const getMuscleGroups = async () => {
-    const res = await client.query('SELECT enum_range(NULL::musclegroup)');
+    const res = await performQuery('SELECT enum_range(NULL::musclegroup)');
     const enumString = res.rows[0].enum_range;
     const enumArray = enumString.substring(1, enumString.length - 1).split(',');
     return enumArray;
@@ -19,7 +11,7 @@ const getMuscleGroups = async () => {
 // Returns a map {exercise : muscleGroup} that represents the Exercise enum.
 // Exercises are stored in the string format "exercise:muscleGroup" in the Exercise enum, hence the reformatting into a map.
 const getExerciseMap = async () => {
-    const res = await client.query('SELECT enum_range(NULL::exercise)');
+    const res = await performQuery('SELECT enum_range(NULL::exercise)');
     const enumString = res.rows[0].enum_range;
     const enumArray = enumString.substring(1, enumString.length - 1).split(',');
     const map = new Map();
