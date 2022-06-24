@@ -12,3 +12,9 @@
 
 --SELECT enum_range(NULL::exercise); -- view exercise enum
 --SELECT enum_range(NULL::muscleGroup); -- view muscleGroup enum
+
+-- CREATE TABLE user(
+--     id bigserial PRIMARY KEY,
+--     username varchar(40) NOT NULL UNIQUE,
+--     password varchar(100)
+--                  )
