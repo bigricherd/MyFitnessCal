@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-// ------ Custom form control: submits AddSet and AddExercise forms and redirects to home if successful or login if unsuccessful ------
+// ------ This hook is identical to useForm, except it submits the forms in Register and Login components so its values are {username, password} ------
 export default function useForm({ initialValues, slug }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
@@ -35,24 +35,19 @@ export default function useForm({ initialValues, slug }) {
     //send data to database
     const submitData = async (formValues) => {
         const dataObject = formValues.values;
-        const { reps, weight, date, exercise, muscleGroup, comments } = dataObject;
+        const { username, password } = dataObject;
         try {
             await axios({
                 method: 'POST',
                 url: `${baseUrl}/${slug}`,
                 data: {
-                    reps,
-                    weight,
-                    date,
-                    exercise,
-                    muscleGroup,
-                    comments
+                    username,
+                    password
                 },
                 headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
                 withCredentials: true
 
             }).then(res => {
-                console.log(res.data);
                 if (res.data.redirect === '/') {
                     window.location = '/';
                 } else if (res.data.redirect === '/login') {

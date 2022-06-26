@@ -1,8 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const passport = require('passport');
 const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
 const { performQuery } = require('./utils/dbModule');
+
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// ---------- CORS SETUP ----------
 
 const homeUrl = process.env.HOMEPAGE_URL || 'http://localhost:3000';
 const whitelist = [homeUrl, 'http://localhost:3000', 'http://localhost:5000'];
@@ -16,11 +23,21 @@ const corsConfig = {
     },
     credentials: true
 }
-
-const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 app.use(cors(corsConfig));
+
+// ---------- SESSION SETUP ----------
+const secret = process.env.SECRET || 'alwaysHungry';
+const sessionConfig = {
+    secret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 // 1 day
+    }
+}
+app.use(session(sessionConfig));
+
+// ---------- SET LOCAL VARIABLES REPRESENTING ENUMS (exercise, muscleGroup) ----------
 
 let map = {};
 let exercises, muscleGroups = [];
@@ -35,13 +52,34 @@ const getEnums = async () => {
 }
 getEnums();
 
+// ---------- PASSPORT CONFIG ----------
+require('./utils/passportLocal');
+app.use(passport.initialize());
+app.use(passport.session());
+app.use((req, res, next) => {
+    console.log('req.session is currently:');
+    console.log(req.session);
+
+    console.log('req.user is currently:');
+    console.log(req.user);
+
+    if (req.session.passport) {
+        console.log(req.session.passport.user);
+    }
+    next();
+})
+
+
+// ---------- ROUTES ----------
 const setRoutes = require('./routes/setRoutes');
 const statRoutes = require('./routes/statRoutes');
+const authRoutes = require('./routes/authRoutes');
 app.use('/api/sets', setRoutes);
 app.use('/api/stats', statRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
-    res.send('whatuppppp');
+    res.send(req.user);
 })
 
 app.get('/api/enums', (req, res) => {
@@ -49,7 +87,7 @@ app.get('/api/enums', (req, res) => {
     res.send({ message: 'enums requested', exercises, muscleGroups })
 })
 
-// ADD AN EXERCISE TO ENUMS
+// ADD AN EXERCISE TO ENUMS -- TODO: move this elsewhere
 app.post("/api/exercises/add", async (req, res) => {
     let { exercise, muscleGroup } = req.body;
 
@@ -74,5 +112,7 @@ app.post("/api/exercises/add", async (req, res) => {
     res.send(enumAfterQuery.rows);
 })
 
+
+// ---------- LISTEN ----------
 const port = process.env.PORT || 5000;
-app.listen(port, (req, res) => { console.log(`Listening on port ${port}`) });
+app.listen(port, (req, res) => { console.log(`Listening on port ${port} `) });

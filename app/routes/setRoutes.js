@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { performQuery } = require('../utils/dbModule');
 const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('../utils/fetchEnums');
+const { isLoggedIn } = require('../utils/middleware');
 
 let map = {};
 let exercises, muscleGroups = [];
@@ -16,15 +17,20 @@ const getEnums = async () => {
 }
 getEnums();
 
+
+
 router.get('/viewData', (req, res) => {
     console.log(map);
     res.send(map);
 })
 
 // Add a new set
-router.post("/add", async (req, res) => {
+router.post("/add", isLoggedIn, async (req, res) => {
     const { reps, weight, comments = '' } = req.body;
     let { date, exercise } = req.body; // FIX: date is currently assumed to come as a string in the format 'yyyy-mm-dd' 
+    console.log('from route handler');
+    console.log(req.isAuthenticated());
+    console.log(req.user);
 
     // Format exercise data to work with the database
     exercise = exercise.toLowerCase(); // because enum is all in lower case
@@ -43,16 +49,16 @@ router.post("/add", async (req, res) => {
     }
 
     exercise = `${exercise}:${muscleGroup}`; // more formatting
-    const query = `INSERT INTO set1(reps, weight, date, exercise, musclegroup, comments) VALUES (${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${comments}')`;
+    const query = `INSERT INTO set1(reps, weight, date, exercise, musclegroup, comments, owner) VALUES (${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${comments}', '${req.user.id}')`;
     console.log(query);
     await performQuery(query);
 
     const all = await performQuery('select * from set1');
-    res.send(all.rows);
+    return res.send(all.rows);
 })
 
-router.get('/all', async (req, res) => {
-    const query = 'SELECT * FROM set1;'
+router.get('/all', isLoggedIn, async (req, res) => {
+    const query = `SELECT * FROM set1 WHERE owner = '${req.user.id}'`;
     const all = await performQuery(query);
     res.send(all.rows);
 })
