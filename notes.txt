@@ -1,12 +1,32 @@
+WHAT'S NEW
+- implemented auth using passport.js. see:
+    - Backend:
+        - app/routes/authRoutes.js
+        - app/utils/middlware.js
+        - app/utils/passportLocal.js --- this is where the meat of the implementation is
+    - Frontend:
+        - app/client/src/components/Register.jsx
+        - app/client/src/components/Login.jsx
+        - app/client/src/hooks/authFormControl.js -- just a copy of useForm.js but customized for Register and Login forms
+- added client-side routing using BrowserRouter from react-router-dom
+- added temporary Navbar (see app/client/src/components/Nav.jsx)
+- added 'owner' attribute to set schema as a foreign key that references appUser.id (see setup.sql)
+- modified all Set and Stat routes to include the owner attribute (see app/client/routes)
+
+------ GENERAL NOTES ------
+
+- probably don't want to be logging req.user.password or even storing the password at all (?)
+
 FRONTEND
 - <Dropdown/> components are only selectors, the form submits the value of the hidden inputs below each of the dropdowns
     - exercise in AddSet
     - muscleGroup in AddExercise
 - AddSet: date field is not a date picker, just a text input 
+- Conditional render of nav links depending on whether user is logged in  -- requires fetching user from server
+    - TODO: display to the user whether they are logged in 
 
 BACKEND
-- consider: refactor so that there are as little database connections as possible
-    - i.e. move all calls to client.query() to one file
+- all database operations abstracted to app/utils/dbModule.js
 
 DATABASE
 - no whitespaces pls, only underscores because Postgres puts double quotes around anything with whitespace
