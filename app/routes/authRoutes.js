@@ -43,14 +43,16 @@ router.post('/login', passport.authenticate('local', { failureRedirect: '/api/au
     return res.json({ redirect: '/' });
 })
 
-// router.post('/logout', (req, res) => {
-//     if (req.isAuthenticated) {
-//         const username = req.user.username;
-//         req.logout();
-//         res.send(`Logged out user ${username}`);
-//     }
-
-// })
+router.post('/logout', (req, res) => {
+    if (req.isAuthenticated) {
+        const username = req.user.username;
+        req.logout((err, next) => {
+            if (err) return next(err);
+        });
+        console.log(`Logged out user ${username}`);
+    }
+    return res.redirect('/');
+})
 
 router.get('/login-success', (req, res) => {
     res.send('Logged in successfully');
@@ -59,6 +61,18 @@ router.get('/login-success', (req, res) => {
 router.get('/login-fail', (req, res) => {
     res.json({ redirect: '/login' }); // TODO: error handling
     //res.send('Login failed');
+})
+
+router.get('/getUser', (req, res) => {
+    const data = {
+        message: "No user logged in",
+        user: null
+    }
+    if (req.user) {
+        data.message = `Logged in user is ${req.user.username}`;
+        data.user = req.user;
+    }
+    return res.json(data);
 })
 
 module.exports = router;

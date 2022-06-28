@@ -16,7 +16,7 @@ const verifyPassword = async (password, hash) => {
     return result;
 }
 
-const verifyCallback = async (username, password, done) => {
+const verifyCallback = async (req, username, password, done) => {
     try {
         const query = `SELECT * FROM appUser WHERE username = '${username}'`;
         const res = await performQuery(query);
@@ -28,13 +28,15 @@ const verifyCallback = async (username, password, done) => {
         }
 
         const hash = user.password;
-        console.log(user);
-        console.log(hash);
+        //console.log(user);
+        //console.log(hash);
 
         const isValid = await verifyPassword(password, hash);
-        console.log(`isValid: ${isValid}`);
-        if (isValid) return done(null, user);
-        else return done(null, false);
+        //console.log(`isValid: ${isValid}`);
+        if (isValid) {
+            //req.session.save(); //Auth seems to be working without this, but will keep for now.
+            return done(null, user)
+        } else return done(null, false);
 
     } catch (e) {
         console.log('Something went wrong in test', e);
@@ -42,7 +44,7 @@ const verifyCallback = async (username, password, done) => {
     }
 }
 
-const strategy = new LocalStrategy(verifyCallback);
+const strategy = new LocalStrategy({ passReqToCallback: true }, verifyCallback);
 
 passport.use(strategy);
 
@@ -67,7 +69,7 @@ const print = (msg) => {
 }
 
 const test = async () => {
-    verifyCallback('testing', 'badpasswordss', print);
+    verifyCallback('username', 'password', print);
 }
 
 //test();

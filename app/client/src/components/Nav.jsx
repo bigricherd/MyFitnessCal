@@ -1,15 +1,23 @@
 import { Link } from 'react-router-dom';
 
 // ------ A simple navbar that leads us to the various pages / components we currently have ------
-function Nav() {
+function Nav(props) {
     let navLinkClasses = 'nav-item nav-link';
 
-    let navbarNav = <div className="navbar-nav ms-auto">
-        <Link to='/register' className={navLinkClasses}>Register</Link>
-        <Link to='/login' className={navLinkClasses}>Login</Link>
-        <Link to='/forms' className={navLinkClasses}>Forms</Link>
-    </div>;
+    let navbarContents = null;
 
+    // Assign navbar contents, selection depends on whether a user is logged in
+    if (props.user) {
+        navbarContents = <div className="navbar-nav ms-auto">
+            <Link to='/forms' className={navLinkClasses}>Forms</Link>
+            <form action='/api/auth/logout' className={navLinkClasses} method='POST'><button className="border-0 bg-light text-muted">Logout | <span className="text-success">{props.user.username}</span></button></form>
+        </div>
+    } else {
+        navbarContents = <div className="navbar-nav ms-auto">
+            <Link to='/register' className={navLinkClasses}>Register</Link>
+            <Link to='/login' className={navLinkClasses}>Login</Link>
+        </div>
+    }
 
     return (
         <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-light">
@@ -19,7 +27,7 @@ function Nav() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbar">
-                    {navbarNav}
+                    {navbarContents}
                 </div>
             </div>
         </nav>

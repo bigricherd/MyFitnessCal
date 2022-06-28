@@ -1,4 +1,12 @@
-WHAT'S NEW
+WHAT'S NEW (JUNE 27)
+- implemented logout (app/routes/authRoutes.js)
+- modified navbar to render different links depending on whether a user is logged in
+    - simple hook in App.js to fetch the currently logged in user and display that data as debug text for now
+- added success message that displays on form submit for AddSet and AddExercise
+    - we query the DB to ensure that the most recent row matches what the user entered
+    - only send success message if row and user-entered data match
+
+WHAT'S NEW (JUNE 25)
 - implemented auth using passport.js. see:
     - Backend:
         - app/routes/authRoutes.js
@@ -22,8 +30,6 @@ FRONTEND
     - exercise in AddSet
     - muscleGroup in AddExercise
 - AddSet: date field is not a date picker, just a text input 
-- Conditional render of nav links depending on whether user is logged in  -- requires fetching user from server
-    - TODO: display to the user whether they are logged in 
 
 BACKEND
 - all database operations abstracted to app/utils/dbModule.js

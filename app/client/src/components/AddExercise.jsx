@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useForm from '../hooks/useForm';
 import Dropdown from './Dropdown';
 import formatEnum from '../helpers/formatEnum';
+import Message from './Message';
 //import Table from './Table'; // Data display, but I didn't want to go too far.
 
 function AddExercise() {
@@ -26,7 +27,7 @@ function AddExercise() {
         start();
     }, [])
 
-    const { values, handleChange, handleKeyDown, handleSubmit } = useForm({
+    const { values, handleChange, handleKeyDown, handleSubmit, successMsg } = useForm({
         initialValues: {
             exercise: '',
             muscleGroup: ''
@@ -84,6 +85,7 @@ function AddExercise() {
             </div> */}
 
             </form>
+            {successMsg && <Message success={successMsg} />}
         </div>
     )
 }

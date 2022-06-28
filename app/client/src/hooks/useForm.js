@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function useForm({ initialValues, slug }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
+    const [successMsg, setSuccessMsg] = useState(null);
 
     //track form values
     const handleChange = event => {
@@ -57,7 +58,10 @@ export default function useForm({ initialValues, slug }) {
                     window.location = '/';
                 } else if (res.data.redirect === '/login') {
                     window.location = '/login';
+                } else if (res.data.redirect === '/forms') {
+                    window.location = '/forms';
                 }
+                setSuccessMsg(res.data.message);
                 setError(null);
             })
         } catch (err) {
@@ -70,6 +74,7 @@ export default function useForm({ initialValues, slug }) {
         handleKeyDown,
         values,
         handleSubmit,
-        error
+        error,
+        successMsg
     }
 }

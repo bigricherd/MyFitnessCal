@@ -4,6 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
 const { performQuery } = require('./utils/dbModule');
+//const errorController = require('./utils/errorController');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -56,6 +57,17 @@ getEnums();
 require('./utils/passportLocal');
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+// ---------- ROUTES ----------
+const setRoutes = require('./routes/setRoutes');
+const statRoutes = require('./routes/statRoutes');
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/sets', setRoutes);
+app.use('/api/stats', statRoutes);
+app.use('/api/auth', authRoutes);
+
+// --- DEBUGGING AUTH --- 
 app.use((req, res, next) => {
     console.log('req.session is currently:');
     console.log(req.session);
@@ -68,15 +80,6 @@ app.use((req, res, next) => {
     }
     next();
 })
-
-
-// ---------- ROUTES ----------
-const setRoutes = require('./routes/setRoutes');
-const statRoutes = require('./routes/statRoutes');
-const authRoutes = require('./routes/authRoutes');
-app.use('/api/sets', setRoutes);
-app.use('/api/stats', statRoutes);
-app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.send(req.user);
@@ -99,17 +102,38 @@ app.post("/api/exercises/add", async (req, res) => {
     if (muscleGroups.indexOf(muscleGroup) === -1) {
         const error = `Error: ${muscleGroup} is not a valid muscle group.`;
         console.log(error);
-        return res.send(error);
+        return res.send({ message: error });
     }
 
     const entry = `${exercise}:${muscleGroup}`;
     const query = `ALTER TYPE exercise ADD VALUE '${entry}';
                    ALTER TABLE set1 ALTER COLUMN exercise TYPE exercise;`;
-    console.log(query);
     await performQuery(query);
-    const enumAfterQuery = await performQuery('SELECT enum_range(NULL::exercise)');
-    getEnums();
-    res.send(enumAfterQuery.rows);
+
+    await getEnums(); // update local 'Exercises' array
+
+
+    // Verify that the last element of the local 'Exercises' array matches user entry
+    const response = { message: '' };
+    if (exercises[exercises.length - 1] === exercise) {
+        console.log('exercises matched');
+        response.message = `Successfully added exercise ${req.body.exercise}`;
+    } else {
+        response.message = 'Exercise was not added';
+    }
+    return res.send(response);
+})
+
+// ---------- ERROR HANDLING ----------
+//app.use(errorController);
+// catch-all error handler
+app.use((err, req, res, next) => {
+    if (!err.statusCode) err.statusCode = 500;
+    if (!err.message) err.message = 'Something went wrong';
+    console.log('you hit the catch-all error middleware');
+    console.log(err.statusCode, err.message);
+    console.log(err.name);
+    return res.status(err.statusCode).send({ messages: err.message });
 })
 
 

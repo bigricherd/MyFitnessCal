@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useForm from '../hooks/useForm';
 import Dropdown from './Dropdown';
 import formatEnum from '../helpers/formatEnum';
+import Message from './Message';
 
 function AddSet() {
 
@@ -26,7 +27,7 @@ function AddSet() {
         start();
     }, [])
 
-    const { values, handleChange, handleKeyDown, handleSubmit } = useForm({
+    const { values, handleChange, handleKeyDown, handleSubmit, successMsg } = useForm({
         initialValues: {
             reps: 0,
             weight: 0,
@@ -91,6 +92,7 @@ function AddSet() {
 
                 <button className="btn btn-primary mb-3">Add set</button>
             </form>
+            {successMsg && <Message success={successMsg} />}
         </div>
     )
 }
