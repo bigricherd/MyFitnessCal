@@ -1,3 +1,12 @@
+WHAT'S NEW (JUNE 29)
+- organized setup.sql to be runnable in one go (hopefully, TODO: before you commit, try with postgres database)
+- updated filter route (app/routes/statRoutes.js -- get('/setsPerMuscle)) a little bit
+    - added documentation
+    - added fetching average weight and reps, maximum weight for matching sets
+        - display this extra data in src/components/tables/NumSetsTable.jsx
+- added TODO:s in src/components/forms/AddSet.jsx to represent decisions on clearing form fields on submit
+- 
+
 WHAT'S NEW (JUNE 28)
 - organized src/components directory in app/client into Pages, Forms, and Tables where applicable
 - abstracted fetching of Exercises and muscleGroups enums out of AddSet and AddExercise form components

@@ -1,5 +1,17 @@
 --CREATE TYPE exercise AS ENUM ('bench_press:chest', 'incline_db_press:chest', 'db_shoulder_press:shoulders', 'bb_shoulder_press:shoulders');
+--SELECT enum_range(NULL::exercise); -- view exercise enum
+
 --CREATE TYPE muscleGroup AS ENUM ('chest', 'shoulders', 'biceps', 'triceps', 'traps', 'lats', 'lower_back', 'abs', 'hamstrings', 'quads', 'glutes', 'calves');
+--SELECT enum_range(NULL::muscleGroup); -- view muscleGroup enum
+
+-- DROP TABLE appUser;
+-- CREATE TABLE appUser(
+--     id UUID PRIMARY KEY,
+--     username varchar(30) NOT NULL UNIQUE,
+--     password varchar(60)
+-- );
+
+-- SELECT * FROM appUser;
 
 --DROP TABLE set1;
  --CREATE TABLE IF NOT EXISTS SET1 (reps INT NOT NULL,
@@ -14,12 +26,4 @@
 --                                   REFERENCES appUser(id)
 -- );
 
-
---SELECT enum_range(NULL::exercise); -- view exercise enum
---SELECT enum_range(NULL::muscleGroup); -- view muscleGroup enum
-
--- CREATE TABLE appUser(
---     id UUID PRIMARY KEY,
---     username varchar(30) NOT NULL UNIQUE,
---     password varchar(60)
---                  )
+-- SELECT * FROM SET1
