@@ -11,7 +11,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // ---------- CORS SETUP ----------
-
 const homeUrl = process.env.HOMEPAGE_URL || 'http://localhost:3000';
 const whitelist = [homeUrl, 'http://localhost:3000', 'http://localhost:5000'];
 const corsConfig = {
@@ -39,7 +38,6 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 // ---------- SET LOCAL VARIABLES REPRESENTING ENUMS (exercise, muscleGroup) ----------
-
 let map = {};
 let exercises, muscleGroups = [];
 
@@ -58,7 +56,6 @@ require('./utils/passportLocal');
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 // ---------- ROUTES ----------
 const setRoutes = require('./routes/setRoutes');
 const statRoutes = require('./routes/statRoutes');
@@ -68,22 +65,22 @@ app.use('/api/stats', statRoutes);
 app.use('/api/auth', authRoutes);
 
 // --- DEBUGGING AUTH --- 
-app.use((req, res, next) => {
-    console.log('req.session is currently:');
-    console.log(req.session);
+// app.use((req, res, next) => {
+//     console.log('req.session is currently:');
+//     console.log(req.session);
 
-    console.log('req.user is currently:');
-    console.log(req.user);
+//     console.log('req.user is currently:');
+//     console.log(req.user);
 
-    if (req.session.passport) {
-        console.log(req.session.passport.user);
-    }
-    next();
-})
+//     if (req.session.passport) {
+//         console.log(req.session.passport.user);
+//     }
+//     next();
+// })
 
-app.get('/', (req, res) => {
-    res.send(req.user);
-})
+// app.get('/', (req, res) => {
+//     res.send(req.user);
+// })
 
 app.get('/api/enums', (req, res) => {
     getEnums();
@@ -98,6 +95,7 @@ app.post("/api/exercises/add", async (req, res) => {
     exercise = exercise.toLowerCase();
     exercise = exercise.split(' ').join('_');
     muscleGroup = muscleGroup.toLowerCase();
+    muscleGroup = muscleGroup.split(' ').join('_');
 
     if (muscleGroups.indexOf(muscleGroup) === -1) {
         const error = `Error: ${muscleGroup} is not a valid muscle group.`;

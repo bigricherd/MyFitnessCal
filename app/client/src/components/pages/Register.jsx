@@ -1,6 +1,6 @@
 import React from 'react';
-import useForm from '../hooks/authFormControl';
-//import Error from './Error';
+import useForm from '../../hooks/useAuthForm';
+//import Error from './Error'; //TODO: show error message on duplicate username, password too short(?)
 
 
 function Register() {

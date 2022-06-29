@@ -1,31 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import useForm from '../hooks/useForm';
-import Dropdown from './Dropdown';
-import formatEnum from '../helpers/formatEnum';
-import Message from './Message';
+import useForm from '../../hooks/useForm';
+import Dropdown from '../Dropdown';
+import Message from '../Message';
 
-function AddSet() {
+function AddSet(props) {
+    const [exercises, setExercises] = useState(props.exercises); // TODO: update exercises when a new one is added by AddExercise
 
-    let exercisesArr = [];
-    let muscleGroupsArr = [];
-
-    const [exercises, setExercises] = useState([]);
-
-    const start = async () => {
-        const baseUrl = 'http://localhost:5000';
-        const data = await fetch(`${baseUrl}/api/enums`);
-        const json = await data.json();
-        //console.log(json);
-        exercisesArr = formatEnum(json.exercises);
-        muscleGroupsArr = formatEnum(json.muscleGroups);
-        setExercises(exercisesArr);
-        console.log(exercisesArr);
-        console.log(muscleGroupsArr);
-    }
-
+    // Update state every time props changes, i.e., when exercises in Forms.jsx changes
     useEffect(() => {
-        start();
-    }, [])
+        setExercises(props.exercises);
+    }, [props])
 
     const { values, handleChange, handleKeyDown, handleSubmit, successMsg } = useForm({
         initialValues: {

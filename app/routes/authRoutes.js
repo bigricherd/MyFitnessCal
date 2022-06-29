@@ -44,7 +44,7 @@ router.post('/login', passport.authenticate('local', { failureRedirect: '/api/au
 })
 
 router.post('/logout', (req, res) => {
-    if (req.isAuthenticated) {
+    if (req.user) {
         const username = req.user.username;
         req.logout((err, next) => {
             if (err) return next(err);
@@ -70,7 +70,7 @@ router.get('/getUser', (req, res) => {
     }
     if (req.user) {
         data.message = `Logged in user is ${req.user.username}`;
-        data.user = req.user;
+        data.user = req.user.username;
     }
     return res.json(data);
 })

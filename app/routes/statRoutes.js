@@ -11,9 +11,9 @@ const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    // console.log(map);
-    // console.log(exercises);
-    // console.log(muscleGroups);
+    console.log(map);
+    console.log(exercises);
+    console.log(muscleGroups);
 }
 getEnums();
 
@@ -22,39 +22,68 @@ router.get('/viewData', (req, res) => {
 })
 
 // Get total number of sets performed for given date range across all muscle groups
-router.get("/setsPerMuscle/all", isLoggedIn, async (req, res) => {
-    const { fromDate, toDate } = req.body;
+// TODO: We'll probably need to refactor this handler, it's long as hell lmao
+router.get("/setsPerMuscle", isLoggedIn, async (req, res) => {
+    const { fromDate, toDate } = req.query;
+    let { muscleGroup } = req.query;
+    muscleGroup = muscleGroup.toLowerCase();
+    muscleGroup = muscleGroup.split(' ').join('_');
+    console.log(req.query);
     let numSets = {};
+    let numSetsPerE = {};
 
-    for (let muscleGroup of muscleGroups) {
-        const query = `SELECT COUNT(*) FROM set1 WHERE ((date >= ${fromDate} AND date <= ${toDate}) AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
-        console.log(query);
-        const data = await performQuery(query);
-        const count = data.rows[0].count;
-        numSets[muscleGroup] = count;
+    if (muscleGroup === 'all') {
+        for (let muscleGroup of muscleGroups) {
+            const query = `SELECT COUNT(*) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
+            const data = await performQuery(query);
+            const count = data.rows[0].count;
+            muscleGroup = muscleGroup.split('_').join(' ');
+            numSets[muscleGroup] = count;
+        }
+        console.log(numSets);
+        return res.send({ results: numSets });
+    } else {
+        //TODO: verify that the user entered a valid muscle group
+        const mgQuery = `SELECT COUNT(*) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
+        console.log(mgQuery);
+        const mgData = await performQuery(mgQuery);
+        const mgCount = mgData.rows[0].count;
+        muscleGroup = muscleGroup.split('_').join(' ');
+        numSets[muscleGroup] = mgCount;
+        console.log(numSets);
 
-        console.log(`You (user ${req.user.username}) did ${count} sets of ${muscleGroup} from ${fromDate} to ${toDate}`);
+        await getEnums();
+
+        // Get all exercises for the given muscle group
+        const filteredMap = new Map(
+            Array.from(map).filter(([key, value]) => {
+                if (value === muscleGroup.split(' ').join('_')) {
+                    return true;
+                }
+                return false;
+            })
+        )
+
+        console.log(filteredMap);
+        const exerciseList = Array.from(filteredMap.keys());
+        for (let exercise of exerciseList) {
+            let exerciseTmp = exercise.toLowerCase(); // because enum is all in lower case
+            exerciseTmp = exerciseTmp.split(' ').join('_');
+            const muscleGroup = map.get(exerciseTmp);
+            exerciseTmp = `${exerciseTmp}:${muscleGroup}`;
+
+            const query = `SELECT count(*) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exerciseTmp}') AND owner = '${req.user.id}'`;
+            const data = await performQuery(query);
+            const count = data.rows[0].count;
+            if (count > 0) {
+                exercise = exercise.split('_').join(' ');
+                numSetsPerE[exercise] = count;
+            }
+        }
+
+        return res.send({ results: numSets, perExercise: numSetsPerE });
     }
-    console.log(numSets);
-    res.send(numSets);
-})
 
-// Get total number of sets performed for given muscleGroup and date range
-// Request will be invoked by a dropdown box's onChange property; maybe on change of dates for all "stat" routes too?
-router.get('/setsPerMuscle', isLoggedIn, async (req, res) => {
-    const { fromDate, toDate, muscleGroup } = req.body;
-    let numSets = {};
-
-    const query = `SELECT COUNT(*) FROM set1 WHERE ((date >= ${fromDate} AND date <= ${toDate}) AND muscleGroup='${muscleGroup}') AND owner = '${req.user.id}'`;
-    console.log(query);
-    const data = await performQuery(query);
-    const count = data.rows[0].count;
-
-    numSets[muscleGroup] = count;
-    console.log(`You (user ${req.user.username}) did ${count} sets of ${muscleGroup} from ${fromDate} to ${toDate}`);
-    console.log(numSets);
-
-    res.send(numSets);
 })
 
 // Get total number of sets performed for given Exercise and date range
