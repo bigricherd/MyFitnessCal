@@ -1,3 +1,27 @@
+WHAT'S NEW (JUNE 28)
+- organized src/components directory in app/client into Pages, Forms, and Tables where applicable
+- abstracted fetching of Exercises and muscleGroups enums out of AddSet and AddExercise form components
+    - instead fetched in src/components/pages/Forms.jsx and passed as props into the two forms
+    - Exercises Dropdown in AddSet does not update after AddExercise adds an exercise
+        - UNLESS we go to a different route like Filters, then come back to Forms
+- renamed authFormControl to useAuthForm (src/components/hooks/useAuthForm.js)
+- shows 'Register or Login' first if a user visits the Forms, Filters, or Home pages
+    - probably better practice to redirect them to a single page (?)
+        - however, user is passed as props to the page components
+        - if we redirect when there is no user, we may end up always redirecting since the component is rendered with state variable user = null
+- implemented Volume Counter: show total number of sets for some date range for selected muscle group
+    - also shows breakdown of sets per exercise for selected muscle group
+    - see:
+        - Backend:
+           - app/routes/statRoutes.js
+        - Frontend:
+            - app/client/src/components/pages/Filter.jsx
+            - app/client/src/components/forms/MuscleGroupFilter.jsx
+            - app/client/src/components/tables/NumSetsTable.jsx
+            - app/client/src/hooks/useFilterForm.js -- another variant of useForm, like useAuthForm is, except this one sends a GET request.
+    
+
+
 WHAT'S NEW (JUNE 27)
 - implemented logout (app/routes/authRoutes.js)
 - modified navbar to render different links depending on whether a user is logged in
