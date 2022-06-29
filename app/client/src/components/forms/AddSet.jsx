@@ -33,12 +33,22 @@ function AddSet(props) {
             console.log(inputField);
         }
 
+        // TODO: START HERE FOR DUPLICATING LAST SET
+        // tempValues = {
+        //     reps: values.reps,
+        //     weight: values.weight,
+        //     date: values.date,
+        //     exercise: values.exercise,
+        //     comments: values.comments
+        // }
+
+        // TODO: Determine whether this can just be eliminated and leave values as is for easy duplication.
         // Clear values fields. Without this, input fields will clear on submit but revert to previous contents on next change
-        values.reps = '';
-        values.weight = '';
-        values.date = '';
-        values.exercise = '';
-        values.comments = '';
+        // values.reps = '';
+        // values.weight = '';
+        // values.date = '';
+        // values.exercise = '';
+        // values.comments = '';
     }
 
     return (

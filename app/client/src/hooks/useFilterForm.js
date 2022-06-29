@@ -50,7 +50,7 @@ export default function useForm({ initialValues, slug }) {
                 withCredentials: true
 
             }).then(res => {
-                // setData(json);
+                console.log(res.data);
                 const results = res.data.results;
                 console.log(Object.entries(results));
                 //console.log(res.data.perExercise);

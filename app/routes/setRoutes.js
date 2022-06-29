@@ -62,7 +62,7 @@ router.post("/add", isLoggedIn, async (req, res) => {
     if (setsMatch) {
         response.message = `Successfully added set of ${req.body.exercise}`;
     } else {
-        response.message = 'Set was not added';
+        response.message = 'Set was not added'; // setsMatch is false when one of reps or weight has a decimal value I think, TODO: solve this
     }
     return res.send(response);
 })

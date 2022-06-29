@@ -11,9 +11,9 @@ const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    console.log(map);
-    console.log(exercises);
-    console.log(muscleGroups);
+    // console.log(map);
+    // console.log(exercises);
+    // console.log(muscleGroups);
 }
 getEnums();
 
@@ -26,6 +26,8 @@ router.get('/viewData', (req, res) => {
 router.get("/setsPerMuscle", isLoggedIn, async (req, res) => {
     const { fromDate, toDate } = req.query;
     let { muscleGroup } = req.query;
+
+    // Format muscle group to match string format in database
     muscleGroup = muscleGroup.toLowerCase();
     muscleGroup = muscleGroup.split(' ').join('_');
     console.log(req.query);
@@ -67,19 +69,31 @@ router.get("/setsPerMuscle", isLoggedIn, async (req, res) => {
         console.log(filteredMap);
         const exerciseList = Array.from(filteredMap.keys());
         for (let exercise of exerciseList) {
+            // Use exerciseTmp to mutate exercise to match string format in database 
             let exerciseTmp = exercise.toLowerCase(); // because enum is all in lower case
-            exerciseTmp = exerciseTmp.split(' ').join('_');
+            exerciseTmp = exerciseTmp.split(' ').join('_'); // and separated by underscores, not spaces
             const muscleGroup = map.get(exerciseTmp);
             exerciseTmp = `${exerciseTmp}:${muscleGroup}`;
 
-            const query = `SELECT count(*) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exerciseTmp}') AND owner = '${req.user.id}'`;
+            const query = `SELECT count(*), AVG(weight), MAX(weight) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exerciseTmp}') AND owner = '${req.user.id}'`;
             const data = await performQuery(query);
+            //console.log(data.rows);
             const count = data.rows[0].count;
+            const avgWeight = data.rows[0].avg; // TODO: reformat
+            const maxWeight = data.rows[0].max;
+
+            const avgRepsQuery = `SELECT AVG(reps) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exerciseTmp}') AND owner = '${req.user.id}'`;
+            const avgRepsData = await performQuery(avgRepsQuery);
+            const avgReps = avgRepsData.rows[0].avg; // TODO: reformat
+            console.log(avgReps);
+
+            // Only include an exercise if user did at least one set of it
             if (count > 0) {
                 exercise = exercise.split('_').join(' ');
-                numSetsPerE[exercise] = count;
+                numSetsPerE[exercise] = { count, avgWeight, maxWeight, avgReps };
             }
         }
+        console.log(numSetsPerE);
 
         return res.send({ results: numSets, perExercise: numSetsPerE });
     }
