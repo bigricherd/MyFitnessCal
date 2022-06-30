@@ -1,17 +1,28 @@
-WHAT'S NEW (JUNE 29)
+WHAT'S NEW (JUNE 29 PM) - CHINO
+- added a dummy option in Dropdown.jsx "select an ..."
+    - fixes our problem of the dropdowns NOT auto-selecting the first element in the list
+    - instead if the user ignores the dropdown, they are prompted to select from the list
+- formatted avgWeight and avgReps (app/routes/statRoutes.js)
+    - avgWeight rounds to nearest integer; two decimals would be too messy imo
+    - avgReps rounds to one decimal place
+- changed AddSet.jsx onSubmit property from customHandleSubmit to handleSubmit
+    - such that form inputs are not cleared when form is submitted
+    - temporary measure, makes it easy to log duplicate sets
+    - maybe we'll make a "Log last set" or "anotha one" button with DJ Khaled's face on it?
+
+WHAT'S NEW (JUNE 29) - CHINO
 - organized setup.sql to be runnable in one go (hopefully, TODO: before you commit, try with postgres database)
 - updated filter route (app/routes/statRoutes.js -- get('/setsPerMuscle)) a little bit
     - added documentation
     - added fetching average weight and reps, maximum weight for matching sets
         - display this extra data in src/components/tables/NumSetsTable.jsx
 - added TODO:s in src/components/forms/AddSet.jsx to represent decisions on clearing form fields on submit
-- 
 
-WHAT'S NEW (JUNE 28)
+WHAT'S NEW (JUNE 28) - CHINO
 - organized src/components directory in app/client into Pages, Forms, and Tables where applicable
 - abstracted fetching of Exercises and muscleGroups enums out of AddSet and AddExercise form components
     - instead fetched in src/components/pages/Forms.jsx and passed as props into the two forms
-    - Exercises Dropdown in AddSet does not update after AddExercise adds an exercise
+    - FIX:Exercises Dropdown in AddSet does not update after AddExercise adds an exercise
         - UNLESS we go to a different route like Filters, then come back to Forms
 - renamed authFormControl to useAuthForm (src/components/hooks/useAuthForm.js)
 - shows 'Register or Login' first if a user visits the Forms, Filters, or Home pages
@@ -31,7 +42,7 @@ WHAT'S NEW (JUNE 28)
     
 
 
-WHAT'S NEW (JUNE 27)
+WHAT'S NEW (JUNE 27) - CHINO
 - implemented logout (app/routes/authRoutes.js)
 - modified navbar to render different links depending on whether a user is logged in
     - simple hook in App.js to fetch the currently logged in user and display that data as debug text for now
@@ -39,7 +50,7 @@ WHAT'S NEW (JUNE 27)
     - we query the DB to ensure that the most recent row matches what the user entered
     - only send success message if row and user-entered data match
 
-WHAT'S NEW (JUNE 25)
+WHAT'S NEW (JUNE 25) - CHINO
 - implemented auth using passport.js. see:
     - Backend:
         - app/routes/authRoutes.js
