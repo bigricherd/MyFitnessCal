@@ -79,13 +79,13 @@ router.get("/setsPerMuscle", isLoggedIn, async (req, res) => {
             const data = await performQuery(query);
             //console.log(data.rows);
             const count = data.rows[0].count;
-            const avgWeight = data.rows[0].avg; // TODO: reformat
+            const avgWeight = parseInt(data.rows[0].avg); // Round to integer
+            //const avgWeight = parseFloat(data.rows[0].avg).toFixed(1);
             const maxWeight = data.rows[0].max;
 
             const avgRepsQuery = `SELECT AVG(reps) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exerciseTmp}') AND owner = '${req.user.id}'`;
             const avgRepsData = await performQuery(avgRepsQuery);
-            const avgReps = avgRepsData.rows[0].avg; // TODO: reformat
-            console.log(avgReps);
+            const avgReps = parseFloat(avgRepsData.rows[0].avg).toFixed(1);
 
             // Only include an exercise if user did at least one set of it
             if (count > 0) {

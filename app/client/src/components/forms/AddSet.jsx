@@ -33,7 +33,7 @@ function AddSet(props) {
             console.log(inputField);
         }
 
-        // TODO: START HERE FOR DUPLICATING LAST SET
+        // TODO: START HERE FOR DUPLICATING LAST SET -- with a button like "anotha one" or something like that
         // tempValues = {
         //     reps: values.reps,
         //     weight: values.weight,
@@ -42,7 +42,6 @@ function AddSet(props) {
         //     comments: values.comments
         // }
 
-        // TODO: Determine whether this can just be eliminated and leave values as is for easy duplication.
         // Clear values fields. Without this, input fields will clear on submit but revert to previous contents on next change
         // values.reps = '';
         // values.weight = '';
@@ -54,7 +53,7 @@ function AddSet(props) {
     return (
         <div>
             <h2 className="display-3 mt-3">Add Set</h2>
-            <form action="#" method="POST" onSubmit={customHandleSubmit}>
+            <form action="#" method="POST" onSubmit={handleSubmit}>
 
                 <div className="mb-3 text-start">
                     <label htmlFor="reps" className='form-label'>Reps</label>
