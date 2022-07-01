@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
+const { v4: uuid } = require('uuid');
 const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
 const { performQuery } = require('./utils/dbModule');
 //const errorController = require('./utils/errorController');
@@ -45,9 +46,9 @@ const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    // console.log(map);
-    // console.log(exercises);
-    // console.log(muscleGroups);
+    console.log(map);
+    console.log(exercises);
+    console.log(muscleGroups);
 }
 getEnums();
 
@@ -97,16 +98,31 @@ app.post("/api/exercises/add", async (req, res) => {
     muscleGroup = muscleGroup.toLowerCase();
     muscleGroup = muscleGroup.split(' ').join('_');
 
+    const id = uuid();
+
     if (muscleGroups.indexOf(muscleGroup) === -1) {
         const error = `Error: ${muscleGroup} is not a valid muscle group.`;
         console.log(error);
         return res.send({ message: error });
     }
 
-    const entry = `${exercise}:${muscleGroup}`;
-    const query = `ALTER TYPE exercise ADD VALUE '${entry}';
-                   ALTER TABLE set1 ALTER COLUMN exercise TYPE exercise;`;
+   
+    // using exercises table
+    const query = `INSERT INTO exercises(id, name, musclegroup) VALUES('${id}', '${exercise}', '${muscleGroup}')`;
     await performQuery(query);
+
+    // using composite key
+    // const query2 = `INSERT INTO exercisescomp(id, name, musclegroup) VALUES('${id}', '${exercise}', '${muscleGroup}')`;
+    // await performQuery(query2);
+    // const x = await performQuery('SELECT * FROM exercisescomp');
+    // console.log(x.rows);
+
+    // TODO: determine if this is the winner! Using a varchar(45) field as primary key, manually populated with the string in the next line.
+    const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
+    const query3 = `INSERT INTO exercisescomp(id, name, musclegroup, nameandmusclegroup) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}')`;
+    await performQuery(query3);
+    const x3 = await performQuery('SELECT * FROM exercisescomp');
+    console.log(x3.rows);
 
     await getEnums(); // update local 'Exercises' array
 
