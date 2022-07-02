@@ -43,13 +43,14 @@ router.post('/login', passport.authenticate('local', { failureRedirect: '/api/au
     return res.json({ redirect: '/' });
 })
 
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     if (req.user) {
         const username = req.user.username;
         req.logout((err, next) => {
             if (err) return next(err);
         });
         console.log(`Logged out user ${username}`);
+        return res.send({message: `Logged out user ${username}`});
     }
     return res.redirect('/');
 })
@@ -71,6 +72,7 @@ router.get('/getUser', (req, res) => {
     if (req.user) {
         data.message = `Logged in user is ${req.user.username}`;
         data.user = req.user.username;
+        data.id = req.user.id;
     }
     return res.json(data);
 })

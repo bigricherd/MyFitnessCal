@@ -3,18 +3,22 @@ import AddSet from '../forms/AddSet';
 import AddExercise from '../forms/AddExercise';
 import formatEnum from '../../helpers/formatEnum';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // ------ A forms page with a button group to select which form to view: AddSet or AddExercise ------
 function Forms(props) {
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(props.user);
+    const [userId, setUserId] = useState(props.userId);
     const [showAddSet, setShowAddSet] = useState(true);
 
     // We can get rid of these two arrays by calling setMuscleGroups(formatEnum(json.muscleGroups)) in start() below
     let exercisesArr = [];
     let muscleGroupsArr = [];
+    let exercisesByUserArr = [];
     const [muscleGroups, setMuscleGroups] = useState([]);
     const [exercises, setExercises] = useState([]);
+    const [exercisesByUser, setExercisesByUser] = useState([]);
 
     const start = async () => {
         const baseUrl = 'http://localhost:5000';
@@ -25,14 +29,29 @@ function Forms(props) {
         setMuscleGroups(muscleGroupsArr);
         setExercises(exercisesArr);
         console.log(muscleGroupsArr);
+
+        const userExercises = await axios({
+            method: 'POST',
+            url: `${baseUrl}/api/enums/byCurrentUser`,
+            data: {
+                id: userId
+            },
+            headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
+            withCredentials: true
+
+        });
+        console.log(userExercises.data.exercisesByUser);
+        exercisesByUserArr = formatEnum(userExercises.data.exercisesByUser);
+        setExercisesByUser(exercisesByUserArr);
     }
 
     useEffect(() => {
-        start();
         setUser(props.user);
+        setUserId(props.userId);
+        start();
     }, [props])
 
-    const addSet = <AddSet exercises={exercises} />;
+    const addSet = <AddSet exercises={exercises} exercisesByUser={exercisesByUser} />;
     const addExercise = <AddExercise muscleGroups={muscleGroups} />;
 
     // If there is no logged in user, show the prompt with links to Login and Register pages

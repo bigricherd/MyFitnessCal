@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 // ------ A simple navbar that leads us to the various pages / components we currently have ------
@@ -6,12 +7,21 @@ function Nav(props) {
 
     let navbarContents = null;
 
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+        const res = await fetch(`${baseUrl}/api/auth/logout`, { credentials: "include" });
+        if (res.ok) {
+            window.location = '/';
+        }
+    }
+
     // Assign navbar contents, selection depends on whether a user is logged in
     if (props.user) {
         navbarContents = <div className="navbar-nav ms-auto">
             <Link to='/forms' className={navLinkClasses}>Forms</Link>
             <Link to='/filters' className={navLinkClasses}>Filters</Link>
-            <form action='/api/auth/logout' className={navLinkClasses} method='POST'><button className="border-0 bg-light text-muted">Logout | <span className="text-success">{props.user}</span></button></form>
+            <form action='#' onSubmit={handleLogout} className={navLinkClasses}><button className="border-0 bg-light text-muted">Logout | <span className="text-success">{props.user}</span></button></form>
         </div>
     } else {
         navbarContents = <div className="navbar-nav ms-auto">

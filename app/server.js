@@ -2,14 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
-const { v4: uuid } = require('uuid');
+const methodOverride = require('method-override');
 const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
 const { performQuery } = require('./utils/dbModule');
+const { isLoggedIn } = require('./utils/middleware');
 //const errorController = require('./utils/errorController');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride('_method'));
 
 // ---------- CORS SETUP ----------
 const homeUrl = process.env.HOMEPAGE_URL || 'http://localhost:3000';
@@ -61,9 +63,11 @@ app.use(passport.session());
 const setRoutes = require('./routes/setRoutes');
 const statRoutes = require('./routes/statRoutes');
 const authRoutes = require('./routes/authRoutes');
+const exerciseRoutes = require('./routes/exerciseRoutes');
 app.use('/api/sets', setRoutes);
 app.use('/api/stats', statRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/exercises', exerciseRoutes);
 
 // --- DEBUGGING AUTH --- 
 // app.use((req, res, next) => {
@@ -88,54 +92,20 @@ app.get('/api/enums', (req, res) => {
     res.send({ message: 'enums requested', exercises, muscleGroups })
 })
 
-// ADD AN EXERCISE TO ENUMS -- TODO: move this elsewhere
-app.post("/api/exercises/add", async (req, res) => {
-    let { exercise, muscleGroup } = req.body;
-
-    // Format exercise and muscle group to store in database
-    exercise = exercise.toLowerCase();
-    exercise = exercise.split(' ').join('_');
-    muscleGroup = muscleGroup.toLowerCase();
-    muscleGroup = muscleGroup.split(' ').join('_');
-
-    const id = uuid();
-
-    if (muscleGroups.indexOf(muscleGroup) === -1) {
-        const error = `Error: ${muscleGroup} is not a valid muscle group.`;
-        console.log(error);
-        return res.send({ message: error });
+// This route is hit when the Forms page loads
+// Returns the list of exercises added by the currently logged in user
+app.post('/api/enums/byCurrentUser', isLoggedIn, async (req, res) => {
+    const { id } = req.body;
+    console.log(id);
+    const query = `SELECT name FROM exercises WHERE owner = '${id}'`;
+    const data = await performQuery(query);
+    console.log(data.rows);
+    const exercisesByUser = [];
+    for (let row of data.rows) {
+        exercisesByUser.push(row.name);
     }
-
-   
-    // using exercises table
-    const query = `INSERT INTO exercises(id, name, musclegroup) VALUES('${id}', '${exercise}', '${muscleGroup}')`;
-    await performQuery(query);
-
-    // using composite key
-    // const query2 = `INSERT INTO exercisescomp(id, name, musclegroup) VALUES('${id}', '${exercise}', '${muscleGroup}')`;
-    // await performQuery(query2);
-    // const x = await performQuery('SELECT * FROM exercisescomp');
-    // console.log(x.rows);
-
-    // TODO: determine if this is the winner! Using a varchar(45) field as primary key, manually populated with the string in the next line.
-    const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
-    const query3 = `INSERT INTO exercisescomp(id, name, musclegroup, nameandmusclegroup) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}')`;
-    await performQuery(query3);
-    const x3 = await performQuery('SELECT * FROM exercisescomp');
-    console.log(x3.rows);
-
-    await getEnums(); // update local 'Exercises' array
-
-
-    // Verify that the last element of the local 'Exercises' array matches user entry
-    const response = { message: '' };
-    if (exercises[exercises.length - 1] === exercise) {
-        console.log('exercises matched');
-        response.message = `Successfully added exercise ${req.body.exercise}`;
-    } else {
-        response.message = 'Exercise was not added';
-    }
-    return res.send(response);
+    ///res.send({ message: 'enums requested', exercisesByUser });
+    res.send({exercisesByUser});
 })
 
 // ---------- ERROR HANDLING ----------

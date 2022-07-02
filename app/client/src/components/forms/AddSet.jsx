@@ -5,10 +5,13 @@ import Message from '../Message';
 
 function AddSet(props) {
     const [exercises, setExercises] = useState(props.exercises); // TODO: update exercises when a new one is added by AddExercise
+    const [exercisesByUser, setExercisesByUser] = useState(props.exercisesByUser);
+    const [showByUserOnly, setShowByUserOnly] = useState(false);
 
     // Update state every time props changes, i.e., when exercises in Forms.jsx changes
     useEffect(() => {
         setExercises(props.exercises);
+        setExercisesByUser(props.exercisesByUser)
     }, [props])
 
     const { values, handleChange, handleKeyDown, handleSubmit, successMsg } = useForm({
@@ -50,6 +53,10 @@ function AddSet(props) {
         // values.comments = '';
     }
 
+    const toggleShownExercises = () => {
+        setShowByUserOnly(!showByUserOnly);
+    }
+
     return (
         <div>
             <h2 className="display-3 mt-3">Add Set</h2>
@@ -71,8 +78,23 @@ function AddSet(props) {
                 </div>
 
                 <div className="mb-3 text-start">
-                    <label htmlFor="exercise" className='form-label d-block'>Exercise</label>
+                    <label htmlFor="exercise" className='form-label d-block'>Exercise</label> 
+                    <button className="btn btn-sm btn-info" type="button" onClick={toggleShownExercises}>
+                        {showByUserOnly ?
+                        "Show all exercises"
+                        :
+                        "Show my exercises only"
+                        }
+                    </button>
+
+                    {/** We give the user the option to view all exercises in the database or only the ones that they added*/}
+
+                    {showByUserOnly ? 
+                    <Dropdown name={'exercise'} id={'exercise'} options={exercisesByUser} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
+                    :
                     <Dropdown name={'exercise'} id={'exercise'} options={exercises} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
+                    }
+                    
 
                     {/* see AddExercise.jsx line 74 for a note on this input */}
                     <input type="text" className="form-control d-none" placeholder="" id="exercise" name="exercise" value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} required />

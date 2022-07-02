@@ -1,4 +1,19 @@
-WHAT'S NEW (JUNE 29 PM) - CHINO
+JUNE 30 6PM - CHINO
+- added 'owner'' column to Exercises table, referencing User(id) (appUser(id) for now)
+    - added a button in AddSet to toggle the list of exercises the user can see:
+        - all exercises logged by all users ever, OR
+        - exercises logged by the currently logged in user
+        FRONTEND:
+            - required fetching user.id in App.js and passing this down to Forms.jsx
+            - required a new state variable in AddSet.jsx called 'exercisesByUser', in addition to 'exercises' (all exercises ever)
+        BACKEND:
+            - see app.get(/api/enums/byCurrentUser) in server.js
+            - TODO: may want to write a method for exercises logged by current user in app/utils/fetchEnums
+- moved add Exercise route out of server.js, into its own routes file 'exerciseRoutes.js'
+    - in preparation for Exercise UPDATE and DELETE implementation
+
+
+JUNE 29 PM - CHINO
 - added a dummy option in Dropdown.jsx "select an ..."
     - fixes our problem of the dropdowns NOT auto-selecting the first element in the list
     - instead if the user ignores the dropdown, they are prompted to select from the list
@@ -10,7 +25,7 @@ WHAT'S NEW (JUNE 29 PM) - CHINO
     - temporary measure, makes it easy to log duplicate sets
     - maybe we'll make a "Log last set" or "anotha one" button with DJ Khaled's face on it?
 
-WHAT'S NEW (JUNE 29) - CHINO
+(JUNE 29) - CHINO
 - organized setup.sql to be runnable in one go (hopefully, TODO: before you commit, try with postgres database)
 - updated filter route (app/routes/statRoutes.js -- get('/setsPerMuscle)) a little bit
     - added documentation

@@ -8,7 +8,7 @@ const getMuscleGroups = async () => {
     return enumArray;
 }
 
-// TODO: change map result
+
 // Returns a map {exercise : muscleGroup} that represents the Exercise enum.
 // Exercises are stored in the string format "exercise:muscleGroup" in the Exercise enum, hence the reformatting into a map.
 const getExerciseMap = async () => {

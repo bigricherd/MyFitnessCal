@@ -14,6 +14,7 @@ function App() {
 
   const [message, setMessage] = useState(null);
   const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const url = `${baseUrl}/api/auth/getUser`
   console.log(url);
@@ -28,6 +29,7 @@ function App() {
       const json = await response.json();
       setMessage(json.message);
       setUser(json.user);
+      setUserId(json.id);
       setIsFetching(false);
     } catch (e) {
       setMessage(`API call failed: ${e}`);
@@ -64,7 +66,7 @@ function App() {
           <Nav user={user} />
           <Routes>
             <Route exact path='/' element={<HomePage user={user} />} />
-            <Route exact path='/forms' element={<Forms user={user} />} />
+            <Route exact path='/forms' element={<Forms user={user} userId={userId}/>} />
             <Route exact path='/filters' element={<Filters user={user} />} />
             <Route exact path='/register' element={<Register />} />
             <Route exact path='/login' element={<Login />} />
