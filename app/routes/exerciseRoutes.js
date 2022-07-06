@@ -13,9 +13,9 @@ const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    console.log(map);
-    console.log(exercises);
-    console.log(muscleGroups);
+    // console.log(map);
+    // console.log(exercises);
+    // console.log(muscleGroups);
 }
 
 getEnums();
@@ -34,7 +34,7 @@ router.post("/add", isLoggedIn, async (req, res) => {
 
     // Ensure muscle group is valid
     // TODO: make this a boolean-returning function. Throw an error if it returns false
-        // also to be used in statRoutes.get('/setsPerMuscle')
+    // also to be used in statRoutes.get('/setsPerMuscle')
     if (muscleGroups.indexOf(muscleGroup) === -1) {
         const error = `Error: ${muscleGroup} is not a valid muscle group.`;
         console.log(error);
@@ -49,7 +49,7 @@ router.post("/add", isLoggedIn, async (req, res) => {
     console.log(x3.rows);
 
     // update local 'Exercises' array
-    await getEnums(); 
+    await getEnums();
 
     // Verify that the last element of the local 'Exercises' array matches user entry
     const response = { message: '' };
@@ -63,9 +63,9 @@ router.post("/add", isLoggedIn, async (req, res) => {
 })
 
 router.delete('/', isLoggedIn, async (req, res) => {
-   const {name} = req.query;
-   const muscleGroup = map.get(name);
-   console.log(muscleGroup);
+    const { name } = req.query;
+    const muscleGroup = map.get(name);
+    console.log(muscleGroup);
 })
 
 module.exports = router;

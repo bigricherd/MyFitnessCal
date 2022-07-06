@@ -62,28 +62,13 @@ function AddSet(props) {
             <h2 className="display-3 mt-3">Add Set</h2>
             <form action="#" method="POST" onSubmit={handleSubmit}>
 
-                <div className="mb-3 text-start">
-                    <label htmlFor="reps" className='form-label'>Reps</label>
-                    <input type="number" className="form-control" placeholder="reps" id="reps" name="reps" value={values.reps} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                </div>
-
-                <div className="mb-3 text-start">
-                    <label htmlFor="weight" className='form-label'>Weight (lb)</label>
-                    <input type="number" className="form-control" placeholder="0" id="weight" name="weight" value={values.weight} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                </div>
-
-                <div className="mb-3 text-start">
-                    <label htmlFor="date" className='form-label'>Date (yyyy-mm-dd)</label>
-                    <input type="text" className="form-control" placeholder="" id="date" name="date" value={values.date} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                </div>
-
-                <div className="mb-3 text-start">
-                    <label htmlFor="exercise" className='form-label d-block'>Exercise</label> 
-                    <button className="btn btn-sm btn-info" type="button" onClick={toggleShownExercises}>
+            <div className="mb-3 text-start">
+                    <label htmlFor="exercise" className='form-label mb-3 me-1'>Exercise</label> 
+                    <button className="btn btn-primary mx-2" type="button" onClick={toggleShownExercises}>
                         {showByUserOnly ?
-                        "Show all exercises"
+                        "Show all"
                         :
-                        "Show my exercises only"
+                        "Show mine"
                         }
                     </button>
 
@@ -98,6 +83,21 @@ function AddSet(props) {
 
                     {/* see AddExercise.jsx line 74 for a note on this input */}
                     <input type="text" className="form-control d-none" placeholder="" id="exercise" name="exercise" value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} required />
+                </div>
+
+                <div className="mb-3 text-start">
+                    <label htmlFor="reps" className='form-label'>Reps</label>
+                    <input type="number" className="form-control" placeholder="reps" id="reps" name="reps" value={values.reps} onChange={handleChange} onKeyDown={handleKeyDown} required />
+                </div>
+
+                <div className="mb-3 text-start">
+                    <label htmlFor="weight" className='form-label'>Weight (lb)</label>
+                    <input type="number" className="form-control" placeholder="0" id="weight" name="weight" value={values.weight} onChange={handleChange} onKeyDown={handleKeyDown} required />
+                </div>
+
+                <div className="mb-3 text-start">
+                    <label htmlFor="date" className='form-label'>Date (yyyy-mm-dd)</label>
+                    <input type="text" className="form-control" placeholder="" id="date" name="date" value={values.date} onChange={handleChange} onKeyDown={handleKeyDown} required />
                 </div>
 
                 <div className="mb-3 text-start">

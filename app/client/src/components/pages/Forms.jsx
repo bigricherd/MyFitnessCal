@@ -15,9 +15,10 @@ function Forms(props) {
     // We can get rid of these two arrays by calling setMuscleGroups(formatEnum(json.muscleGroups)) in start() below
     let exercisesArr = [];
     let muscleGroupsArr = [];
-    let exercisesByUserArr = [];
     const [muscleGroups, setMuscleGroups] = useState([]);
     const [exercises, setExercises] = useState([]);
+    
+    let exercisesByUserArr = [];
     const [exercisesByUser, setExercisesByUser] = useState([]);
 
     const start = async () => {
@@ -28,7 +29,6 @@ function Forms(props) {
         muscleGroupsArr = formatEnum(json.muscleGroups);
         setMuscleGroups(muscleGroupsArr);
         setExercises(exercisesArr);
-        console.log(muscleGroupsArr);
 
         const userExercises = await axios({
             method: 'POST',
@@ -40,7 +40,6 @@ function Forms(props) {
             withCredentials: true
 
         });
-        console.log(userExercises.data.exercisesByUser);
         exercisesByUserArr = formatEnum(userExercises.data.exercisesByUser);
         setExercisesByUser(exercisesByUserArr);
     }
@@ -52,7 +51,7 @@ function Forms(props) {
     }, [props])
 
     const addSet = <AddSet exercises={exercises} exercisesByUser={exercisesByUser} />;
-    const addExercise = <AddExercise muscleGroups={muscleGroups} />;
+    const addExercise = <AddExercise muscleGroups={muscleGroups} exercisesByUser={exercisesByUser} />;
 
     // If there is no logged in user, show the prompt with links to Login and Register pages
     if (!user) {

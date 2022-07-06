@@ -1,3 +1,14 @@
+JULY 05 5PM - CHINO
+- in AddExercise.jsx: 
+    - added state variable to track exercisesByUser (passed as props from Forms.jsx)
+        - to help development of 'DELETE FROM Exercise' frontend
+    - using react-scrollable-list (have to npm install) but not working, will troubleshoot
+- TODO: in app/utils/fetchEnums.js, in getExercisesArray()
+    - group exercises by muscle group
+    - working in server.js app.post('/api/enums/byCurrentUser'), but not in getExercisesArray()
+- TODO: move data fetching of enums from Forms.jsx to App.js, pass as props down the tree
+- there isn't much that's new and working, I am doing commit so I can move between machines oops
+
 JUNE 30 6PM - CHINO
 - added 'owner'' column to Exercises table, referencing User(id) (appUser(id) for now)
     - added a button in AddSet to toggle the list of exercises the user can see:

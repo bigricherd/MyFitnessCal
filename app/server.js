@@ -48,9 +48,9 @@ const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    console.log(map);
-    console.log(exercises);
-    console.log(muscleGroups);
+    // console.log(map);
+    // console.log(exercises);
+    // console.log(muscleGroups);
 }
 getEnums();
 
@@ -97,7 +97,7 @@ app.get('/api/enums', (req, res) => {
 app.post('/api/enums/byCurrentUser', isLoggedIn, async (req, res) => {
     const { id } = req.body;
     console.log(id);
-    const query = `SELECT name FROM exercises WHERE owner = '${id}'`;
+    const query = `SELECT muscleGroup, name FROM exercises WHERE owner = '${id}' GROUP BY muscleGroup, name`;
     const data = await performQuery(query);
     console.log(data.rows);
     const exercisesByUser = [];
@@ -105,7 +105,7 @@ app.post('/api/enums/byCurrentUser', isLoggedIn, async (req, res) => {
         exercisesByUser.push(row.name);
     }
     ///res.send({ message: 'enums requested', exercisesByUser });
-    res.send({exercisesByUser});
+    res.send({ exercisesByUser });
 })
 
 // ---------- ERROR HANDLING ----------

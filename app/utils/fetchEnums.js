@@ -24,6 +24,15 @@ const getExerciseMap = async () => {
 const getExercisesArray = async () => {
     const map = await getExerciseMap();
     return Array.from(map.keys());
+    // TODO: group exercises by muscle group
+    // const res = await performQuery('SELECT muscleGroup, name FROM exercises GROUP BY muscleGroup, name');
+    // console.log(res.rows);
+    // const arr = [];
+    // for (let item of res.rows) {
+    //     arr.push(item.name);
+    // }
+    // console.log(arr);
+    // return arr;
 }
 
 const test = async () => {

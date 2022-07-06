@@ -8,7 +8,7 @@ const verifyPassword = async (password, hash) => {
     let result = false;
     try {
         const res = await bcrypt.compare(password, hash);
-        console.log(`Res async: ${res}`);
+        console.log(`Correct password: ${res}`);
         result = res;
     } catch (e) {
         console.log(`Error at bcrypt.compare: ${e}`);
