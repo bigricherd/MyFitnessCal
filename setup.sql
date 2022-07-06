@@ -36,6 +36,7 @@
 --                  FOREIGN KEY(OWNER)
 --                  REFERENCES appUser(id),
 --    comments varchar(40)
+-- )
 
 -- select * from session
 
@@ -55,7 +56,7 @@
 --                    session UUID NOT NULL,
 --                                    CONSTRAINT fk_session
 --                                    FOREIGN KEY(session)
---                                   REFERENCES session(id),
+--                                   REFERENCES session(id)
 -- );
 
--- SELECT * FROM SET1
+-- SELECT * FROM set1
