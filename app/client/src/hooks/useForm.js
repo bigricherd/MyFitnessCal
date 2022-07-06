@@ -36,7 +36,7 @@ export default function useForm({ initialValues, slug }) {
     //send data to database
     const submitData = async (formValues) => {
         const dataObject = formValues.values;
-        const { reps, weight, date, exercise, muscleGroup, comments } = dataObject;
+        const { reps, weight, date, exercise, muscleGroup } = dataObject;
         try {
             await axios({
                 method: 'POST',
@@ -46,8 +46,7 @@ export default function useForm({ initialValues, slug }) {
                     weight,
                     date,
                     exercise,
-                    muscleGroup,
-                    comments
+                    muscleGroup
                 },
                 headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
                 withCredentials: true

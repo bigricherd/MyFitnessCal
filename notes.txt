@@ -1,3 +1,19 @@
+JULY 05 6PM - CHINO
+- eliminating comments attribute from Set table
+    - in setRoutes.js: router.post('/add')
+     - removed comments field in INSERT query
+    - in AddSet.jsx
+        - removed comments input field
+    - in setup.sql
+        - removed from CREATE TABLE statement
+- updated setup.sql with new data models
+    - CREATE TABLE Session
+    - changed ordering of CREATEs
+- NOTE: Add Set will be broken until we implement Session
+    - see the TODO in setRoutes.js router.post('/add)
+    - will also have to fix frontend add session + add set
+
+
 JULY 05 5PM - CHINO
 - in AddExercise.jsx: 
     - added state variable to track exercisesByUser (passed as props from Forms.jsx)
@@ -19,7 +35,7 @@ JUNE 30 6PM - CHINO
             - required a new state variable in AddSet.jsx called 'exercisesByUser', in addition to 'exercises' (all exercises ever)
         BACKEND:
             - see app.get(/api/enums/byCurrentUser) in server.js
-            - TODO: may want to write a method for exercises logged by current user in app/utils/fetchEnums
+            - may want to write a method for exercises logged by current user in app/utils/fetchEnums
 - moved add Exercise route out of server.js, into its own routes file 'exerciseRoutes.js'
     - in preparation for Exercise UPDATE and DELETE implementation
 
@@ -37,7 +53,7 @@ JUNE 29 PM - CHINO
     - maybe we'll make a "Log last set" or "anotha one" button with DJ Khaled's face on it?
 
 (JUNE 29) - CHINO
-- organized setup.sql to be runnable in one go (hopefully, TODO: before you commit, try with postgres database)
+- organized setup.sql to be runnable in one go
 - updated filter route (app/routes/statRoutes.js -- get('/setsPerMuscle)) a little bit
     - added documentation
     - added fetching average weight and reps, maximum weight for matching sets

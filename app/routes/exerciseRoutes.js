@@ -66,6 +66,12 @@ router.delete('/', isLoggedIn, async (req, res) => {
     const { name } = req.query;
     const muscleGroup = map.get(name);
     console.log(muscleGroup);
+    const primaryKey = `${name}:${muscleGroup}`;
+    const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${primaryKey}'`;
+    await performQuery(query);
+
+    const postDelete = await performQuery('SELECT musclegroup, name FROM Exercises GROUP BY musclegroup');
+    console.log(postDelete.rows);
 })
 
 module.exports = router;

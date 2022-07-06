@@ -42,7 +42,6 @@ function AddSet(props) {
         //     weight: values.weight,
         //     date: values.date,
         //     exercise: values.exercise,
-        //     comments: values.comments
         // }
 
         // Clear values fields. Without this, input fields will clear on submit but revert to previous contents on next change
@@ -50,7 +49,6 @@ function AddSet(props) {
         // values.weight = '';
         // values.date = '';
         // values.exercise = '';
-        // values.comments = '';
     }
 
     const toggleShownExercises = () => {
@@ -62,24 +60,24 @@ function AddSet(props) {
             <h2 className="display-3 mt-3">Add Set</h2>
             <form action="#" method="POST" onSubmit={handleSubmit}>
 
-            <div className="mb-3 text-start">
-                    <label htmlFor="exercise" className='form-label mb-3 me-1'>Exercise</label> 
+                <div className="mb-3 text-start">
+                    <label htmlFor="exercise" className='form-label mb-3 me-1'>Exercise</label>
                     <button className="btn btn-primary mx-2" type="button" onClick={toggleShownExercises}>
                         {showByUserOnly ?
-                        "Show all"
-                        :
-                        "Show mine"
+                            "Show all"
+                            :
+                            "Show mine"
                         }
                     </button>
 
                     {/** We give the user the option to view all exercises in the database or only the ones that they added*/}
 
-                    {showByUserOnly ? 
-                    <Dropdown name={'exercise'} id={'exercise'} options={exercisesByUser} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
-                    :
-                    <Dropdown name={'exercise'} id={'exercise'} options={exercises} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
+                    {showByUserOnly ?
+                        <Dropdown name={'exercise'} id={'exercise'} options={exercisesByUser} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
+                        :
+                        <Dropdown name={'exercise'} id={'exercise'} options={exercises} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
                     }
-                    
+
 
                     {/* see AddExercise.jsx line 74 for a note on this input */}
                     <input type="text" className="form-control d-none" placeholder="" id="exercise" name="exercise" value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} required />
@@ -87,22 +85,17 @@ function AddSet(props) {
 
                 <div className="mb-3 text-start">
                     <label htmlFor="reps" className='form-label'>Reps</label>
-                    <input type="number" className="form-control" placeholder="reps" id="reps" name="reps" value={values.reps} onChange={handleChange} onKeyDown={handleKeyDown} required />
+                    <input type="number" className="form-control" placeholder="" id="reps" name="reps" value={values.reps} onChange={handleChange} onKeyDown={handleKeyDown} required />
                 </div>
 
                 <div className="mb-3 text-start">
                     <label htmlFor="weight" className='form-label'>Weight (lb)</label>
-                    <input type="number" className="form-control" placeholder="0" id="weight" name="weight" value={values.weight} onChange={handleChange} onKeyDown={handleKeyDown} required />
+                    <input type="number" className="form-control" placeholder="" id="weight" name="weight" value={values.weight} onChange={handleChange} onKeyDown={handleKeyDown} required />
                 </div>
 
                 <div className="mb-3 text-start">
                     <label htmlFor="date" className='form-label'>Date (yyyy-mm-dd)</label>
                     <input type="text" className="form-control" placeholder="" id="date" name="date" value={values.date} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                </div>
-
-                <div className="mb-3 text-start">
-                    <label htmlFor="comments" className='form-label'>Comments</label>
-                    <textarea name="comments" id="comments" cols="20" rows="5" className='form-control' value={values.comments} onChange={handleChange} onKeyDown={handleKeyDown}></textarea>
                 </div>
 
                 <button className="btn btn-primary mb-3">Add set</button>

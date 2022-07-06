@@ -48,9 +48,9 @@ const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    // console.log(map);
-    // console.log(exercises);
-    // console.log(muscleGroups);
+    console.log(map);
+    console.log(exercises);
+    console.log(muscleGroups);
 }
 getEnums();
 

@@ -24,10 +24,10 @@ router.get('/viewData', (req, res) => {
     res.send(map);
 })
 
-// Add a new set
+// Add a new set TODO: add Session id
 router.post("/add", isLoggedIn, async (req, res) => {
     await getEnums(); // without this, we cannot go directly from adding a new exercise to adding a set of it.
-    const { reps, weight, comments = '' } = req.body;
+    const { reps, weight } = req.body;
     let { date, exercise } = req.body; // FIX: date is currently assumed to come as a string in the format 'yyyy-mm-dd' 
 
     // Format exercise data to work with the database
@@ -47,7 +47,7 @@ router.post("/add", isLoggedIn, async (req, res) => {
     }
 
     exercise = `${exercise}:${muscleGroup}`; // more formatting
-    const query = `INSERT INTO set1(reps, weight, date, exercise, musclegroup, comments, owner) VALUES (${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${comments}', '${req.user.id}')`;
+    const query = `INSERT INTO set1(reps, weight, date, exercise, musclegroup, owner) VALUES (${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${req.user.id}')`;
     console.log(query);
     await performQuery(query);
 
@@ -55,8 +55,7 @@ router.post("/add", isLoggedIn, async (req, res) => {
     const newestSet = all.rows[all.rows.length - 1];
     console.log(newestSet);
     const setsMatch = (newestSet.reps == reps) && (newestSet.weight == weight)
-        && (newestSet.exercise === exercise) && (newestSet.musclegroup === muscleGroup)
-        && (newestSet.comments === comments) && (newestSet.owner === req.user.id);
+        && (newestSet.exercise === exercise) && (newestSet.musclegroup === muscleGroup) && (newestSet.owner === req.user.id);
 
     const response = { message: '' };
     if (setsMatch) {
