@@ -5,8 +5,6 @@ import Dropdown from '../Dropdown';
 import { useEffect } from 'react';
 
 function MuscleGroupFilter(props) {
-    //const [tableData, setTableData] = useState([]);
-
     const [muscleGroups, setMuscleGroups] = useState([]);
     useEffect(() => {
         setMuscleGroups(props.muscleGroups);

@@ -8,20 +8,20 @@ import Forms from './components/pages/Forms';
 import HomePage from './components/pages/HomePage';
 import Nav from './components/Nav';
 import Filters from './components/pages/Filters';
+import formatEnum from './helpers/formatEnum';
 
 function App() {
   const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
 
   const [message, setMessage] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
-  const url = `${baseUrl}/api/auth/getUser`
-  console.log(url);
+  const getUserUrl = `${baseUrl}/api/auth/getUser`;
 
   const fetchUser = useCallback(async () => {
 
-    const response = await fetch(url, { credentials: "include" });
+    const response = await fetch(getUserUrl, { credentials: "include" });
     if (!response.ok) {
       throw new Error(`status ${response.status}`);
     }
@@ -36,12 +36,28 @@ function App() {
       setIsFetching(false);
     }
 
-  }, [url]);
+  }, [getUserUrl]);
+
+  let exercisesArr = [];
+  let muscleGroupsArr = [];
+  const [muscleGroups, setMuscleGroups] = useState([]);
+  const [exercises, setExercises] = useState([]);
+  const getEnumsUrl = `${baseUrl}/api/enums`;
+
+  const fetchEnums = useCallback(async () => {
+    const data = await fetch(getEnumsUrl);
+    const json = await data.json();
+    exercisesArr = formatEnum(json.exercises);
+    muscleGroupsArr = formatEnum(json.muscleGroups);
+    setMuscleGroups(muscleGroupsArr);
+    setExercises(exercisesArr);
+  }, [getEnumsUrl])
 
   useEffect(() => {
     setIsFetching(true);
     fetchUser();
-  }, [fetchUser]);
+    fetchEnums();
+  }, [fetchUser, fetchEnums]);
 
   const debugText = <div>
     <p>{'« '}<strong>
@@ -66,8 +82,9 @@ function App() {
           <Nav user={user} />
           <Routes>
             <Route exact path='/' element={<HomePage user={user} />} />
-            <Route exact path='/forms' element={<Forms user={user} userId={userId}/>} />
-            <Route exact path='/filters' element={<Filters user={user} />} />
+            <Route exact path='/forms' element={<Forms user={user} userId={userId} muscleGroups={muscleGroups}
+              exercises={exercises} />} />
+            <Route exact path='/filters' element={<Filters user={user} muscleGroups={muscleGroups} />} />
             <Route exact path='/register' element={<Register />} />
             <Route exact path='/login' element={<Login />} />
           </Routes>

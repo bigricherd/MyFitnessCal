@@ -47,16 +47,18 @@
 --                    exercise varchar(45) NOT NULL,
 --                                   CONSTRAINT fk_exercise
 --                                     FOREIGN KEY(exercise)
---                                   REFERENCES exercises(nameandmusclegroup),
+--                                   REFERENCES exercises(nameandmusclegroup)
+--                                   ON DELETE CASCADE,
 --                    musclegroup MUSCLEGROUP NOT NULL,
 --                    owner UUID NOT NULL,
 --                    CONSTRAINT fk_owner
 --                                    FOREIGN KEY(owner)
---                                   REFERENCES appUser(id),
---                    session UUID NOT NULL,
+--                                   REFERENCES appUser(id))
+-- --                    session UUID NOT NULL,
 --                                    CONSTRAINT fk_session
 --                                    FOREIGN KEY(session)
 --                                   REFERENCES session(id)
+--                                   ON DELETE CASCADE
 -- );
 
 -- SELECT * FROM set1

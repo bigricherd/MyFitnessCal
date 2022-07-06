@@ -23,16 +23,18 @@ const getExerciseMap = async () => {
 // Returns the Exercise enum as an array and without their corresponding muscleGroups.
 const getExercisesArray = async () => {
     const map = await getExerciseMap();
-    return Array.from(map.keys());
+
+
     // TODO: group exercises by muscle group
-    // const res = await performQuery('SELECT muscleGroup, name FROM exercises GROUP BY muscleGroup, name');
-    // console.log(res.rows);
+    const res = await performQuery('SELECT name, musclegroup FROM exercises GROUP BY musclegroup, name');
+    console.log(res.rows);
     // const arr = [];
     // for (let item of res.rows) {
     //     arr.push(item.name);
     // }
     // console.log(arr);
-    // return arr;
+
+    return Array.from(map.keys());
 }
 
 const test = async () => {

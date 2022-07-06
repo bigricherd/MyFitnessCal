@@ -41,3 +41,15 @@ nav.fixed-top {
     transform: rotate(360deg);
   }
 }
+
+.manageExercisesList {
+  max-height: 130px;
+  overflow-y: scroll;
+  width: 60%;
+  margin: 0 auto;
+}
+
+div.row.manageExercisesListItem {
+  flex-wrap: nowrap;
+  --bs-gutter-x: 0;
+}

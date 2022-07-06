@@ -62,16 +62,18 @@ router.post("/add", isLoggedIn, async (req, res) => {
     return res.send(response);
 })
 
+// WORKING WITH POSTMAN
 router.delete('/', isLoggedIn, async (req, res) => {
     const { name } = req.query;
     const muscleGroup = map.get(name);
-    console.log(muscleGroup);
     const primaryKey = `${name}:${muscleGroup}`;
+
     const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${primaryKey}'`;
     await performQuery(query);
 
-    const postDelete = await performQuery('SELECT musclegroup, name FROM Exercises GROUP BY musclegroup');
+    const postDelete = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' GROUP BY musclegroup, name`);
     console.log(postDelete.rows);
+    res.send(postDelete.rows);
 })
 
 module.exports = router;

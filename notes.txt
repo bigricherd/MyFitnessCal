@@ -1,3 +1,22 @@
+JULY 06 4:45PM - CHINO
+- moved data fetching of Exercises and muscleGroups to App.js
+    - passed as props to pages like Forms and Filters
+    - removed fetching muscleGroups from MuscleGroupFilter.jsx
+    - removed fetching Exercises and muscleGroups from Forms.jsx
+        - fetch exercisesByUser had to remain in Forms.jsx because it requires user, which is passed as props from App.js
+- in AddExercise.jsx
+    - sorry I know I put delete in AddExercise
+        - should we refactor -- break up Forms.jsx and separate Exercises from Sets and Sessions -- now or later?
+    - added list of exercisesByUser below the form
+        - with delete Buttons that send DELETE requests (see client/src/hooks/deleteExercise.js)
+        - delete works, but list does not re-render. see line 31 in AddExercise.jsx - FIX!
+- in setup.sql
+    - added cascading deletes:
+        - delete all Sets of an Exercise when the Exercise is deleted
+        - delete all Sets referencing some Session when that Session is deleted
+    
+
+
 JULY 05 6PM - CHINO
 - eliminating comments attribute from Set table
     - in setRoutes.js: router.post('/add')
