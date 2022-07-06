@@ -1,15 +1,6 @@
---DROP TABLE exercises;
---   CREATE TABLE exercises(
---       id UUID,
---       name varchar(25),
---       musclegroup MUSCLEGROUP NOT NULL,
---       nameandmusclegroup varchar(45) PRIMARY KEY NOT NULL
---   )
-
--- select * from exercises;
-
--- CREATE TYPE muscleGroup AS ENUM ('chest', 'shoulders', 'biceps', 'triceps', 'traps', 'lats', 'lower_back', 'abs', 'hamstrings', 'quads', 'glutes', 'calves');
--- SELECT enum_range(NULL::muscleGroup); -- view muscleGroup enum
+-- DROP TYPE musclegroup CASCADE;
+--CREATE TYPE muscleGroup AS ENUM ('chest', 'shoulders', 'biceps', 'triceps', 'forearms', 'traps', 'neck', 'lats', 'lower_back', 'abs', 'hamstrings', 'quads', 'glutes', 'calves', 'tibialis', 'cardio');
+--SELECT enum_range(NULL::muscleGroup); -- view muscleGroup enum
 
 -- DROP TABLE appUser;
 -- CREATE TABLE appUser(
@@ -18,9 +9,37 @@
 --     password varchar(60)
 -- );
 
---SELECT * FROM appUser;
+-- SELECT * FROM appUser;
 
--- DROP TABLE set1;
+-- DROP TABLE exercises CASCADE;
+--   CREATE TABLE exercises(
+--       id UUID,
+--       name varchar(25),
+--       musclegroup MUSCLEGROUP NOT NULL,
+--       nameandmusclegroup varchar(45) PRIMARY KEY NOT NULL,
+--       owner UUID NOT NULL,
+--                    CONSTRAINT fk_owner
+--                    FOREIGN KEY(owner)
+--                    REFERENCES appUser(id)
+--   );
+
+-- select * from exercises;
+
+-- DROP TABLE SESSION;
+-- CREATE TABLE SESSION (
+--    id UUID NOT NULL,
+--    title varchar(15) NOT NULL,
+--    startdatetime timestamptz NOT NULL,
+--    enddatetime timestamptz NOT NULL,
+--    owner uuid NOT NULL,
+--                  CONSTRAINT fk_owner
+--                  FOREIGN KEY(OWNER)
+--                  REFERENCES appUser(id),
+--    comments varchar(40)
+
+-- select * from session
+
+--  DROP TABLE set1;
 --  CREATE TABLE IF NOT EXISTS SET1 (reps INT NOT NULL,
 --                    weight INT NOT NULL,
 --                    date DATE NOT NULL,
@@ -29,11 +48,14 @@
 --                                     FOREIGN KEY(exercise)
 --                                   REFERENCES exercises(nameandmusclegroup),
 --                    musclegroup MUSCLEGROUP NOT NULL,
---                    comments varchar(40) DEFAULT '',
 --                    owner UUID NOT NULL,
 --                    CONSTRAINT fk_owner
 --                                    FOREIGN KEY(owner)
---                                   REFERENCES appUser(id)
+--                                   REFERENCES appUser(id),
+--                    session UUID NOT NULL,
+--                                    CONSTRAINT fk_session
+--                                    FOREIGN KEY(session)
+--                                   REFERENCES session(id),
 -- );
 
 -- SELECT * FROM SET1
