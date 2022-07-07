@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MuscleGroupFilter from '../forms/MuscleGroupFilter';
-import formatEnum from '../../helpers/formatEnum';
 
 function Filters(props) {
     const [user, setUser] = useState(props.user);

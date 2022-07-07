@@ -40,7 +40,9 @@ function App() {
 
   let exercisesArr = [];
   let muscleGroupsArr = [];
+  let muscleGroupsForFiltersArr = [];
   const [muscleGroups, setMuscleGroups] = useState([]);
+  const [muscleGroupsForFilters, setMuscleGroupsForFilters] = useState([]);
   const [exercises, setExercises] = useState([]);
   const getEnumsUrl = `${baseUrl}/api/enums`;
 
@@ -49,8 +51,12 @@ function App() {
     const json = await data.json();
     exercisesArr = formatEnum(json.exercises);
     muscleGroupsArr = formatEnum(json.muscleGroups);
-    setMuscleGroups(muscleGroupsArr);
+    muscleGroupsForFiltersArr = formatEnum(json.muscleGroups);
+    muscleGroupsForFiltersArr.unshift('All');
+
     setExercises(exercisesArr);
+    setMuscleGroups(muscleGroupsArr);
+    setMuscleGroupsForFilters(muscleGroupsForFiltersArr);
   }, [getEnumsUrl])
 
   useEffect(() => {
@@ -84,7 +90,7 @@ function App() {
             <Route exact path='/' element={<HomePage user={user} />} />
             <Route exact path='/forms' element={<Forms user={user} userId={userId} muscleGroups={muscleGroups}
               exercises={exercises} />} />
-            <Route exact path='/filters' element={<Filters user={user} muscleGroups={muscleGroups} />} />
+            <Route exact path='/filters' element={<Filters user={user} muscleGroups={muscleGroupsForFilters} />} />
             <Route exact path='/register' element={<Register />} />
             <Route exact path='/login' element={<Login />} />
           </Routes>
