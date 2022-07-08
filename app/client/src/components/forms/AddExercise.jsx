@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useForm from '../../hooks/useForm';
 import Dropdown from '../Dropdown';
 import Message from '../Message';
+import { InputLabel } from '@mui/material';
 
 //import Table from './Table'; // Data display, but I didn't want to go too far.
 
@@ -47,20 +48,19 @@ function AddExercise(props) {
                         <input type="text" className="form-control" placeholder="" id="exercise" name="exercise" value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} required />
                     </div>
 
-                    <div className="mb-3 text-start">
-                        <label htmlFor="muscleGroup" className='form-label d-block'>Muscle Group</label>
-                        <Dropdown name={'muscleGroup'} id={'muscleGroup'} options={muscleGroups} value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
+                    {/* <FormControl> */}
+                    <InputLabel>Muscle Group</InputLabel>
+                    <Dropdown name='muscleGroup' id='muscleGroup' options={muscleGroups} value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
+                    {/* <Input type="text" placeholder="" id="muscleGroup" name="muscleGroup" value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} /> */}
 
-                        {/* the dropdown does not work if this hidden input is removed. 
-                    I guess the dropdown works as a setter but the form takes the value from this input element*/}
-                        <input type="text" className="form-control d-none" placeholder="" id="muscleGroup" name="muscleGroup" value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
-                    </div>
+                    {/* </FormControl> */}
                     <button className="btn btn-primary mb-3">Add exercise</button>
 
                 </form>
                 {successMsg && <Message success={successMsg} />}
             </div>
         </div>
+
     )
 }
 

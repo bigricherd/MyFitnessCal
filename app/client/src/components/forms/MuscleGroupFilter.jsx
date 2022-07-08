@@ -3,6 +3,7 @@ import useForm from '../../hooks/useFilterForm';
 import NumSetsTable from '../tables/NumSetsTable';
 import Dropdown from '../Dropdown';
 import { useEffect } from 'react';
+import { InputLabel } from '@mui/material';
 
 function MuscleGroupFilter(props) {
     const [muscleGroups, setMuscleGroups] = useState([]);
@@ -43,8 +44,8 @@ function MuscleGroupFilter(props) {
 
 
                         <div className="mb-3 text-start">
-                            <label htmlFor="muscleGroup" className='form-label d-block'>Muscle Group</label>
-                            <Dropdown name={'muscleGroup'} id={'muscleGroup'} options={muscleGroups} value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
+                            <InputLabel>Exercise</InputLabel>
+                            <Dropdown name='muscleGroup' id='muscleGroup' options={muscleGroups} value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
                             <input type="text" className="form-control d-none" placeholder="" id="muscleGroup" name="muscleGroup" value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
                         </div>
 

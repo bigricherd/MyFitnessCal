@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useForm from '../../hooks/useForm';
 import Dropdown from '../Dropdown';
 import Message from '../Message';
+import { InputLabel } from '@mui/material';
 
 function AddSet(props) {
     const [exercises, setExercises] = useState(props.exercises); // TODO: update exercises when a new one is added by AddExercise
@@ -72,10 +73,11 @@ function AddSet(props) {
 
                     {/** We give the user the option to view all exercises in the database or only the ones that they added*/}
 
+                    <InputLabel>Exercise</InputLabel>
                     {showByUserOnly ?
-                        <Dropdown name={'exercise'} id={'exercise'} options={exercisesByUser} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
+                        <Dropdown name='exercise' id='exercise' options={exercisesByUser} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
                         :
-                        <Dropdown name={'exercise'} id={'exercise'} options={exercises} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
+                        <Dropdown name='exercise' id='exercise' options={exercises} value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} />
                     }
 
 

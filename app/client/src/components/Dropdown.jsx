@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Select, MenuItem } from '@mui/material'
 
 // Returns a <select> element to be used in a form as a dropdown
 // Used in AddExercise, MuscleGroupFilter to show muscleGroups
@@ -10,25 +11,23 @@ function Dropdown(props) {
 
     // Add a dummy option so that the user is forced to interact with the dropdown.
     // Assign the label to the dummy option depending on which enum will be shown.
+
     if (props.id === 'muscleGroup') {
-        optionsArr.push(<option value="" key="0">Select a muscle group</option>);
+        optionsArr.push(<MenuItem value="" key="0" selected>Select a muscle group</MenuItem>);
     } else if (props.id === 'exercise') {
-        optionsArr.push(<option value="" key="0">Select an exercise</option>);
+        optionsArr.push(<MenuItem value="" key="0" selected>Select an exercise</MenuItem>);
     }
 
     for (let option of options) {
-        optionsArr.push(<option value={option} key={option}>{option}</option>)
+        optionsArr.push(<MenuItem value={option} key={option}>{option}</MenuItem>)
     }
 
     useEffect(() => {
         setOptions(props.options);
     }, [props])
-    //console.log(options);
 
     return (
-        <select className="btn btn-light dropdown-toggle" name={props.name} id={props.id} value={props.value} onChange={props.onChange} onKeyDown={props.onKeyDown} required>
-            {optionsArr}
-        </select>
+        <Select name={props.name} id={props.id} value={props.value} onChange={props.onChange} onKeyDown={props.onKeyDown} sx={{ display: 'block' }}>{optionsArr}</Select>
     )
 }
 
