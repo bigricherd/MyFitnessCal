@@ -4,8 +4,6 @@ import Dropdown from '../Dropdown';
 import Message from '../Message';
 import { Input, InputLabel, Button, FormControl } from '@mui/material';
 
-//import Table from './Table'; // Data display, but I didn't want to go too far.
-
 function AddExercise(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
