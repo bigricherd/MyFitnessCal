@@ -23,11 +23,12 @@
 --                    REFERENCES appUser(id)
 --   );
 
--- select * from exercises;
+ --select * from exercises;
 
 -- DROP TABLE SESSION;
 -- CREATE TABLE SESSION (
 --    id UUID NOT NULL,
+--    insertorder serial NOT NULL,
 --    title varchar(15) NOT NULL,
 --    startdatetime timestamptz NOT NULL,
 --    enddatetime timestamptz NOT NULL,
@@ -40,8 +41,10 @@
 
 -- select * from session
 
---  DROP TABLE set1;
---  CREATE TABLE IF NOT EXISTS SET1 (reps INT NOT NULL,
+--DROP TABLE set1;
+--  CREATE TABLE IF NOT EXISTS SET1 (
+--                    id UUID NOT NULL,
+--                    reps INT NOT NULL,
 --                    weight INT NOT NULL,
 --                    date DATE NOT NULL,
 --                    exercise varchar(45) NOT NULL,
@@ -54,11 +57,11 @@
 --                    CONSTRAINT fk_owner
 --                                    FOREIGN KEY(owner)
 --                                   REFERENCES appUser(id))
--- --                    session UUID NOT NULL,
+--                                  session UUID NOT NULL,
 --                                    CONSTRAINT fk_session
 --                                    FOREIGN KEY(session)
 --                                   REFERENCES session(id)
 --                                   ON DELETE CASCADE
 -- );
 
--- SELECT * FROM set1
+--SELECT * FROM set1

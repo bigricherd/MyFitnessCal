@@ -1,3 +1,11 @@
+JULY 07 7:20PM - CHINO
+- in setup.sql
+    - added insertorder in Session data model
+    - added id in Set data model
+- Frontend
+    - reorganized page structure: added Exercises page
+        - new component ManageExercisesList.jsx, previously a part of AddExercise.jsx
+
 JULY 06 4:45PM - CHINO
 - moved data fetching of Exercises and muscleGroups to App.js
     - passed as props to pages like Forms and Filters

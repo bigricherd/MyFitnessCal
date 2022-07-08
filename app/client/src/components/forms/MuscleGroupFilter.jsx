@@ -30,7 +30,7 @@ function MuscleGroupFilter(props) {
         <div>
             <div className="card-shadow mt-5 pt-5">
                 <div className="card-body d-flex flex-column align-items-center">
-                    <h5 className="card-title display-4 fw-bold my-2">View Total Sets per Muscle Group</h5>
+                    <h5 className="card-title display-4 my-2">View Total Sets per Muscle Group</h5>
                     <form action="#" method="POST" onSubmit={handleSubmit} className="mb-3">
                         <div className="mb-3 text-start">
                             <label htmlFor="fromDate" name="fromDate" className='form-label'>From date:</label>

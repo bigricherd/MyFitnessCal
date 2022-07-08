@@ -21,6 +21,7 @@ function Nav(props) {
         navbarContents = <div className="navbar-nav ms-auto">
             <Link to='/forms' className={navLinkClasses}>Forms</Link>
             <Link to='/filters' className={navLinkClasses}>Filters</Link>
+            <Link to='/exercises' className={navLinkClasses}>Exercises</Link>
             <form action='#' onSubmit={handleLogout} className={navLinkClasses}><button className="border-0 bg-light text-muted">Logout | <span className="text-success">{props.user}</span></button></form>
         </div>
     } else {

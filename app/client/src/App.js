@@ -8,6 +8,7 @@ import Forms from './components/pages/Forms';
 import HomePage from './components/pages/HomePage';
 import Nav from './components/Nav';
 import Filters from './components/pages/Filters';
+import Exercises from './components/pages/Exercises';
 import formatEnum from './helpers/formatEnum';
 
 function App() {
@@ -89,6 +90,8 @@ function App() {
           <Routes>
             <Route exact path='/' element={<HomePage user={user} />} />
             <Route exact path='/forms' element={<Forms user={user} userId={userId} muscleGroups={muscleGroups}
+              exercises={exercises} />} />
+            <Route exact path='/exercises' element={<Exercises user={user} userId={userId} muscleGroups={muscleGroups}
               exercises={exercises} />} />
             <Route exact path='/filters' element={<Filters user={user} muscleGroups={muscleGroupsForFilters} />} />
             <Route exact path='/register' element={<Register />} />
