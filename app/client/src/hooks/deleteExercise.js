@@ -3,7 +3,7 @@ import formatEnum from '../helpers/formatEnum';
 
 // ------ This hook submits the forms in the MuscleGroupFilter component with a GET reqyest; its values are {fromDate, toDate} ------
 // form values are passed in the query string as they do not contain sensitive information, simply user selections of the filters
-export default async function handleDeleteExercise(exercise, slug) {
+export default async function handleDeleteExercise(exercise) {
 
     exercise = exercise.toLowerCase();
     exercise = exercise.toString();
@@ -15,18 +15,21 @@ export default async function handleDeleteExercise(exercise, slug) {
     const url = `${baseUrl}/api/exercises/?name=${exercise}`; // Sending a delete request using method override
     console.log(url);
 
-    const res = await axios({
+    await axios({
         method: 'DELETE',
         url,
         headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
         withCredentials: true
-    });
-    console.log(res.data);
-    let arr = [];
-    for (let row of res.data) {
-        arr.push(row.name);
-    }
-    console.log(arr);
-    arr = formatEnum(arr);
-    return arr;
+    }).then(res => {
+        console.log(res.data.exercises);
+        let postDelete = [];
+        for (let row of res.data.exercises) {
+            postDelete.push(row.name);
+        }
+        console.log(postDelete);
+        console.log(res.data.message)
+        postDelete = formatEnum(postDelete);
+        return { postDelete, msg: res.data.message };
+    })
+
 }

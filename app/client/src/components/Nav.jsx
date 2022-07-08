@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+// TODO: migrate to MUI
 // ------ A simple navbar that leads us to the various pages / components we currently have ------
 function Nav(props) {
     let navLinkClasses = 'nav-item nav-link';

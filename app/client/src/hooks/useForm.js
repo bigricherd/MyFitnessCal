@@ -11,7 +11,6 @@ export default function useForm({ initialValues, slug }) {
     const handleChange = event => {
         const value = event.target.value;
         const name = event.target.name;
-        console.log(values);
         setValues({
             ...values,
             [name]: value

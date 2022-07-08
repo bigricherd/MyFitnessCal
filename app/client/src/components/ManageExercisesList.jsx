@@ -5,6 +5,7 @@ import formatEnum from '../helpers/formatEnum';
 
 function ManageExercisesList(props) {
     const [exercisesByUser, setExercisesByUser] = useState(props.exercisesByUser);
+    let message = null;
 
     const liftState = (val) => {
         props.liftState(val);
@@ -17,14 +18,15 @@ function ManageExercisesList(props) {
     // const [showDeleteOption, setShowDeleteOption] = useState(showDeleteArr);
     // console.log(showDeleteArr);
 
-    const onDeleteClick = (e, index) => {
+    const onDeleteClick = async (e, index) => {
         e.persist();
         console.log(props.exercisesByUser[index]);
-        const postDel = handleDeleteExercise(props.exercisesByUser[index]);
+        const { postDel, msg } = handleDeleteExercise(props.exercisesByUser[index]);
+        // Both postDel and msg are currently coming back undefined
         console.log(postDel);
+        console.log(msg);
+        message = msg;
         setExercisesByUser(postDel);
-        const arr = Array.from(postDel);
-        console.log(typeof (arr)); // 'object' but why
 
         // trying to lift state into Forms to force re-render, but we get the error props.exercisesByUser.map (useState below)
         // is not a function. Maybe it's because postDel is an object, not an array; will continue to troubleshoot.
@@ -56,6 +58,8 @@ function ManageExercisesList(props) {
             <ListGroup className="manageExercisesList">
                 {list}
             </ListGroup>
+            {/**Doesn't show right now */}
+            {message}
         </div>
     )
 }

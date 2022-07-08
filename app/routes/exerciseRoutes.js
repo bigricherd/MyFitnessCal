@@ -70,10 +70,12 @@ router.delete('/', isLoggedIn, async (req, res) => {
 
     const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${primaryKey}'`;
     await performQuery(query);
+    const msg = `Successfully deleted exercise ${name.toLowerCase().split('_').map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' ')}`;
+    console.log(msg);
 
     const postDelete = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' GROUP BY musclegroup, name`);
     console.log(postDelete.rows);
-    res.send(postDelete.rows);
+    res.send({ exercises: postDelete.rows, message: msg });
 })
 
 module.exports = router;

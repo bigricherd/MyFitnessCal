@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useForm from '../../hooks/useForm';
 import Dropdown from '../Dropdown';
 import Message from '../Message';
-import { InputLabel } from '@mui/material';
+import { Input, InputLabel, Button, FormControl } from '@mui/material';
 
 //import Table from './Table'; // Data display, but I didn't want to go too far.
 
@@ -39,14 +39,13 @@ function AddExercise(props) {
     }
 
     return (
-        <div className='col'>
+        <div className='col'> {/** TODO: migrate to MUI */}
             <div>
                 <h2 className="display-4 mb-3">Add Exercise</h2>
-                <form action="#" onSubmit={customHandleSubmit}>
-                    <div className="mb-3 text-start">
-                        <label htmlFor="exercise" className='form-label'>Name</label>
-                        <input type="text" className="form-control" placeholder="" id="exercise" name="exercise" value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                    </div>
+                <form action="#" onSubmit={customHandleSubmit}> {/** TODO: migrate to MUI */}
+
+                    <InputLabel>Name</InputLabel>
+                    <Input name='exercise' value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} required></Input>
 
                     {/* <FormControl> */}
                     <InputLabel>Muscle Group</InputLabel>
@@ -54,7 +53,7 @@ function AddExercise(props) {
                     {/* <Input type="text" placeholder="" id="muscleGroup" name="muscleGroup" value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} /> */}
 
                     {/* </FormControl> */}
-                    <button className="btn btn-primary mb-3">Add exercise</button>
+                    <Button className="mb-3" onClick={customHandleSubmit}>Add exercise</Button>
 
                 </form>
                 {successMsg && <Message success={successMsg} />}
