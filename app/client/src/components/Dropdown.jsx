@@ -27,7 +27,7 @@ function Dropdown(props) {
     }, [props])
 
     return (
-        <Select name={props.name} id={props.id} value={props.value} onChange={props.onChange} onKeyDown={props.onKeyDown} sx={{ display: 'block' }}>{optionsArr}</Select>
+        <Select rules={{ required: true }} name={props.name} id={props.id} value={props.value} onChange={props.onChange} onKeyDown={props.onKeyDown} sx={{ display: 'block' }} required>{optionsArr}</Select>
     )
 }
 

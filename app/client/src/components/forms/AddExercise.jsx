@@ -2,23 +2,32 @@ import React, { useState, useEffect } from 'react';
 import useForm from '../../hooks/useForm';
 import Dropdown from '../Dropdown';
 import Message from '../Message';
-import { Input, InputLabel, Button, FormControl } from '@mui/material';
+import { Input, InputLabel, Button, FormLabel, FormControl, Grid, TextField, Box } from '@mui/material';
+import formatEnum from '../../helpers/formatEnum';
 
 function AddExercise(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
-    // Update state every time props changes, i.e., when muscleGroups in Forms.jsx changes
-    useEffect(() => {
-        setMuscleGroups(props.muscleGroups);
-    }, [props]);
-
-    const { values, handleChange, handleKeyDown, handleSubmit, successMsg } = useForm({
+    const { values, handleChange, handleKeyDown, handleSubmit, successMsg, exercisesPostAdd } = useForm({
         initialValues: {
             exercise: '',
             muscleGroup: ''
         },
         slug: 'api/exercises/add'
     });
+
+    // Update state every time props changes, i.e., when muscleGroups in Forms.jsx changes
+    useEffect(() => {
+        setMuscleGroups(props.muscleGroups);
+    }, [props]);
+
+    // Update state in parent (Forms.jsx) when an exercise is added, i.e. setExercisesByUser(exercisesPostAdd)
+    useEffect(() => {
+        if (exercisesPostAdd && exercisesPostAdd.length > 0) {
+            console.log('going to lift state');
+            props.liftState(formatEnum(exercisesPostAdd));
+        }
+    }, [exercisesPostAdd])
 
     const customHandleSubmit = (e) => {
         handleSubmit(e);
@@ -37,26 +46,24 @@ function AddExercise(props) {
     }
 
     return (
-        <div className='col'> {/** TODO: migrate to MUI */}
-            <div>
-                <h2 className="display-4 mb-3">Add Exercise</h2>
-                <form action="#" onSubmit={customHandleSubmit}> {/** TODO: migrate to MUI */}
+        <Grid item xs={10} sm={8}>
+            <Box onSubmit={customHandleSubmit} component='form' noValidate>
+                <h1>Add Exercise</h1>
+                <FormControl required fullWidth>
+                    <FormLabel>Name</FormLabel>
+                    <TextField name='exercise' id='exercise' value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown}></TextField>
+                </FormControl>
 
-                    <InputLabel>Name</InputLabel>
-                    <Input name='exercise' value={values.exercise} onChange={handleChange} onKeyDown={handleKeyDown} required></Input>
-
-                    {/* <FormControl> */}
-                    <InputLabel>Muscle Group</InputLabel>
+                <FormControl required fullWidth>
+                    <FormLabel>Muscle Group</FormLabel>
                     <Dropdown name='muscleGroup' id='muscleGroup' options={muscleGroups} value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
-                    {/* <Input type="text" placeholder="" id="muscleGroup" name="muscleGroup" value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} /> */}
+                </FormControl>
 
-                    {/* </FormControl> */}
-                    <Button className="mb-3" onClick={customHandleSubmit}>Add exercise</Button>
+                <Button className="mb-3" onClick={customHandleSubmit}>Add exercise</Button>
 
-                </form>
-                {successMsg && <Message success={successMsg} />}
-            </div>
-        </div>
+            </Box>
+            {successMsg && <Message success={successMsg} />}
+        </Grid >
 
     )
 }

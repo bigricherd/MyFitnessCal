@@ -45,7 +45,6 @@ nav.fixed-top {
 .manageExercisesList {
   max-height: 260px;
   overflow-y: scroll;
-  width: 75%;
   margin: 0 auto;
 }
 

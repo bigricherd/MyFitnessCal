@@ -44,7 +44,7 @@ function MuscleGroupFilter(props) {
 
 
                         <div className="mb-3 text-start">
-                            <InputLabel>Exercise</InputLabel>
+                            <InputLabel>Muscle group</InputLabel>
                             <Dropdown name='muscleGroup' id='muscleGroup' options={muscleGroups} value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
                             <input type="text" className="form-control d-none" placeholder="" id="muscleGroup" name="muscleGroup" value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
                         </div>

@@ -7,7 +7,6 @@ export default async function handleDeleteExercise(exercise) {
 
     exercise = exercise.toLowerCase();
     exercise = exercise.toString();
-    console.log(typeof (exercise));
     exercise = exercise.split(' ').join('_');
 
 
@@ -22,14 +21,9 @@ export default async function handleDeleteExercise(exercise) {
         withCredentials: true
     }).then(res => {
         console.log(res.data.exercises);
-        let postDelete = [];
-        for (let row of res.data.exercises) {
-            postDelete.push(row.name);
-        }
-        console.log(postDelete);
-        console.log(res.data.message)
-        postDelete = formatEnum(postDelete);
-        return { postDelete, msg: res.data.message };
+        console.log(res.data.message);
+        //const postDelete = formatEnum(res.data.exercises);
+        return { exercises: res.data.exercises, msg: res.data.message };
     })
 
 }

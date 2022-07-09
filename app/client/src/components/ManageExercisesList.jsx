@@ -1,66 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import handleDeleteExercise from '../hooks/deleteExercise';
-import { Button, ListGroup } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import formatEnum from '../helpers/formatEnum';
+import { Grid, Button, Box, css, Divider } from '@mui/material';
+import useForm from '../hooks/useDeleteForm'
 
 function ManageExercisesList(props) {
     const [exercisesByUser, setExercisesByUser] = useState(props.exercisesByUser);
-    let message = null;
 
-    const liftState = (val) => {
-        props.liftState(val);
-    }
-
-    // const showDeleteArr = [];
-    // for (let i = 0; i < props.exercisesByUser.length; i++) {
-    //     showDeleteArr.push(false);
-    // }
-    // const [showDeleteOption, setShowDeleteOption] = useState(showDeleteArr);
-    // console.log(showDeleteArr);
+    const { values, handleSubmit, error, successMsg, exercisesPostDelete } = useForm(
+        { exercise: '' }
+    )
 
     const onDeleteClick = async (e, index) => {
         e.persist();
-        console.log(props.exercisesByUser[index]);
-        const { postDel, msg } = handleDeleteExercise(props.exercisesByUser[index]);
-        // Both postDel and msg are currently coming back undefined
-        console.log(postDel);
-        console.log(msg);
-        message = msg;
-        setExercisesByUser(postDel);
-
-        // trying to lift state into Forms to force re-render, but we get the error props.exercisesByUser.map (useState below)
-        // is not a function. Maybe it's because postDel is an object, not an array; will continue to troubleshoot.
-        // For now, user must navigate to another page (Filters) and back to Forms and AddExercise to see changes.
-        //liftState(postDel);
+        const source = props.exercisesByUser;
+        values.exercise = source[index];
+        handleSubmit(e);
+        values.exercise = '';
     }
 
     const [list, setList] = useState(props.exercisesByUser.map((item, index) =>
-        <div key={index} className="row manageExercisesListItem">
-            <ListGroup.Item className="col-9 col-md-10">{item}
-            </ListGroup.Item>
-            <Button className="col-3 col-md-2 text-center" variant="danger" size="sm" onClick={(e) => onDeleteClick(e, index)}>X</Button>
-        </div>
+        <Grid container key={index} className="manageExercisesListItem">
+            <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
+                {item}
+            </Box>
+
+            <Button className="text-center" variant="contained" onClick={(e) => onDeleteClick(e, index)}>
+                <Grid item xs={3} sm={2}>X</Grid>
+            </Button>
+
+        </Grid >
     ));
 
     useEffect(() => {
-        setList(props.exercisesByUser.map((item, index) =>
-            <div key={index} className="row manageExercisesListItem">
-                <ListGroup.Item className="col-9 col-md-10">{item}
-                </ListGroup.Item>
-                <Button className="col-3 col-md-2 text-center" variant="danger" size="sm" onClick={(e) => onDeleteClick(e, index)}>X</Button>
-            </div>
-        ))
+        setList(props.exercisesByUser.map((item, index) => // TODO: make each item and button a row, i.e. grid items whose widths add up to 12
+            <Grid container key={index} className="manageExercisesListItem" >
+                <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
+                    {item}
+                </Box>
+                <Grid item xs={3} sm={2}>
+                    <Button variant="contained" onClick={(e) => onDeleteClick(e, index)}>X</Button>
+                </Grid>
+            </Grid >
+        ));
+        setExercisesByUser(props.exercisesByUser);
     }, [props]);
 
+    useEffect(() => {
+        console.log(exercisesPostDelete);
+        setList(props.exercisesByUser.map((item, index) => // TODO: make each item and button a row, i.e. grid items whose widths add up to 12
+            <Grid container key={index} className="manageExercisesListItem" >
+                <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
+                    {item}
+                </Box>
+                <Grid item xs={3} sm={2}>
+                    <Button variant="contained" onClick={(e) => onDeleteClick(e, index)}>X</Button>
+                </Grid>
+            </Grid >
+        ));
+        props.liftState(formatEnum(exercisesPostDelete));
+    }, [exercisesPostDelete])
+
     return (
-        <div className="col">
-            <h2 className="display-4 mb-3 ">Manage Exercises</h2>
-            <ListGroup className="manageExercisesList">
+        <Grid item xs={10} sm={8}>
+            <h1>Manage Exercises</h1>
+            <div className="manageExercisesList">
                 {list}
-            </ListGroup>
+            </div>
             {/**Doesn't show right now */}
-            {message}
-        </div>
+            {successMsg && <h3>{successMsg}</h3>}
+            {error && <h3>{error}</h3>}
+        </Grid>
     )
 }
 
