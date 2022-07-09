@@ -49,16 +49,6 @@ function ManageExercisesList(props) {
 
     useEffect(() => {
         console.log(exercisesPostDelete);
-        setList(props.exercisesByUser.map((item, index) => // TODO: make each item and button a row, i.e. grid items whose widths add up to 12
-            <Grid container key={index} className="manageExercisesListItem" >
-                <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
-                    {item}
-                </Box>
-                <Grid item xs={3} sm={2}>
-                    <Button variant="contained" onClick={(e) => onDeleteClick(e, index)}>X</Button>
-                </Grid>
-            </Grid >
-        ));
         props.liftState(formatEnum(exercisesPostDelete));
     }, [exercisesPostDelete])
 
