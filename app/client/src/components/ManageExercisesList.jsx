@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import handleDeleteExercise from '../hooks/deleteExercise';
-import { ListGroup } from 'react-bootstrap';
+import React, { useState, useEffect, useCallback } from 'react';
 import formatEnum from '../helpers/formatEnum';
-import { Grid, Button, Box, css, Divider } from '@mui/material';
+import { Grid, Button, Box } from '@mui/material';
 import useForm from '../hooks/useDeleteForm'
 
 function ManageExercisesList(props) {
-    const [exercisesByUser, setExercisesByUser] = useState(props.exercisesByUser);
-
     const { values, handleSubmit, error, successMsg, exercisesPostDelete } = useForm(
         { exercise: '' }
     )
@@ -20,21 +16,24 @@ function ManageExercisesList(props) {
         values.exercise = '';
     }
 
+    const liftState = useCallback(() => {
+        props.liftState(formatEnum(exercisesPostDelete));
+    }, [exercisesPostDelete])
+
     const [list, setList] = useState(props.exercisesByUser.map((item, index) =>
         <Grid container key={index} className="manageExercisesListItem">
             <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
                 {item}
             </Box>
 
-            <Button className="text-center" variant="contained" onClick={(e) => onDeleteClick(e, index)}>
+            <Button fullWidth variant="contained" color='success' onClick={(e) => onDeleteClick(e, index)}>
                 <Grid item xs={3} sm={2}>X</Grid>
             </Button>
-
         </Grid >
     ));
 
     useEffect(() => {
-        setList(props.exercisesByUser.map((item, index) => // TODO: make each item and button a row, i.e. grid items whose widths add up to 12
+        setList(props.exercisesByUser.map((item, index) =>
             <Grid container key={index} className="manageExercisesListItem" >
                 <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
                     {item}
@@ -44,13 +43,12 @@ function ManageExercisesList(props) {
                 </Grid>
             </Grid >
         ));
-        setExercisesByUser(props.exercisesByUser);
-    }, [props]);
+    }, [props]); // React complains that onDeleteClick is a missing dependency, but adding it results in "maximum update depth exceeded"
 
     useEffect(() => {
         console.log(exercisesPostDelete);
-        props.liftState(formatEnum(exercisesPostDelete));
-    }, [exercisesPostDelete])
+        liftState();
+    }, [exercisesPostDelete, liftState])
 
     return (
         <Grid item xs={10} sm={8}>
