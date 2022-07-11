@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 
 // ------ This hook submits the forms in the MuscleGroupFilter component with a GET reqyest; its values are {fromDate, toDate} ------
 // form values are passed in the query string as they do not contain sensitive information, simply user selections of the filters
@@ -9,31 +9,34 @@ export default function useForm({ initialValues, slug }) {
     const [data, setData] = useState(null);
 
     //track form values
-    const handleChange = event => {
+    const handleChange = (event) => {
         const value = event.target.value;
         const name = event.target.name;
         setValues({
             ...values,
-            [name]: value
+            [name]: value,
         });
     };
 
     //submit form when enter key is pressed
-    const handleKeyDown = event => {
+    const handleKeyDown = (event) => {
         const enter = 13;
         if (event.keyCode === enter) {
             handleSubmit(event);
         }
-    }
+    };
 
     //submit form when submit button is clicked
-    const handleSubmit = event => {
+    const handleSubmit = (event) => {
         event.preventDefault();
+        // convert dates from Date object to ISO String
+        values.fromDate = values.fromDate.toISOString();
+        values.toDate = values.toDate.toISOString();
         console.log(values);
         submitData({ values });
     };
 
-    const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+    const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
 
     //send data to database
     const submitData = async (formValues) => {
@@ -44,25 +47,27 @@ export default function useForm({ initialValues, slug }) {
         // Instead we pass filter parameters through the query string and they are read on the backend through req.query
         try {
             await axios({
-                method: 'GET',
+                method: "GET",
                 url: `${baseUrl}/${slug}?fromDate=${fromDate}&toDate=${toDate}&muscleGroup=${muscleGroup}`,
-                headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
-                withCredentials: true
-
-            }).then(res => {
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                }),
+                withCredentials: true,
+            }).then((res) => {
                 console.log(res.data);
                 const results = res.data.results;
                 console.log(Object.entries(results));
                 //console.log(res.data.perExercise);
                 //console.log(Object.values(results));
                 setData(res.data);
-                if (res.data.redirect === '/') {
-                    window.location = '/';
-                } else if (res.data.redirect === '/login') {
-                    window.location = '/login';
+                if (res.data.redirect === "/") {
+                    window.location = "/";
+                } else if (res.data.redirect === "/login") {
+                    window.location = "/login";
                 }
                 setError(null);
-            })
+            });
         } catch (err) {
             console.log(err);
             setError(err.response.data);
@@ -74,6 +79,6 @@ export default function useForm({ initialValues, slug }) {
         values,
         handleSubmit,
         error,
-        data
-    }
+        data,
+    };
 }
