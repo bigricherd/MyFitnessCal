@@ -29,6 +29,9 @@ export default function useForm({ initialValues, slug }) {
     //submit form when submit button is clicked
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (values.date != null) {
+            values.date = values.date.toISOString();
+        }
         submitData({ values });
     };
 

@@ -2,7 +2,18 @@ import React, { useEffect, useState } from "react";
 import useForm from "../../hooks/useForm";
 import Dropdown from "../Dropdown";
 import Message from "../Message";
-import { InputLabel } from "@mui/material";
+import {
+    Typography,
+    Container,
+    Box,
+    Button,
+    TextField,
+    FormControl,
+    Stack,
+} from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 function AddSet(props) {
     const [exercises, setExercises] = useState(props.exercises); // TODO: update exercises when a new one is added by AddExercise
@@ -22,7 +33,7 @@ function AddSet(props) {
             initialValues: {
                 reps: 0,
                 weight: 0,
-                date: "",
+                date: null,
                 exercise: "",
                 muscleGroup: "",
             },
@@ -60,112 +71,116 @@ function AddSet(props) {
     };
 
     return (
-        <div>
-            <h2 className="display-3 mt-3">Add Set</h2>
-            <form action="#" method="POST" onSubmit={handleSubmit}>
-                <div className="mb-3 text-start">
-                    <label htmlFor="exercise" className="form-label mb-3 me-1">
-                        Exercise
-                    </label>
-                    <button
-                        className="btn btn-primary mx-2"
-                        type="button"
-                        onClick={toggleShownExercises}
-                    >
-                        {showByUserOnly ? "Show all" : "Show mine"}
-                    </button>
+        <Container>
+            <Typography variant="h2" gutterBottom component="div">
+                Add Set
+            </Typography>
+            <Box component="form" autoComplete="on">
+                <Button
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    onClick={toggleShownExercises}
+                >
+                    {showByUserOnly
+                        ? "Show all exercises"
+                        : "Show my exercises"}
+                </Button>
 
-                    {/** We give the user the option to view all exercises in the database or only the ones that they added*/}
-
-                    {showByUserOnly ? (
-                        <Dropdown
-                            name="exercise"
-                            id="exercise"
-                            options={exercisesByUser}
-                            value={values.exercise}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                        />
-                    ) : (
-                        <Dropdown
-                            name="exercise"
-                            id="exercise"
-                            options={exercises}
-                            value={values.exercise}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                        />
-                    )}
-
-                    {/* see AddExercise.jsx line 74 for a note on this input */}
-                    <input
-                        type="text"
-                        className="form-control d-none"
-                        placeholder=""
-                        id="exercise"
+                {/** We give the user the option to view all exercises in the database or only the ones that they added*/}
+                {showByUserOnly ? (
+                    <Dropdown
                         name="exercise"
+                        id="exercise"
+                        options={exercisesByUser}
                         value={values.exercise}
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
-                        required
                     />
-                </div>
-
-                <div className="mb-3 text-start">
-                    <label htmlFor="reps" className="form-label">
-                        Reps
-                    </label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        placeholder=""
-                        id="reps"
-                        name="reps"
-                        value={values.reps}
+                ) : (
+                    <Dropdown
+                        name="exercise"
+                        id="exercise"
+                        options={exercises}
+                        value={values.exercise}
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
-                        required
                     />
-                </div>
+                )}
 
-                <div className="mb-3 text-start">
-                    <label htmlFor="weight" className="form-label">
-                        Weight (lb)
-                    </label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        placeholder=""
-                        id="weight"
-                        name="weight"
-                        value={values.weight}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3 text-start">
-                    <label htmlFor="date" className="form-label">
-                        Date (yyyy-mm-dd)
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder=""
-                        id="date"
-                        name="date"
-                        value={values.date}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        required
-                    />
-                </div>
-
-                <button className="btn btn-primary mb-3">Add set</button>
-            </form>
-            {successMsg && <Message success={successMsg} />}
-        </div>
+                {/* see AddExercise.jsx line 74 for a note on this input */}
+                {/* <input
+                    type="text"
+                    className="form-control d-none"
+                    placeholder=""
+                    id="exercise"
+                    name="exercise"
+                    value={values.exercise}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    required
+                /> */}
+                <Stack spacing={2}>
+                    <FormControl>
+                        <TextField
+                            id="reps"
+                            name="reps"
+                            label="Reps"
+                            type="number"
+                            value={values.reps}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
+                            required
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <TextField
+                            id="weight"
+                            name="weight"
+                            label="Weight (lb)"
+                            type="number"
+                            value={values.weight}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
+                            required
+                        />
+                    </FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <FormControl>
+                            <DatePicker
+                                id="date"
+                                views={["day"]}
+                                label="Date"
+                                value={values.date}
+                                onChange={(newValue) => {
+                                    let event = {
+                                        target: {
+                                            value: newValue,
+                                            name: "date",
+                                        },
+                                    };
+                                    handleChange(event);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField {...params} />
+                                )}
+                                onKeyDown={handleKeyDown}
+                                required
+                            />
+                        </FormControl>
+                    </LocalizationProvider>
+                </Stack>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                >
+                    Add Set
+                </Button>
+                {successMsg && <Message success={successMsg} />}
+            </Box>
+        </Container>
     );
 }
 

@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react";
 import useForm from "../../hooks/useFilterForm";
 import NumSetsTable from "../tables/NumSetsTable";
 import Dropdown from "../Dropdown";
-import { FormControl, TextField, Box, Stack, Button } from "@mui/material";
+import {
+    FormControl,
+    TextField,
+    Box,
+    Stack,
+    Button,
+    Typography,
+} from "@mui/material";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -19,8 +25,8 @@ function MuscleGroupFilter(props) {
     const { values, handleChange, handleKeyDown, handleSubmit, error, data } =
         useForm({
             initialValues: {
-                fromDate: new Date(),
-                toDate: new Date(),
+                fromDate: null,
+                toDate: null,
                 muscleGroup: "",
             },
             slug: "api/stats/setsPerMuscle",
@@ -49,9 +55,10 @@ function MuscleGroupFilter(props) {
                                     handleChange(event);
                                 }}
                                 renderInput={(params) => (
-                                    <TextField {...params} helperText={null} />
+                                    <TextField {...params} />
                                 )}
                                 onKeyDown={handleKeyDown}
+                                required
                             />
                         </FormControl>
                         <FormControl>
@@ -69,9 +76,10 @@ function MuscleGroupFilter(props) {
                                     handleChange(event);
                                 }}
                                 renderInput={(params) => (
-                                    <TextField {...params} helperText={null} />
+                                    <TextField {...params} />
                                 )}
                                 onKeyDown={handleKeyDown}
+                                required
                             />
                         </FormControl>
                         <FormControl>
