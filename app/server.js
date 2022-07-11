@@ -32,8 +32,8 @@ app.use(cors(corsConfig));
 const secret = process.env.SECRET || 'alwaysHungry';
 const sessionConfig = {
     secret,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 // 1 day
     }

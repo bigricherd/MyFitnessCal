@@ -52,3 +52,7 @@ div.row.manageExercisesListItem {
   flex-wrap: nowrap;
   --bs-gutter-x: 0;
 }
+
+.drawerLink {
+  color: #515151;
+}
