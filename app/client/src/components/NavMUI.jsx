@@ -31,7 +31,11 @@ const NavMUI = (props) => {
 
 
     const drawer = <Box onClick={handleDrawerToggle}>
-        <Typography variant='h6' sx={{ my: 2, mx: 3, color: '#373737' }}>MyFitnessCal</Typography>
+        <Typography
+            variant='h6'
+            sx={{ my: 2, mx: 3, color: '#373737' }}>
+            MyFitnessCal
+        </Typography>
         <Divider />
 
         <List>
@@ -39,13 +43,22 @@ const NavMUI = (props) => {
                 <ListItem key={item}>
                     <Button>
                         {/* <MUILink sx={{ textDecoration: 'none' }} href={`/${item.toLowerCase()}`}>{item}</MUILink> */}
-                        <Link to={`/${item.toLowerCase()}`} className='text-decoration-none drawerLink'> {item} </Link>
+                        <Link
+                            to={`/${item.toLowerCase()}`}
+                            className='text-decoration-none drawerLink'>
+                            {item}
+                        </Link>
                     </Button>
                 </ListItem>
             ))}
-            {props.user ? <ListItem>
-                <Button onClick={handleLogout}><span className='drawerLink'>Logout | <span className="text-success">{props.user}</span></span></Button>
-            </ListItem>
+            {props.user ?
+                <ListItem>
+                    <Button onClick={handleLogout}>
+                        <span className='drawerLink'>Logout |
+                            <span className="text-success">{props.user}</span>
+                        </span>
+                    </Button>
+                </ListItem>
                 : null}
         </List>
     </Box >
@@ -73,12 +86,18 @@ const NavMUI = (props) => {
                                 pages.map((page) => (
                                     <Button key={page} sx={{ my: 2, display: 'block' }}>
                                         {/* <MUILink sx={{ color: 'white' }} href={`/${page.toLowerCase()}`}>{page}</MUILink> */}
-                                        <Link to={`/${page.toLowerCase()}`} className='text-white text-decoration-none'> {page} </Link>
+                                        <Link
+                                            to={`/${page.toLowerCase()}`}
+                                            className='text-white text-decoration-none'>
+                                            {page}
+                                        </Link>
                                     </Button>
                                 ))
                             }
                             {props.user ?
-                                <Button sx={{ color: 'white' }} onClick={handleLogout}>Logout |<span className="ms-1 text-success">{props.user}</span></Button>
+                                <Button sx={{ color: 'white' }} onClick={handleLogout}>
+                                    Logout |<span className="ms-1 text-success">{props.user}</span>
+                                </Button>
                                 : null}
                         </Box>
 
@@ -88,7 +107,11 @@ const NavMUI = (props) => {
 
             {/* Sidebar shown by clicking <Menu/> in <IconButton> above, hid by clicking anywhere else */}
             <Box component='nav'>
-                <Drawer variant='temporary' open={mobileOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }}
+                <Drawer
+                    variant='temporary'
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    ModalProps={{ keepMounted: true }}
                     sx={{ display: { xs: 'block', sm: 'none' }, boxSizing: 'border-box' }}>
                     {drawer}
                 </Drawer>
