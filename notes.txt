@@ -1,3 +1,9 @@
+JULY 10 7:35PM - CHINO
+- Nav is now a responsive MUI AppBar
+    - Link is from react-router-dom, not MUI because MUI links make the app refresh
+        - user is logged out on refresh and this is probably an Express Session problem
+        - there is some Bootstrap like 'text-success' in the Logout button or 'text-decoration-none' to style the Links
+
 JULY 07 7:20PM - CHINO
 - in setup.sql
     - added insertorder in Session data model

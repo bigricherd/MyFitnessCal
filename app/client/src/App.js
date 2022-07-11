@@ -6,10 +6,11 @@ import Register from './components/pages/Register';
 import Login from './components/pages/Login';
 import Forms from './components/pages/Forms';
 import HomePage from './components/pages/HomePage';
-import Nav from './components/Nav';
+import NavMUI from './components/NavMUI';
 import Filters from './components/pages/Filters';
 import Exercises from './components/pages/Exercises';
 import formatEnum from './helpers/formatEnum';
+
 
 function App() {
   const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
@@ -86,7 +87,7 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <Nav user={user} />
+          <NavMUI user={user} />
           <Routes>
             <Route exact path='/' element={<HomePage user={user} />} />
             <Route exact path='/forms' element={<Forms user={user} userId={userId} muscleGroups={muscleGroups}
