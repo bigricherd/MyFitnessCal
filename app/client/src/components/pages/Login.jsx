@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useForm from '../../hooks/useAuthForm';
+import { Typography, Grid, Stack, Container, Button, FormControl, FormLabel, InputAdornment, IconButton, TextField } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 //import Error from './Error'; //TODO: show error message on incorrect password, invalid username
 
 
 function Login() {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
+
     const { values, handleChange, handleKeyDown, handleSubmit, error } = useForm({
         initialValues: {
             username: '',
@@ -13,23 +21,62 @@ function Login() {
     });
 
     return (
-        <div className="card-shadow">
-            <div className="card-body d-flex flex-column align-items-center">
-                <h5 className="card-title display-4 fw-bold my-2">Login</h5>
-                <form action="#" method="POST" onSubmit={handleSubmit}>
-                    <div className="mb-3 text-start">
-                        <label htmlFor="username" name="username" className='form-label'>Username</label>
-                        <input type="text" className="form-control" placeholder="Username" id="username" name="username" value={values.username} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                    </div>
-                    <div className="mb-3 text-start">
-                        <label htmlFor="password" name="password" className='form-label'>Password</label>
-                        <input type="password" className="form-control" placeholder="Password" id="password" name="password" value={values.password} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                    </div>
-                    <button className="btn btn-primary mb-3">Login</button>
-                </form>
-                {/* {error && <Error error={error.messages} />} */}
-            </div>
-        </div>
+        <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <Grid item xs={3}>
+                <Container>
+                    <Stack spacing={2}>
+                        <Typography variant="h3" gutterBottom>
+                            Login
+                        </Typography>
+                        <FormControl>
+                            <FormLabel>Username</FormLabel>
+                            <TextField
+                                name="username"
+                                value={values.username}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                                required >
+                            </TextField>
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel>Password</FormLabel>
+                            <TextField
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }}
+                                required>
+                            </TextField>
+                        </FormControl>
+                    </Stack>
+                    <Button
+                        onClick={handleSubmit}
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                    > Login
+                    </Button>
+                </Container>
+            </Grid>
+        </Grid>
+
     )
 }
 
