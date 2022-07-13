@@ -86,8 +86,12 @@ function AddExercise(props) {
                     />
                 </FormControl>
 
-                <Button className="mb-3" onClick={customHandleSubmit}>
-                    Add exercise
+                <Button className="mb-3"
+                    onClick={customHandleSubmit}
+                    type="submit"
+                    color="primary"
+                    variant="contained"
+                > Add exercise
                 </Button>
             </Box>
             {successMsg && <Message success={successMsg} />}

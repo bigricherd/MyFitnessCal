@@ -55,7 +55,7 @@ const NavMUI = (props) => {
                 <ListItem>
                     <Button onClick={handleLogout}>
                         <span className='drawerLink'>Logout |
-                            <span className="text-success">{props.user}</span>
+                            <span className="ms-1 text-success">{props.user}</span>
                         </span>
                     </Button>
                 </ListItem>
@@ -96,7 +96,7 @@ const NavMUI = (props) => {
                             }
                             {props.user ?
                                 <Button sx={{ color: 'white' }} onClick={handleLogout}>
-                                    Logout |<span className="ms-1 text-success">{props.user}</span>
+                                    Logout |<span className='ms-1 text-info'>{props.user}</span>
                                 </Button>
                                 : null}
                         </Box>
