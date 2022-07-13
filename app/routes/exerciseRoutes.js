@@ -56,7 +56,7 @@ router.post("/add", isLoggedIn, async (req, res) => {
     const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
     const query3 = `INSERT INTO exercises(id, name, musclegroup, nameandmusclegroup, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${req.user.id}')`;
     await performQuery(query3);
-    const postAdd = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' GROUP BY musclegroup, name`);
+    const postAdd = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
     const exerciseNames = [];
     console.log(postAdd.rows);
     for (let row of postAdd.rows) {
@@ -90,7 +90,7 @@ router.delete('/', isLoggedIn, async (req, res) => {
     const msg = `Successfully deleted exercise ${name.toLowerCase().split('_').map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' ')}`;
     console.log(msg);
 
-    const postDelete = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' GROUP BY musclegroup, name`);
+    const postDelete = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
     console.log(postDelete.rows);
     let exerciseNames = []
     for (let row of postDelete.rows) {

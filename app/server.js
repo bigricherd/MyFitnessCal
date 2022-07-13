@@ -99,7 +99,7 @@ app.get('/api/enums', (req, res) => {
 app.post('/api/enums/byCurrentUser', isLoggedIn, async (req, res) => {
     const { id } = req.body;
     console.log(id);
-    const query = `SELECT muscleGroup, name FROM exercises WHERE owner = '${id}' GROUP BY muscleGroup, name`;
+    const query = `SELECT muscleGroup, name FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
     const data = await performQuery(query);
     //console.log(data.rows);
     const exercisesByUser = [];
