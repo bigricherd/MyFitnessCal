@@ -107,9 +107,9 @@ function MuscleGroupFilter(props) {
                     <NumSetsTable
                         data={Object.entries(data.results)}
                         type={"perMuscleGroup"}
+                        className="mb-2"
                     />
                 )}
-                <hr></hr>
                 {data && data.perExercise && (
                     <NumSetsTable
                         data={Object.entries(data.perExercise)}
