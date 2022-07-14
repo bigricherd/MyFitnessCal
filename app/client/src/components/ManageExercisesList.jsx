@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import formatEnum from '../helpers/formatEnum';
-import { Grid, Button, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import {
+    Grid,
+    Button,
+    Box,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Alert
+} from '@mui/material';
 import useForm from '../hooks/useDeleteForm'
 
 function ManageExercisesList(props) {
@@ -96,8 +106,8 @@ function ManageExercisesList(props) {
             </div>
 
             {/* Feedback messages */}
-            {successMsg && <h3>{successMsg}</h3>}
-            {error && <h3>{error}</h3>}
+            {successMsg && <Alert severity="success" sx={{ mt: '1rem' }}>{successMsg}</Alert>}
+            {error && <h3><Alert severity="error">{error}</Alert></h3>}
         </Grid>
     )
 }

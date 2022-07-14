@@ -9,6 +9,7 @@ import {
     Grid,
     TextField,
     Box,
+    Alert
 } from "@mui/material";
 import formatEnum from "../../helpers/formatEnum";
 
@@ -22,6 +23,7 @@ function AddExercise(props) {
         handleSubmit,
         successMsg,
         exercisesPostAdd,
+        error
     } = useForm({
         initialValues: {
             exercise: "",
@@ -94,7 +96,8 @@ function AddExercise(props) {
                 > Add exercise
                 </Button>
             </Box>
-            {successMsg && <Message success={successMsg} />}
+            {successMsg && <Alert severity="success">{successMsg}</Alert>}
+            {error && <Alert severity="error">{error}</Alert>}
         </Grid>
     );
 }

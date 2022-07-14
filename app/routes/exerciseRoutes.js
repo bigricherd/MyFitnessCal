@@ -21,7 +21,7 @@ const getEnums = async () => {
 getEnums();
 
 // Add an exercise to the Exercises table
-router.post("/add", isLoggedIn, async (req, res) => {
+router.post("/add", isLoggedIn, async (req, res, next) => {
     let { exercise, muscleGroup } = req.body;
 
     const response = { message: '' };
@@ -52,30 +52,36 @@ router.post("/add", isLoggedIn, async (req, res) => {
         return res.send({ message: error });
     }
 
-    // Using a varchar(45) field to store "exercise:muscleGroup" as Primary Key, manually populated with the string in the next line.
-    const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
-    const query3 = `INSERT INTO exercises(id, name, musclegroup, nameandmusclegroup, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${req.user.id}')`;
-    await performQuery(query3);
-    const postAdd = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
-    const exerciseNames = [];
-    console.log(postAdd.rows);
-    for (let row of postAdd.rows) {
-        exerciseNames.push(row.name);
-    }
-    console.log('post add names');
-    console.log(exerciseNames);
-    response.exercises = exerciseNames;
+    try {
 
-    // update local 'Exercises' array
-    await getEnums();
+        // Using a varchar(45) field to store "exercise:muscleGroup" as Primary Key, manually populated with the string in the next line.
+        const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
+        const query3 = `INSERT INTO exercises(id, name, musclegroup, nameandmusclegroup, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${req.user.id}')`;
+        await performQuery(query3);
+        const postAdd = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
+        const exerciseNames = [];
+        console.log(postAdd.rows);
+        for (let row of postAdd.rows) {
+            exerciseNames.push(row.name);
+        }
+        console.log('post add names');
+        console.log(exerciseNames);
+        response.exercises = exerciseNames;
 
-    // Verify that the last element of the local 'Exercises' array matches user entry
-    if (exercises[exercises.length - 1] === exercise) {
-        console.log('exercises matched');
-        response.message = `Successfully added exercise ${req.body.exercise}`;
-    } else {
-        response.message = `Exercise ${req.body.exercise} was maybe added, the if statement is glitchy rn`;
+        // update local 'Exercises' array
+        await getEnums();
+
+        // Verify that the last element of the local 'Exercises' array matches user entry
+        if (exercises[exercises.length - 1] === exercise) {
+            console.log('exercises matched');
+            response.message = `Successfully added exercise ${req.body.exercise}`;
+        } else {
+            response.message = `Exercise ${req.body.exercise} was maybe added, the if statement is glitchy rn`;
+        }
+    } catch (err) {
+        return next(err);
     }
+
     return res.send(response);
 })
 
