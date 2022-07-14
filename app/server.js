@@ -66,10 +66,12 @@ const setRoutes = require('./routes/setRoutes');
 const statRoutes = require('./routes/statRoutes');
 const authRoutes = require('./routes/authRoutes');
 const exerciseRoutes = require('./routes/exerciseRoutes');
+const errorController = require('./utils/errorController');
 app.use('/api/sets', setRoutes);
 app.use('/api/stats', statRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/exercises', exerciseRoutes);
+app.use(errorController);
 
 // --- DEBUGGING AUTH --- 
 // app.use((req, res, next) => {

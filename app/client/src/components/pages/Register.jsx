@@ -7,10 +7,12 @@ import {
     Stack,
     FormControl,
     FormLabel,
+    Tooltip,
     TextField,
     InputAdornment,
     IconButton,
-    Button
+    Button,
+    Alert
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 //import Error from './Error'; //TODO: show error message on duplicate username, password too short(?)
@@ -31,6 +33,15 @@ function Register() {
         slug: 'api/auth/register'
     });
 
+    const passwordFieldHover = <Stack>
+        <Typography>Password must contain at least:</Typography>
+        <Typography>- 6 characters</Typography>
+        <Typography>- one lowercase letter (a-z)</Typography>
+        <Typography>- one uppercase letter (A-Z)</Typography>
+        <Typography> - one digit (0-9)</Typography>
+        <Typography>- one symbol {`(!@#$%^&*)`}</Typography>
+    </Stack>
+
     return (
 
         <Box
@@ -42,7 +53,7 @@ function Register() {
                 <Typography variant="h3" gutterBottom>
                     Register
                 </Typography>
-                <Stack spacing={2}>
+                <Stack spacing={2} sx={{ mb: '1rem' }}>
                     <FormControl>
                         <FormLabel>Username</FormLabel>
                         <TextField
@@ -55,23 +66,27 @@ function Register() {
                     </FormControl>
                     <FormControl>
                         <FormLabel>Password</FormLabel>
-                        <TextField
-                            name="password"
-                            type={showPassword ? 'text' : 'password'}
-                            value={values.password}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                            InputProps={{
-                                endAdornment:
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            onClick={handleClickShowPassword}
-                                        > {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                            }}
-                            required>
-                        </TextField>
+                        <Tooltip
+                            title={passwordFieldHover}
+                            arrow>
+                            <TextField
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                                InputProps={{
+                                    endAdornment:
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={handleClickShowPassword}
+                                            > {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                }}
+                                required>
+                            </TextField>
+                        </Tooltip>
                     </FormControl>
                 </Stack>
                 <Button
@@ -79,10 +94,13 @@ function Register() {
                     type="submit"
                     color="primary"
                     variant="contained"
+                    sx={{ mb: '1rem' }}
                 > Register
                 </Button>
+                {error && <Alert severity="error" sx={{ mb: '1rem' }}>{error}</Alert>}
             </Container>
-        </Box>
+
+        </Box >
     )
 }
 

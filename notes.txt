@@ -1,3 +1,25 @@
+JULY 13 8:38PM - CHINO
+- added Register error handling:
+    - Username already taken (Postgres error (duplicate PK) with useful fields such as code and constraint)
+    - Username is empty (manually thrown)
+    - Password is empty (manually thrown)
+    - Password is too weak (manually thrown)
+    - note that we currently only have backend validation
+- [FRONTEND]  
+    - in Register.jsx
+        - Alert displayed with error message that is returned by useAuthForm hook
+        - added a message showing password requirements on hover of password field in Register
+    - in useAuthForm.js
+        - set error to be err.response.data.message (see backend errorController.js)
+- [BACKEND]
+    - added errorController.js to handle specific errors and respond with the appropriate feedback for the user
+    - configured server.js to use this
+    - in authRoutes.js 
+        - manual checks for:
+            - empty username
+            - empty password
+            - weak password
+
 JULY 10 9:54PM - TRICIA 
 - [FRONTEND]
     - in MuscleGroupFilter: replaced bootstrap with MUI components 
