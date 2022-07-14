@@ -53,7 +53,6 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
     }
 
     try {
-
         // Using a varchar(45) field to store "exercise:muscleGroup" as Primary Key, manually populated with the string in the next line.
         const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
         const query3 = `INSERT INTO exercises(id, name, musclegroup, nameandmusclegroup, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${req.user.id}')`;
@@ -96,14 +95,19 @@ router.delete('/', isLoggedIn, async (req, res) => {
     const msg = `Successfully deleted exercise ${name.toLowerCase().split('_').map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' ')}`;
     console.log(msg);
 
-    const postDelete = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
-    console.log(postDelete.rows);
     let exerciseNames = []
-    for (let row of postDelete.rows) {
-        exerciseNames.push(row.name);
+    try {
+        const postDelete = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
+        console.log(postDelete.rows);
+
+        for (let row of postDelete.rows) {
+            exerciseNames.push(row.name);
+        }
+        console.log(exerciseNames);
+    } catch (err) {
+        return next(err);
     }
-    console.log(exerciseNames);
-    res.send({ exercises: exerciseNames, message: msg });
+    return res.send({ exercises: exerciseNames, message: msg });
 })
 
 module.exports = router;
