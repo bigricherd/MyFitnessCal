@@ -2,22 +2,11 @@ import React from "react";
 import Kalend, { CalendarView } from "kalend";
 import "kalend/dist/styles/index.css";
 
-function DefaultCalendarView() {
-    const [events, setEvents] = React.useState({});
-
-    const testEvent = [
-        {
-            id: 1,
-            event: "test event",
-            startAt: "2022-06-30T18:00:00.000Z",
-            endAt: "2022-06-30T19:00:00.000Z",
-            summary: "test",
-            color: "blue",
-        },
-    ];
+function DefaultCalendarView(props) {
+    const [events, setEvents] = React.useState([]);
 
     React.useEffect(() => {
-        setEvents(testEvent);
+        setEvents(props.events);
     }, []);
 
     const onEventClick = () => {
