@@ -3,14 +3,31 @@ import Kalend, { CalendarView } from "kalend";
 import "kalend/dist/styles/index.css";
 
 function DefaultCalendarView(props) {
-    const [events, setEvents] = React.useState([]);
+    const [calEvents, setCalEvents] = React.useState([]);
+    const [dbEvents, setDbEvents] = React.useState([]);
 
     React.useEffect(() => {
-        setEvents(props.events);
-    }, []);
+        setCalEvents(props.calEvents);
+        setDbEvents(props.dbEvents);
+    }, [props]);
 
-    const onEventClick = () => {
+    const onEventClick = (data) => {
         console.log("event click");
+        let currentDbEvent = dbEvents.find((dbEvent) => {
+            return dbEvent.id === data.id;
+        });
+        alert(
+            "You have clicked event with: id: " +
+                data.id +
+                ", and title: " +
+                data.summary +
+                ", between " +
+                data.startAt +
+                " and " +
+                data.endAt +
+                " with comments: " +
+                currentDbEvent.comments
+        );
     };
 
     const onNewEventClick = (data) => {
@@ -39,14 +56,14 @@ function DefaultCalendarView(props) {
         <div
             style={{
                 backgroundColor: "white",
-                height: "300px",
-                width: "700px",
+                height: "75vh",
+                width: "80vw",
             }}
         >
             <Kalend
                 onEventClick={onEventClick}
                 onNewEventClick={onNewEventClick}
-                events={events}
+                events={calEvents}
                 initialDate={new Date().toISOString()}
                 hourHeight={60}
                 initialView={CalendarView.WEEK}

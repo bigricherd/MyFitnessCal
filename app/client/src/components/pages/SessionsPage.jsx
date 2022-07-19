@@ -4,7 +4,8 @@ import DefaultCalendarView from "../views/CalendarView";
 
 function SessionsPage(props) {
     const [user, setUser] = useState(null);
-    const [events, setEvents] = useState([]);
+    const [calEvents, setCalEvents] = useState([]);
+    const [dbEvents, setDbEvents] = useState([]);
 
     const getAllSessions = async () => {
         const baseUrl = "http://localhost:5000";
@@ -16,9 +17,9 @@ function SessionsPage(props) {
             },
         });
         const json = await data.json();
-        console.log(json);
         convertToCalendarEvents(json);
-        console.log(events);
+        console.log(calEvents);
+        console.log(dbEvents);
     };
 
     const convertToCalendarEvents = (sessions) => {
@@ -29,7 +30,8 @@ function SessionsPage(props) {
             summary: session.title,
         }));
         console.log(calendarEvents);
-        setEvents(calendarEvents);
+        setCalEvents(calendarEvents);
+        setDbEvents(sessions);
     };
 
     // Update state every time props.user is updated
@@ -43,7 +45,10 @@ function SessionsPage(props) {
             {user ? (
                 <div>
                     CalendarView
-                    <DefaultCalendarView events={events} />
+                    <DefaultCalendarView
+                        calEvents={calEvents}
+                        dbEvents={dbEvents}
+                    />
                 </div>
             ) : (
                 <div>
