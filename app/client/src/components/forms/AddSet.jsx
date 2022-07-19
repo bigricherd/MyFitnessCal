@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useForm from "../../hooks/useForm";
 import Dropdown from "../Dropdown";
-import Message from "../Message";
 import {
     Typography,
     Container,
@@ -10,6 +9,7 @@ import {
     TextField,
     FormControl,
     Stack,
+    Alert
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -178,7 +178,7 @@ function AddSet(props) {
                 >
                     Add Set
                 </Button>
-                {successMsg && <Message success={successMsg} />}
+                {successMsg && <Alert severity="success">{successMsg}</Alert>}
             </Box>
         </Container>
     );
