@@ -10,11 +10,10 @@ import {
     TextField,
     InputAdornment,
     IconButton,
-    Button
+    Button,
+    Alert
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-//import Error from './Error'; //TODO: show error message on incorrect password, invalid username
-
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +40,7 @@ function Login() {
                 <Typography variant="h3" gutterBottom>
                     Login
                 </Typography>
-                <Stack spacing={2}>
+                <Stack spacing={2} sx={{ mb: '1rem' }}>
                     <FormControl>
                         <FormLabel>Username</FormLabel>
                         <TextField
@@ -79,8 +78,10 @@ function Login() {
                     type="submit"
                     color="primary"
                     variant="contained"
+                    sx={{ mb: '1rem' }}
                 > Login
                 </Button>
+                {error && <Alert severity="error">{error}</Alert>}
             </Container>
         </Box>
     )

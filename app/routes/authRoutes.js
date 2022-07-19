@@ -35,7 +35,7 @@ router.post('/register', async (req, res, next) => {
         const last = allUsers.rows[allUsers.rows.length - 1];
         //console.log(last);
         req.login(last, (err, user) => {
-            if (err) return next(err); // TODO: error handling
+            if (err) return next(err);
             let response = { redirect: "/" };
             return res.json(response);
         })
@@ -47,7 +47,8 @@ router.post('/register', async (req, res, next) => {
     }
 })
 
-router.post('/login', passport.authenticate('local', { failureRedirect: '/api/auth/login-fail' }), (req, res, next) => {
+router.post('/login', passport.authenticate('local', { successRedirect: '/api/auth/login-success' }), (err, req, res, next) => {
+    if (err) return res.status(401).send({ message: err.message }); // Error is sent to client
     return res.json({ redirect: '/' });
 })
 
@@ -63,13 +64,9 @@ router.get('/logout', (req, res) => {
     return res.redirect('/');
 })
 
+// Redirect user to home page on login success.
 router.get('/login-success', (req, res) => {
-    res.send('Logged in successfully');
-})
-
-router.get('/login-fail', (req, res) => {
-    res.json({ redirect: '/login' }); // TODO: error handling
-    //res.send('Login failed');
+    res.json({ redirect: '/' });
 })
 
 router.get('/getUser', (req, res) => {
