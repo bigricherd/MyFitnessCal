@@ -37,34 +37,51 @@ export default function useForm({ initialValues, slug }) {
     const submitData = async (formValues) => {
         const dataObject = formValues.values;
         const { username, password } = dataObject;
-        try {
-            await axios({
-                method: 'POST',
-                url: `${baseUrl}/${slug}`,
-                data: {
-                    username,
-                    password
-                },
-                headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
-                withCredentials: true
-
-            }).then(res => {
-                if (res.data.redirect === '/') {
-                    window.location = '/';
-                } else if (res.data.redirect === '/login') {
-                    window.location = '/login';
-                }
-                setError(null);
-            })
-        } catch (err) {
-            console.log(err);
+        if (username === '') {
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {
                 setPrevError(null);
             }
-            setError(err.response.data.message);
+            setError('Username cannot be blank');
+        } else if (password === '') {
+            if (!prevError || (error !== prevError)) {
+                setPrevError(error);
+            } else {
+                setPrevError(null);
+            }
+            setError('Password cannot be blank');
+        } else {
+            try {
+                await axios({
+                    method: 'POST',
+                    url: `${baseUrl}/${slug}`,
+                    data: {
+                        username,
+                        password
+                    },
+                    headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
+                    withCredentials: true
+
+                }).then(res => {
+                    if (res.data.redirect === '/') {
+                        window.location = '/';
+                    } else if (res.data.redirect === '/login') {
+                        window.location = '/login';
+                    }
+                    setError(null);
+                })
+            } catch (err) {
+                console.log(err);
+                if (!prevError || (error !== prevError)) {
+                    setPrevError(error);
+                } else {
+                    setPrevError(null);
+                }
+                setError(err.response.data.message);
+            }
         }
+
     };
     return {
         handleChange,
