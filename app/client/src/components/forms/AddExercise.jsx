@@ -68,7 +68,7 @@ function AddExercise(props) {
     }
 
     useEffect(() => {
-        if (error || (error === prevError)) setShowError(true);
+        if (error) setShowError(true);
     }, [error, prevError]);
 
     const [showSuccessMsg, setShowSuccessMsg] = useState(false);
@@ -78,7 +78,7 @@ function AddExercise(props) {
     }
 
     useEffect(() => {
-        if (successMsg || (successMsg === prevSuccessMsg)) setShowSuccessMsg(true);
+        if (successMsg) setShowSuccessMsg(true);
     }, [successMsg, prevSuccessMsg]);
 
     return (
