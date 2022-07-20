@@ -61,16 +61,7 @@ function AddExercise(props) {
         values.exercise = "";
     };
 
-    const [showError, setShowError] = useState(false);
-
-    const handleCloseError = () => {
-        setShowError(false);
-    }
-
-    useEffect(() => {
-        if (error) setShowError(true);
-    }, [error, prevError]);
-
+    // User feedback -- success and error
     const [showSuccessMsg, setShowSuccessMsg] = useState(false);
 
     const handleCloseSuccessMsg = () => {
@@ -80,6 +71,16 @@ function AddExercise(props) {
     useEffect(() => {
         if (successMsg) setShowSuccessMsg(true);
     }, [successMsg, prevSuccessMsg]);
+
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) setShowError(true);
+    }, [error, prevError]);
 
     return (
         <Grid item xs={10} sm={8}>
