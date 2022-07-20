@@ -60,7 +60,7 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
         // update local 'Exercises' array
         await getEnums();
 
-        // Verify that the last element of the local 'Exercises' array matches user entry
+        // Verify that the last element of the local 'Exercises' array matches user entry -- TODO: check whether PK exists `${exercise}:${muscleGroup}`
         if (exercises[exercises.length - 1] === exercise) {
             console.log('exercises matched');
             response.message = `Successfully added exercise ${req.body.exercise}`;
@@ -88,7 +88,8 @@ router.delete('/', isLoggedIn, async (req, res) => {
     let exerciseNames = []
     try {
         const postDelete = await performQuery(`SELECT musclegroup, name FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
-        console.log(postDelete.rows);
+
+        await getEnums();
 
         for (let row of postDelete.rows) {
             exerciseNames.push(row.name);

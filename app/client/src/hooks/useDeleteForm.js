@@ -6,7 +6,9 @@ import formatEnum from '../helpers/formatEnum';
 export default function useForm({ initialValues }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
+    const [prevError, setPrevError] = useState(null);
     const [successMsg, setSuccessMsg] = useState(null);
+    const [prevSuccessMsg, setPrevSuccessMsg] = useState(null);
     const [exercisesPostDelete, setExercisesPostDelete] = useState([]);
 
     //track form values
@@ -55,11 +57,21 @@ export default function useForm({ initialValues }) {
             }).then(res => {
                 console.log(res.data);
                 const exercisesFormatted = formatEnum(res.data.exercises);
-                setExercisesPostDelete(exercisesFormatted)
+                setExercisesPostDelete(exercisesFormatted);
+                if (!prevSuccessMsg || (prevSuccessMsg !== successMsg)) {
+                    setPrevSuccessMsg(successMsg);
+                } else {
+                    setPrevSuccessMsg(null);
+                }
                 setSuccessMsg(res.data.message);
             })
         } catch (err) {
             console.log(err);
+            if (!prevError || (prevError !== error)) {
+                setPrevError(error);
+            } else {
+                setPrevError(null);
+            }
             setError(err.response.data);
         }
     };
@@ -68,7 +80,9 @@ export default function useForm({ initialValues }) {
         values,
         handleSubmit,
         error,
+        prevError,
         successMsg,
+        prevSuccessMsg,
         exercisesPostDelete
     }
 }

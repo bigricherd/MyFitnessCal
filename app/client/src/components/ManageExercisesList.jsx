@@ -18,6 +18,8 @@ function ManageExercisesList(props) {
     // Two state variables to store index and event corresponding to 
     const [indexToDelete, setIndexToDelete] = useState(null);
     const [deleteEvent, setDeleteEvent] = useState(null);
+
+    // State variable and handlers for the confirm delete dialog
     const [open, setOpen] = useState(false);
     const handleClickOpen = (e, i) => {
         e.persist();
@@ -32,7 +34,8 @@ function ManageExercisesList(props) {
         setOpen(false);
     }
 
-    const { values, handleSubmit, error, successMsg, exercisesPostDelete } = useForm(
+    // Delete form hook 
+    const { values, handleSubmit, error, prevError, successMsg, prevSuccessMsg, exercisesPostDelete } = useForm(
         { exercise: '' }
     )
 
@@ -77,7 +80,28 @@ function ManageExercisesList(props) {
     useEffect(() => {
         console.log(exercisesPostDelete);
         liftState();
-    }, [exercisesPostDelete, liftState])
+    }, [exercisesPostDelete, liftState]);
+
+    // User feedback -- success and error
+    const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+
+    const handleCloseSuccessMsg = () => {
+        setShowSuccessMsg(false);
+    }
+
+    useEffect(() => {
+        if (successMsg) setShowSuccessMsg(true);
+    }, [successMsg, prevSuccessMsg])
+
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) setShowError(true);
+    }, [error, prevError]);
 
     return (
         <Grid item xs={10} sm={8}>
@@ -106,8 +130,8 @@ function ManageExercisesList(props) {
             </div>
 
             {/* Feedback messages */}
-            {successMsg && <Alert severity="success" sx={{ mt: '1rem' }}>{successMsg}</Alert>}
-            {error && <h3><Alert severity="error">{error}</Alert></h3>}
+            {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ mt: '1rem' }}>{successMsg}</Alert>}
+            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
         </Grid>
     )
 }
