@@ -5,7 +5,9 @@ import axios from "axios";
 export default function useForm({ initialValues, slug }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
+    const [prevError, setPrevError] = useState(null);
     const [successMsg, setSuccessMsg] = useState(null);
+    const [prevSuccessMsg, setPrevSuccessMsg] = useState(null);
     const [exercisesPostAdd, setExercisesPostAdd] = useState([]);
 
     //track form values
@@ -66,12 +68,22 @@ export default function useForm({ initialValues, slug }) {
                 } else if (res.data.redirect === "/forms") {
                     window.location = "/forms";
                 }
+                if (!prevSuccessMsg || (successMsg !== prevSuccessMsg)) {
+                    setPrevSuccessMsg(successMsg);
+                } else {
+                    setPrevSuccessMsg(null);
+                }
                 setSuccessMsg(res.data.message);
                 setExercisesPostAdd(res.data.exercises);
                 setError(null);
             });
         } catch (err) {
             console.log(err);
+            if (!prevError || (error !== prevError)) {
+                setPrevError(error);
+            } else {
+                setPrevError(null);
+            }
             setError(err.response.data.message);
         }
     };
@@ -81,7 +93,9 @@ export default function useForm({ initialValues, slug }) {
         values,
         handleSubmit,
         error,
+        prevError,
         successMsg,
+        prevSuccessMsg,
         exercisesPostAdd,
     };
 }

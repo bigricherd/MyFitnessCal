@@ -26,14 +26,8 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
 
     const response = { message: '' };
 
-    // Simple validation to check if either field is empty. Having trouble doing this on the frontend with MUI
-    if (exercise === '') {
-        response.message = 'Error: Name cannot be empty';
-        return res.send(response);
-    } else if (muscleGroup === '') {
-        response.message = 'Error: Muscle group cannot be empty';
-        return res.send(response);
-    }
+    if (exercise === '') return next(new Error('Name cannot be blank'));
+    if (muscleGroup === '') return next(new Error('Muscle group cannot be blank'));
 
     // Format exercise and muscle group to store in database
     exercise = exercise.toLowerCase();
@@ -46,11 +40,7 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
     // Ensure muscle group is valid
     // TODO: make this a boolean-returning function. Throw an error if it returns false
     // also to be used in statRoutes.get('/setsPerMuscle')
-    if (muscleGroups.indexOf(muscleGroup) === -1) {
-        const error = `Error: ${muscleGroup} is not a valid muscle group.`;
-        console.log(error);
-        return res.send({ message: error });
-    }
+    if (muscleGroups.indexOf(muscleGroup) === -1) return next(new Error('Invalid muscle group'));
 
     try {
         // Using a varchar(45) field to store "exercise:muscleGroup" as Primary Key, manually populated with the string in the next line.

@@ -8,6 +8,9 @@ module.exports = (err, req, res, next) => {
         if (err.message === 'Password is not strong enough') return err = handleWeakPasswordError(err, res);
 
         if (err.code === '23505' && err.constraint === 'exercises_pkey') return err = handleExerciseExistsError(err, res);
+        if (err.message === 'Name cannot be blank') return res.status(409).send({ message: err.message });
+        if (err.message === 'Muscle group cannot be blank') return res.status(409).send({ message: err.message });
+        if (err.message === 'Invalid muscle group') return res.status(409).send({ message: err.message });
 
         return next(err);
     }

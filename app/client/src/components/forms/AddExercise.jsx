@@ -15,14 +15,16 @@ import formatEnum from "../../helpers/formatEnum";
 function AddExercise(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
-    const {
+    let {
         values,
         handleChange,
         handleKeyDown,
         handleSubmit,
         successMsg,
+        prevSuccessMsg,
         exercisesPostAdd,
-        error
+        error,
+        prevError
     } = useForm({
         initialValues: {
             exercise: "",
@@ -46,7 +48,6 @@ function AddExercise(props) {
 
     const customHandleSubmit = (e) => {
         handleSubmit(e);
-        console.log(e.target);
 
         // This loop clears all input fields but skips the last element in the array because it is the submit button.
         for (let i = 0; i < e.target.length - 1; i++) {
@@ -59,6 +60,26 @@ function AddExercise(props) {
         values.muscleGroup = "";
         values.exercise = "";
     };
+
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error || (error === prevError)) setShowError(true);
+    }, [error, prevError]);
+
+    const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+
+    const handleCloseSuccessMsg = () => {
+        setShowSuccessMsg(false);
+    }
+
+    useEffect(() => {
+        if (successMsg || (successMsg === prevSuccessMsg)) setShowSuccessMsg(true);
+    }, [successMsg, prevSuccessMsg]);
 
     return (
         <Grid item xs={10} sm={8}>
@@ -95,8 +116,8 @@ function AddExercise(props) {
                 > Add exercise
                 </Button>
             </Box>
-            {successMsg && <Alert severity="success">{successMsg}</Alert>}
-            {error && <Alert severity="error">{error}</Alert>}
+            {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg}>{successMsg}</Alert>}
+            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
         </Grid>
     );
 }
