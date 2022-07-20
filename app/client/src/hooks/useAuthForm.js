@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function useForm({ initialValues, slug }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
+    const [prevError, setPrevError] = useState(null);
 
     //track form values
     const handleChange = event => {
@@ -57,6 +58,11 @@ export default function useForm({ initialValues, slug }) {
             })
         } catch (err) {
             console.log(err);
+            if (!prevError || (error !== prevError)) {
+                setPrevError(error);
+            } else {
+                setPrevError(null);
+            }
             setError(err.response.data.message);
         }
     };
@@ -65,6 +71,7 @@ export default function useForm({ initialValues, slug }) {
         handleKeyDown,
         values,
         handleSubmit,
-        error
+        error,
+        prevError
     }
 }

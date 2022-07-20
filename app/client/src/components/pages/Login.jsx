@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useForm from '../../hooks/useAuthForm';
 import {
     Box,
@@ -22,13 +22,23 @@ function Login() {
         setShowPassword(!showPassword);
     }
 
-    const { values, handleChange, handleKeyDown, handleSubmit, error } = useForm({
+    const { values, handleChange, handleKeyDown, handleSubmit, error, prevError } = useForm({
         initialValues: {
             username: '',
             password: '',
         },
         slug: 'api/auth/login'
     });
+
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) setShowError(true);
+    }, [error, prevError]);
 
     return (
         <Box
@@ -81,7 +91,7 @@ function Login() {
                     sx={{ mb: '1rem' }}
                 > Login
                 </Button>
-                {error && <Alert severity="error">{error}</Alert>}
+                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
             </Container>
         </Box>
     )

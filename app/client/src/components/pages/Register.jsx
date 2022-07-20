@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useForm from '../../hooks/useAuthForm';
 import {
     Box,
@@ -25,7 +25,7 @@ function Register() {
         setShowPassword(!showPassword);
     }
 
-    const { values, handleChange, handleKeyDown, handleSubmit, error } = useForm({
+    const { values, handleChange, handleKeyDown, handleSubmit, error, prevError } = useForm({
         initialValues: {
             username: '',
             password: '',
@@ -40,7 +40,17 @@ function Register() {
         <Typography>- one uppercase letter (A-Z)</Typography>
         <Typography> - one digit (0-9)</Typography>
         <Typography>- one symbol {`(!@#$%^&*)`}</Typography>
-    </Stack>
+    </Stack>;
+
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) setShowError(true);
+    }, [error, prevError]);
 
     return (
 
@@ -97,7 +107,7 @@ function Register() {
                     sx={{ mb: '1rem' }}
                 > Register
                 </Button>
-                {error && <Alert severity="error" sx={{ mb: '1rem' }}>{error}</Alert>}
+                {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ mb: '1rem' }}>{error}</Alert>}
             </Container>
 
         </Box >
