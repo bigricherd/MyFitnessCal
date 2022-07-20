@@ -32,8 +32,8 @@ app.use(cors(corsConfig));
 const secret = process.env.SECRET || 'alwaysHungry';
 const sessionConfig = {
     secret,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 // 1 day
     }
@@ -48,9 +48,11 @@ const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
+    console.log('map');
     console.log(map);
-    console.log(exercises);
-    console.log(muscleGroups);
+
+    // console.log(exercises);
+    // console.log(muscleGroups);
 }
 getEnums();
 
@@ -64,10 +66,12 @@ const setRoutes = require('./routes/setRoutes');
 const statRoutes = require('./routes/statRoutes');
 const authRoutes = require('./routes/authRoutes');
 const exerciseRoutes = require('./routes/exerciseRoutes');
+const errorController = require('./utils/errorController');
 app.use('/api/sets', setRoutes);
 app.use('/api/stats', statRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/exercises', exerciseRoutes);
+app.use(errorController);
 
 // --- DEBUGGING AUTH --- 
 // app.use((req, res, next) => {
@@ -97,9 +101,9 @@ app.get('/api/enums', (req, res) => {
 app.post('/api/enums/byCurrentUser', isLoggedIn, async (req, res) => {
     const { id } = req.body;
     console.log(id);
-    const query = `SELECT muscleGroup, name FROM exercises WHERE owner = '${id}' GROUP BY muscleGroup, name`;
+    const query = `SELECT muscleGroup, name FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
     const data = await performQuery(query);
-    console.log(data.rows);
+    //console.log(data.rows);
     const exercisesByUser = [];
     for (let row of data.rows) {
         exercisesByUser.push(row.name);

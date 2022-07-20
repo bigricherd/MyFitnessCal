@@ -6,10 +6,11 @@ import Register from './components/pages/Register';
 import Login from './components/pages/Login';
 import Forms from './components/pages/Forms';
 import HomePage from './components/pages/HomePage';
-import Nav from './components/Nav';
+import NavMUI from './components/NavMUI';
 import Filters from './components/pages/Filters';
 import Exercises from './components/pages/Exercises';
 import formatEnum from './helpers/formatEnum';
+
 
 function App() {
   const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
@@ -18,11 +19,11 @@ function App() {
   const [isFetching, setIsFetching] = useState(false);
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
-  const getUserUrl = `${baseUrl}/api/auth/getUser`;
+  const fetchUserUrl = `${baseUrl}/api/auth/getUser`;
 
   const fetchUser = useCallback(async () => {
 
-    const response = await fetch(getUserUrl, { credentials: "include" });
+    const response = await fetch(fetchUserUrl, { credentials: "include" });
     if (!response.ok) {
       throw new Error(`status ${response.status}`);
     }
@@ -37,34 +38,30 @@ function App() {
       setIsFetching(false);
     }
 
-  }, [getUserUrl]);
+  }, [fetchUserUrl]);
 
-  let exercisesArr = [];
   let muscleGroupsArr = [];
   let muscleGroupsForFiltersArr = [];
   const [muscleGroups, setMuscleGroups] = useState([]);
   const [muscleGroupsForFilters, setMuscleGroupsForFilters] = useState([]);
-  const [exercises, setExercises] = useState([]);
-  const getEnumsUrl = `${baseUrl}/api/enums`;
+  const fetchMuscleGroupsUrl = `${baseUrl}/api/enums`;
 
-  const fetchEnums = useCallback(async () => {
-    const data = await fetch(getEnumsUrl);
+  const fetchMuscleGroups = useCallback(async () => {
+    const data = await fetch(fetchMuscleGroupsUrl);
     const json = await data.json();
-    exercisesArr = formatEnum(json.exercises);
     muscleGroupsArr = formatEnum(json.muscleGroups);
     muscleGroupsForFiltersArr = formatEnum(json.muscleGroups);
     muscleGroupsForFiltersArr.unshift('All');
 
-    setExercises(exercisesArr);
     setMuscleGroups(muscleGroupsArr);
     setMuscleGroupsForFilters(muscleGroupsForFiltersArr);
-  }, [getEnumsUrl])
+  }, [fetchMuscleGroupsUrl])
 
   useEffect(() => {
     setIsFetching(true);
     fetchUser();
-    fetchEnums();
-  }, [fetchUser, fetchEnums]);
+    fetchMuscleGroups();
+  }, [fetchUser, fetchMuscleGroups]);
 
   const debugText = <div>
     <p>{'« '}<strong>
@@ -86,13 +83,11 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <Nav user={user} />
+          <NavMUI user={user} />
           <Routes>
             <Route exact path='/' element={<HomePage user={user} />} />
-            <Route exact path='/forms' element={<Forms user={user} userId={userId} muscleGroups={muscleGroups}
-              exercises={exercises} />} />
-            <Route exact path='/exercises' element={<Exercises user={user} userId={userId} muscleGroups={muscleGroups}
-              exercises={exercises} />} />
+            <Route exact path='/forms' element={<Forms user={user} userId={userId} muscleGroups={muscleGroups} />} />
+            <Route exact path='/exercises' element={<Exercises user={user} userId={userId} muscleGroups={muscleGroups} />} />
             <Route exact path='/filters' element={<Filters user={user} muscleGroups={muscleGroupsForFilters} />} />
             <Route exact path='/register' element={<Register />} />
             <Route exact path='/login' element={<Login />} />

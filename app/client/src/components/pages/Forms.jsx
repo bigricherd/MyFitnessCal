@@ -13,7 +13,6 @@ function Forms(props) {
     const [user, setUser] = useState(props.user);
     const [userId, setUserId] = useState(props.userId);
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
-    const [exercises, setExercises] = useState(props.exercises);
 
     // Fetching exercises by logged in user could not be done in App.js because user begins as undefined
     // Instead we do it here where user can be passed in as props
@@ -37,13 +36,23 @@ function Forms(props) {
         setExercisesByUser(exercisesByUserArr);
     }, [url])
 
+    const exercisesUrl = `${baseUrl}/api/enums`;
+    let exercisesArr = [];
+    const [exercises, setExercises] = useState([]);
+    const fetchExercises = useCallback(async () => {
+        const data = await fetch(exercisesUrl);
+        const json = await data.json();
+        exercisesArr = formatEnum(json.exercises);
+        setExercises(exercisesArr);
+    }, [exercisesUrl]);
+
     useEffect(() => {
         setUser(props.user);
         setUserId(props.userId);
-        setExercises(props.exercises);
         setMuscleGroups(props.muscleGroups);
         fetchExercisesByUser();
-    }, [props, fetchExercisesByUser])
+        fetchExercises();
+    }, [props, fetchExercisesByUser, fetchExercises])
 
     const addSet = <AddSet exercises={exercises} exercisesByUser={exercisesByUser} />;
     const addExercise = "Put whatever here";

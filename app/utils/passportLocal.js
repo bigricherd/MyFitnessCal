@@ -20,11 +20,11 @@ const verifyCallback = async (req, username, password, done) => {
     try {
         const query = `SELECT * FROM appUser WHERE username = '${username}'`;
         const res = await performQuery(query);
-        const user = res.rows[0]
+        const user = res.rows[0];
+
+        // Invalid username error handling
         if (!user) {
-            // can flash error message here
-            console.log('no such user');
-            return done(null, false, { message: 'Incorrect username' });
+            return done({ message: 'That user does not exist.' }, false);
         }
 
         const hash = user.password;
@@ -32,11 +32,12 @@ const verifyCallback = async (req, username, password, done) => {
         //console.log(hash);
 
         const isValid = await verifyPassword(password, hash);
-        //console.log(`isValid: ${isValid}`);
         if (isValid) {
-            //req.session.save(); //Auth seems to be working without this, but will keep for now.
-            return done(null, user)
-        } else return done(null, false);
+            return done(null, user);
+        } else {
+            // Invalid password error handling
+            return done({ message: 'Invalid password.' }, false);
+        }
 
     } catch (e) {
         console.log('Something went wrong in test', e);

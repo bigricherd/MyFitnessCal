@@ -10,7 +10,16 @@ router.use(express.json());
 
 router.post('/register', async (req, res, next) => {
     const { username, password } = req.body;
-    console.log(username, password);
+    if (username === '') return next(new Error('Username cannot be empty'));
+    if (password === '') return next(new Error('Password cannot be empty'));
+
+    // Password requirements: at least 6 characters, one digit, one lowercase letter, one uppercase letter, one symbol
+    // This might be overkill, we can maybe remove the symbol requirement.
+    const regex = /(?=^.{6,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    console.log('regex test result follows');
+    console.log(regex.test(password));
+    if (regex.test(password) === false) return next(new Error('Password is not strong enough'));
+
     let newId = uuid();
     try {
         const salt = await bcrypt.genSalt(9);
@@ -26,20 +35,20 @@ router.post('/register', async (req, res, next) => {
         const last = allUsers.rows[allUsers.rows.length - 1];
         //console.log(last);
         req.login(last, (err, user) => {
-            if (err) return next(err); // TODO: error handling
-            //console.log('after login');
-            //console.log(req.user);
-            let redir = { redirect: "/" }; // this works yay!       
-            return res.json(redir);
+            if (err) return next(err);
+            let response = { redirect: "/" };
+            return res.json(response);
         })
 
     } catch (err) {
-        console.log('Error while hashing password');
+        console.log('Error while hashing password; error follows');
+        console.log(err)
         return next(err);
     }
 })
 
-router.post('/login', passport.authenticate('local', { failureRedirect: '/api/auth/login-fail' }), (req, res, next) => {
+router.post('/login', passport.authenticate('local', { successRedirect: '/api/auth/login-success' }), (err, req, res, next) => {
+    if (err) return res.status(401).send({ message: err.message }); // Error is sent to client
     return res.json({ redirect: '/' });
 })
 
@@ -50,18 +59,14 @@ router.get('/logout', (req, res) => {
             if (err) return next(err);
         });
         console.log(`Logged out user ${username}`);
-        return res.send({message: `Logged out user ${username}`});
+        return res.send({ message: `Logged out user ${username}` });
     }
     return res.redirect('/');
 })
 
+// Redirect user to home page on login success.
 router.get('/login-success', (req, res) => {
-    res.send('Logged in successfully');
-})
-
-router.get('/login-fail', (req, res) => {
-    res.json({ redirect: '/login' }); // TODO: error handling
-    //res.send('Login failed');
+    res.json({ redirect: '/' });
 })
 
 router.get('/getUser', (req, res) => {

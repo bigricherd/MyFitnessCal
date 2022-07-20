@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 import AddExercise from '../forms/AddExercise';
 import ManageExercisesList from '../ManageExercisesList';
-import axios from 'axios';
 import formatEnum from '../../helpers/formatEnum';
+import { Box, Grid } from '@mui/material';
 
 
 function Exercises(props) {
@@ -14,7 +16,7 @@ function Exercises(props) {
     // Fetching exercises by logged in user could not be done in App.js because user begins as undefined
     // Instead we do it here where user can be passed in as props
     let exercisesByUserArr = [];
-    const [exercisesByUser, setExercisesByUser] = useState([]);
+    let [exercisesByUser, setExercisesByUser] = useState([]);
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
     const url = `${baseUrl}/api/enums/byCurrentUser`;
@@ -40,13 +42,25 @@ function Exercises(props) {
         fetchExercisesByUser();
     }, [props, fetchExercisesByUser])
 
-    return (
-        <div className="container">
-            <div className="row mb-5">
-                <AddExercise muscleGroups={muscleGroups} />
-                <ManageExercisesList exercisesByUser={exercisesByUser} liftState={setExercisesByUser} />
+
+    if (!user) {
+        return (
+            <div>
+                <p><Link to={'/register'} className="text-decoration-none">Register</Link> or <Link to={'/login'} className="text-decoration-none">Login</Link> first</p>
             </div>
-        </div>
+        )
+    }
+
+    else return (
+        <Grid container columns={{ xs: 12, sm: 14, md: 20, lg: 24 }} sx={{ mt: '4rem' }}>
+            <Grid item xs={1} sm={3} md={6} lg={8}></Grid> {/** Offset column */}
+            <AddExercise muscleGroups={muscleGroups} liftState={setExercisesByUser} />
+            <Grid item xs={1} sm={3} md={6} lg={8}></Grid> {/** Offset column */}
+
+            <Grid item xs={1} sm={3} md={6} lg={8}></Grid> {/** Offset column */}
+            <ManageExercisesList exercisesByUser={exercisesByUser} liftState={setExercisesByUser} />
+            <Grid item xs={1} sm={3} md={6} lg={8}></Grid> {/** Offset column */}
+        </Grid >
     )
 }
 
