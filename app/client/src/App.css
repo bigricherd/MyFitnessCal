@@ -43,3 +43,18 @@ nav.fixed-top {
         transform: rotate(360deg);
     }
 }
+
+.manageExercisesList {
+    max-height: 260px;
+    overflow-y: scroll;
+    margin: 0 auto;
+}
+
+div.row.manageExercisesListItem {
+    flex-wrap: nowrap;
+    --bs-gutter-x: 0;
+}
+
+.drawerLink {
+    color: #515151;
+}

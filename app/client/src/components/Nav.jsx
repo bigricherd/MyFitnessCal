@@ -1,10 +1,23 @@
 import { Link } from "react-router-dom";
 
+// TODO: migrate to MUI
 // ------ A simple navbar that leads us to the various pages / components we currently have ------
 function Nav(props) {
     let navLinkClasses = "nav-item nav-link";
 
     let navbarContents = null;
+
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        const baseUrl =
+            process.env.REACT_APP_HOME_URL || "http://localhost:5000";
+        const res = await fetch(`${baseUrl}/api/auth/logout`, {
+            credentials: "include",
+        });
+        if (res.ok) {
+            window.location = "/";
+        }
+    };
 
     // Assign navbar contents, selection depends on whether a user is logged in
     if (props.user) {

@@ -1,39 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import AddSet from '../forms/AddSet';
 import AddExercise from '../forms/AddExercise';
 import formatEnum from '../../helpers/formatEnum';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // ------ A forms page with a button group to select which form to view: AddSet or AddExercise ------
 function Forms(props) {
 
-    const [user, setUser] = useState(null);
     const [showAddSet, setShowAddSet] = useState(true);
 
-    // We can get rid of these two arrays by calling setMuscleGroups(formatEnum(json.muscleGroups)) in start() below
-    let exercisesArr = [];
-    let muscleGroupsArr = [];
-    const [muscleGroups, setMuscleGroups] = useState([]);
-    const [exercises, setExercises] = useState([]);
+    const [user, setUser] = useState(props.user);
+    const [userId, setUserId] = useState(props.userId);
+    const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
-    const start = async () => {
-        const baseUrl = 'http://localhost:5000';
-        const data = await fetch(`${baseUrl}/api/enums`);
+    // Fetching exercises by logged in user could not be done in App.js because user begins as undefined
+    // Instead we do it here where user can be passed in as props
+    let exercisesByUserArr = [];
+    const [exercisesByUser, setExercisesByUser] = useState([]);
+
+    const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+    const url = `${baseUrl}/api/enums/byCurrentUser`;
+    const fetchExercisesByUser = useCallback(async () => {
+        const userExercises = await axios({
+            method: 'POST',
+            url: url,
+            data: {
+                id: userId
+            },
+            headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
+            withCredentials: true
+
+        });
+        exercisesByUserArr = formatEnum(userExercises.data.exercisesByUser);
+        setExercisesByUser(exercisesByUserArr);
+    }, [url])
+
+    const exercisesUrl = `${baseUrl}/api/enums`;
+    let exercisesArr = [];
+    const [exercises, setExercises] = useState([]);
+    const fetchExercises = useCallback(async () => {
+        const data = await fetch(exercisesUrl);
         const json = await data.json();
         exercisesArr = formatEnum(json.exercises);
-        muscleGroupsArr = formatEnum(json.muscleGroups);
-        setMuscleGroups(muscleGroupsArr);
         setExercises(exercisesArr);
-        console.log(muscleGroupsArr);
-    }
+    }, [exercisesUrl]);
 
     useEffect(() => {
-        start();
         setUser(props.user);
-    }, [props])
+        setUserId(props.userId);
+        setMuscleGroups(props.muscleGroups);
+        fetchExercisesByUser();
+        fetchExercises();
+    }, [props, fetchExercisesByUser, fetchExercises])
 
-    const addSet = <AddSet exercises={exercises} />;
-    const addExercise = <AddExercise muscleGroups={muscleGroups} />;
+    const addSet = <AddSet exercises={exercises} exercisesByUser={exercisesByUser} />;
+    const addExercise = "Put whatever here";
 
     // If there is no logged in user, show the prompt with links to Login and Register pages
     if (!user) {

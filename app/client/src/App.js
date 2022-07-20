@@ -6,21 +6,23 @@ import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 import Forms from "./components/pages/Forms";
 import HomePage from "./components/pages/HomePage";
-import Nav from "./components/Nav";
-import Filters from "./components/pages/Filters";
 import SessionsPage from "./components/pages/SessionsPage";
+import NavMUI from "./components/NavMUI";
+import Filters from "./components/pages/Filters";
+import Exercises from "./components/pages/Exercises";
+import formatEnum from "./helpers/formatEnum";
 
 function App() {
     const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
 
     const [message, setMessage] = useState(null);
-    const [user, setUser] = useState(null);
     const [isFetching, setIsFetching] = useState(false);
-    const url = `${baseUrl}/api/auth/getUser`;
-    console.log(url);
+    const [user, setUser] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const fetchUserUrl = `${baseUrl}/api/auth/getUser`;
 
     const fetchUser = useCallback(async () => {
-        const response = await fetch(url, { credentials: "include" });
+        const response = await fetch(fetchUserUrl, { credentials: "include" });
         if (!response.ok) {
             throw new Error(`status ${response.status}`);
         }
@@ -28,17 +30,36 @@ function App() {
             const json = await response.json();
             setMessage(json.message);
             setUser(json.user);
+            setUserId(json.id);
             setIsFetching(false);
         } catch (e) {
             setMessage(`API call failed: ${e}`);
             setIsFetching(false);
         }
-    }, [url]);
+    }, [fetchUserUrl]);
+
+    let muscleGroupsArr = [];
+    let muscleGroupsForFiltersArr = [];
+    const [muscleGroups, setMuscleGroups] = useState([]);
+    const [muscleGroupsForFilters, setMuscleGroupsForFilters] = useState([]);
+    const fetchMuscleGroupsUrl = `${baseUrl}/api/enums`;
+
+    const fetchMuscleGroups = useCallback(async () => {
+        const data = await fetch(fetchMuscleGroupsUrl);
+        const json = await data.json();
+        muscleGroupsArr = formatEnum(json.muscleGroups);
+        muscleGroupsForFiltersArr = formatEnum(json.muscleGroups);
+        muscleGroupsForFiltersArr.unshift("All");
+
+        setMuscleGroups(muscleGroupsArr);
+        setMuscleGroupsForFilters(muscleGroupsForFiltersArr);
+    }, [fetchMuscleGroupsUrl]);
 
     useEffect(() => {
         setIsFetching(true);
         fetchUser();
-    }, [fetchUser]);
+        fetchMuscleGroups();
+    }, [fetchUser, fetchMuscleGroups]);
 
     const debugText = (
         <div>
@@ -59,9 +80,7 @@ function App() {
         <Router>
             <div className="App">
                 <header className="App-header">
-                    <Nav user={user} />
-                </header>
-                <body className="App-body">
+                    <NavMUI user={user} />
                     <Routes>
                         <Route
                             exact
@@ -70,24 +89,46 @@ function App() {
                         />
                         <Route
                             exact
+                            path="/sessions"
+                            element={<SessionsPage user={user} />}
+                        />
+                        <Route
+                            exact
                             path="/forms"
-                            element={<Forms user={user} />}
+                            element={
+                                <Forms
+                                    user={user}
+                                    userId={userId}
+                                    muscleGroups={muscleGroups}
+                                />
+                            }
+                        />
+                        <Route
+                            exact
+                            path="/exercises"
+                            element={
+                                <Exercises
+                                    user={user}
+                                    userId={userId}
+                                    muscleGroups={muscleGroups}
+                                />
+                            }
                         />
                         <Route
                             exact
                             path="/filters"
-                            element={<Filters user={user} />}
-                        />
-                        <Route
-                            exact
-                            path="/sessions"
-                            element={<SessionsPage user={user} />}
+                            element={
+                                <Filters
+                                    user={user}
+                                    muscleGroups={muscleGroupsForFilters}
+                                />
+                            }
                         />
                         <Route exact path="/register" element={<Register />} />
                         <Route exact path="/login" element={<Login />} />
                     </Routes>
                     {debugText}
-                </body>
+                </header>
             </div>
         </Router>
     );

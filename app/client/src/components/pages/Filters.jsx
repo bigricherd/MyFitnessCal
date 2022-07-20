@@ -1,28 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MuscleGroupFilter from '../forms/MuscleGroupFilter';
-import formatEnum from '../../helpers/formatEnum';
 
 function Filters(props) {
-    const [user, setUser] = useState(null);
-    let muscleGroupsArr = [];
-    const [muscleGroups, setMuscleGroups] = useState([]);
-
-    // Sets muscleGroups after fetching enum from DB.
-    // Adds "All" option for user to see an overview of volume for the given date range
-    const start = async () => {
-        const baseUrl = 'http://localhost:5000';
-        const data = await fetch(`${baseUrl}/api/enums`);
-        const json = await data.json();
-        muscleGroupsArr = formatEnum(json.muscleGroups);
-        muscleGroupsArr.unshift('All');
-        setMuscleGroups(muscleGroupsArr);
-    }
+    const [user, setUser] = useState(props.user);
+    const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
     // Update state every time props.user is updated
     useEffect(() => {
-        start();
         setUser(props.user);
+        setMuscleGroups(props.muscleGroups);
     }, [props])
 
     // If there is no logged in user, show the prompt with links to Login and Register pages

@@ -1,66 +1,124 @@
-import React, { useState } from 'react';
-import useForm from '../../hooks/useFilterForm';
-import NumSetsTable from '../tables/NumSetsTable';
-import Dropdown from '../Dropdown';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import useForm from "../../hooks/useFilterForm";
+import NumSetsTable from "../tables/NumSetsTable";
+import Dropdown from "../Dropdown";
+import {
+    FormControl,
+    TextField,
+    Box,
+    Stack,
+    Button,
+    Typography,
+} from "@mui/material";
+import Container from "@mui/material/Container";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 function MuscleGroupFilter(props) {
-    //const [tableData, setTableData] = useState([]);
-
     const [muscleGroups, setMuscleGroups] = useState([]);
+
     useEffect(() => {
         setMuscleGroups(props.muscleGroups);
     }, [props]);
 
-    const { values, handleChange, handleKeyDown, handleSubmit, error, data } = useForm({
-        initialValues: {
-            fromDate: '',
-            toDate: '',
-            muscleGroup: ''
-        },
-        slug: 'api/stats/setsPerMuscle'
-    });
+    const { values, handleChange, handleKeyDown, handleSubmit, error, data } =
+        useForm({
+            initialValues: {
+                fromDate: null,
+                toDate: null,
+                muscleGroup: "",
+            },
+            slug: "api/stats/setsPerMuscle",
+        });
 
-    // if (!user) {
-    //     return (
-    //         <div>
-    //             <p><Link to={'/register'} className="text-decoration-none">Register</Link> or <Link to={'/login'} className="text-decoration-none">Login</Link> first</p>
-    //         </div>
-    //     )
-    // } else
     return (
-        <div>
-            <div className="card-shadow mt-5 pt-5">
-                <div className="card-body d-flex flex-column align-items-center">
-                    <h5 className="card-title display-4 fw-bold my-2">View Total Sets per Muscle Group</h5>
-                    <form action="#" method="POST" onSubmit={handleSubmit} className="mb-3">
-                        <div className="mb-3 text-start">
-                            <label htmlFor="fromDate" name="fromDate" className='form-label'>From date:</label>
-                            <input type="text" className="form-control" placeholder="start date" id="fromDate" name="fromDate" value={values.fromDate} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                        </div>
-                        <div className="mb-3 text-start">
-                            <label htmlFor="toDate" name="toDate" className='form-label'>To date:</label>
-                            <input type="text" className="form-control" placeholder="end date" id="toDate" name="toDate" value={values.toDate} onChange={handleChange} onKeyDown={handleKeyDown} required />
-                        </div>
-
-
-                        <div className="mb-3 text-start">
-                            <label htmlFor="muscleGroup" className='form-label d-block'>Muscle Group</label>
-                            <Dropdown name={'muscleGroup'} id={'muscleGroup'} options={muscleGroups} value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
-                            <input type="text" className="form-control d-none" placeholder="" id="muscleGroup" name="muscleGroup" value={values.muscleGroup} onChange={handleChange} onKeyDown={handleKeyDown} />
-                        </div>
-
-                        <button className="btn btn-primary mb-3">Crunch the numbers</button>
-                    </form>
-                    {/* {error && <Error error={error.messages} />} */}
-                    {data && data.results && <NumSetsTable data={Object.entries(data.results)} type={'perMuscleGroup'} />}
-                    <hr></hr>
-                    {data && data.perExercise && <NumSetsTable data={Object.entries(data.perExercise)} type={'perExercise'} />}
-                </div>
-            </div>
-
-        </div>
-    )
+        <Container fixed>
+            <Typography variant="h4" gutterBottom component="div">
+                View Total Sets per Muscle Group
+            </Typography>
+            <Box component="form" autoComplete="on">
+                <Stack spacing={2}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <FormControl>
+                            <DatePicker
+                                views={["day"]}
+                                label="From Date"
+                                value={values.fromDate}
+                                onChange={(newValue) => {
+                                    let event = {
+                                        target: {
+                                            value: newValue,
+                                            name: "fromDate",
+                                        },
+                                    };
+                                    handleChange(event);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField {...params} />
+                                )}
+                                onKeyDown={handleKeyDown}
+                                required
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <DatePicker
+                                views={["day"]}
+                                label="To Date"
+                                value={values.toDate}
+                                onChange={(newValue) => {
+                                    let event = {
+                                        target: {
+                                            value: newValue,
+                                            name: "toDate",
+                                        },
+                                    };
+                                    handleChange(event);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField {...params} />
+                                )}
+                                onKeyDown={handleKeyDown}
+                                required
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <Dropdown
+                                name="muscleGroup"
+                                id="muscleGroup"
+                                options={muscleGroups}
+                                value={values.muscleGroup}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                            />
+                        </FormControl>
+                    </LocalizationProvider>
+                </Stack>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                >
+                    Crunch the numbers
+                </Button>
+                {/* {error && <Error error={error.messages} />} */}
+                {data && data.results && (
+                    <NumSetsTable
+                        data={Object.entries(data.results)}
+                        type={"perMuscleGroup"}
+                        className="mb-2"
+                    />
+                )}
+                {data && data.perExercise && (
+                    <NumSetsTable
+                        data={Object.entries(data.perExercise)}
+                        type={"perExercise"}
+                    />
+                )}
+            </Box>
+        </Container>
+    );
 }
 
 export default MuscleGroupFilter;

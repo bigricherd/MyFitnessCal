@@ -1,4 +1,15 @@
 import React from 'react';
+import {
+    Paper,
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    Typography
+} from '@mui/material';
+import formatEnum from '../../helpers/formatEnum';
 
 function NumSetsTable(props) {
 
@@ -8,67 +19,57 @@ function NumSetsTable(props) {
     let avgRepsHeading = null;
     let tableBody = null;
 
+    let title = <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
+        {(props.type === 'perMuscleGroup') ? '# Sets per Muscle Group' : 'Breakdown of Exercises'}
+    </Typography>
+
     if (props.type === 'perMuscleGroup') {
         heading = 'Muscle Group';
-        tableBody = <tbody>
+        tableBody = <TableBody>
             {props.data.map((item, i) => (
-                <tr key={i}>
-                    <td>{item[0]}</td>
-                    <td>{item[1]}</td>
-                </tr>
+                <TableRow key={i}>
+                    {/* FormatEnum here at item[0] */}
+                    <TableCell>{formatEnum([item[0]], ' ')}</TableCell>
+                    <TableCell>{item[1]}</TableCell>
+                </TableRow>
             ))}
-        </tbody>;
+        </TableBody>;
     } else if (props.type === 'perExercise') {
         heading = 'Exercise';
-        avgWeightHeading = <th className="px-3">Avg Weight</th>;
-        maxWeightHeading = <th className="px-3">Max Weight</th>;
-        avgRepsHeading = <th className="px-3">Avg Reps</th>;
+        avgWeightHeading = <TableCell className="px-3">Avg Weight</TableCell>;
+        maxWeightHeading = <TableCell className="px-3">Max Weight</TableCell>;
+        avgRepsHeading = <TableCell className="px-3">Avg Reps</TableCell>;
 
         console.log(props.data);
-        tableBody = <tbody>
+        tableBody = <TableBody>
             {props.data.map((item, i) => (
-                <tr key={i}>
-                    <td>{item[0]}</td>
-                    <td>{item[1].count}</td>
-                    <td>{item[1].avgWeight}</td>
-                    <td>{item[1].maxWeight}</td>
-                    <td>{item[1].avgReps}</td>
-                </tr>
+                <TableRow key={i}>
+                    {/* FormatEnum here at item[0] */}
+                    <TableCell>{formatEnum([item[0]], ' ')}</TableCell>
+                    <TableCell>{item[1].count}</TableCell>
+                    <TableCell>{item[1].avgWeight}</TableCell>
+                    <TableCell>{item[1].maxWeight}</TableCell>
+                    <TableCell>{item[1].avgReps}</TableCell>
+                </TableRow>
             ))}
-        </tbody>;
+        </TableBody>;
     }
     return (
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th className="px-3">{heading}</th>
-                        <th className="px-3"># Sets</th>
+        <TableContainer component={Paper} sx={{ mt: '1rem' }}>
+            {title}
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell className="px-3">{heading}</TableCell>
+                        <TableCell className="px-3"># Sets</TableCell>
                         {avgWeightHeading}
                         {maxWeightHeading}
                         {avgRepsHeading}
-                    </tr>
-                </thead>
+                    </TableRow>
+                </TableHead>
                 {tableBody}
-            </table>
-            {/* <table>
-                <thead>
-                    <tr>
-                        <th className="px-3">Exercise</th>
-                        <th className="px-3"># Sets</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {props.exerciseData.map((item, i) => {
-                        <tr key={i}>
-                            <td>{item[0]}</td>
-                            <td>{item[1]}</td>
-                        </tr>
-                    })}
-                </tbody>
-            </table> */}
-
-        </div>
+            </Table>
+        </TableContainer>
     )
 }
 

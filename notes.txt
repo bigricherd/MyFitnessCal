@@ -1,17 +1,135 @@
-WHAT'S NEW (JUNE 29)
-- organized setup.sql to be runnable in one go (hopefully, TODO: before you commit, try with postgres database)
+JULY 13 8:38PM - CHINO
+- added Register error handling:
+    - Username already taken (Postgres error (duplicate PK) with useful fields such as code and constraint)
+    - Username is empty (manually thrown)
+    - Password is empty (manually thrown)
+    - Password is too weak (manually thrown)
+    - note that we currently only have backend validation
+- [FRONTEND]  
+    - in Register.jsx
+        - Alert displayed with error message that is returned by useAuthForm hook
+        - added a message showing password requirements on hover of password field in Register
+    - in useAuthForm.js
+        - set error to be err.response.data.message (see backend errorController.js)
+- [BACKEND]
+    - added errorController.js to handle specific errors and respond with the appropriate feedback for the user
+    - configured server.js to use this
+    - in authRoutes.js 
+        - manual checks for:
+            - empty username
+            - empty password
+            - weak password
+
+JULY 10 9:54PM - TRICIA 
+- [FRONTEND]
+    - in MuscleGroupFilter: replaced bootstrap with MUI components 
+        - changed type of fromDate and toDate to null / Date to accommodate for MUI Date Picker values
+        - useFilterForm needs to convert these Date type toISOString before submitting values to allow for db date comparison 
+    - Set: same thing, replaced with MUI components 
+        - also has a Date Picker component so same thing 
+- in setup.sql 
+    - added PRIMARY KEY constraint to address error when trying to create the set1 table afterwards 
+    
+JULY 10 7:35PM - CHINO
+- Nav is now a responsive MUI AppBar
+    - Link is from react-router-dom, not MUI because MUI links make the app refresh
+        - user is logged out on refresh and this is probably an Express Session problem
+        - there is some Bootstrap like 'text-success' in the Logout button or 'text-decoration-none' to style the Links
+
+JULY 07 7:20PM - CHINO
+- in setup.sql
+    - added insertorder in Session data model
+    - added id in Set data model
+- Frontend
+    - reorganized page structure: added Exercises page
+        - new component ManageExercisesList.jsx, previously a part of AddExercise.jsx
+
+JULY 06 4:45PM - CHINO
+- moved data fetching of Exercises and muscleGroups to App.js
+    - passed as props to pages like Forms and Filters
+    - removed fetching muscleGroups from MuscleGroupFilter.jsx
+    - removed fetching Exercises and muscleGroups from Forms.jsx
+        - fetch exercisesByUser had to remain in Forms.jsx because it requires user, which is passed as props from App.js
+- in AddExercise.jsx
+    - sorry I know I put delete in AddExercise
+        - should we refactor -- break up Forms.jsx and separate Exercises from Sets and Sessions -- now or later?
+    - added list of exercisesByUser below the form
+        - with delete Buttons that send DELETE requests (see client/src/hooks/deleteExercise.js)
+        - delete works, but list does not re-render. see line 31 in AddExercise.jsx - FIX!
+- in setup.sql
+    - added cascading deletes:
+        - delete all Sets of an Exercise when the Exercise is deleted
+        - delete all Sets referencing some Session when that Session is deleted
+    
+
+
+JULY 05 6PM - CHINO
+- eliminating comments attribute from Set table
+    - in setRoutes.js: router.post('/add')
+     - removed comments field in INSERT query
+    - in AddSet.jsx
+        - removed comments input field
+    - in setup.sql
+        - removed from CREATE TABLE statement
+- updated setup.sql with new data models
+    - CREATE TABLE Session
+    - changed ordering of CREATEs
+- NOTE: Add Set will be broken until we implement Session
+    - see the TODO in setRoutes.js router.post('/add)
+    - will also have to fix frontend add session + add set
+
+
+JULY 05 5PM - CHINO
+- in AddExercise.jsx: 
+    - added state variable to track exercisesByUser (passed as props from Forms.jsx)
+        - to help development of 'DELETE FROM Exercise' frontend
+    - using react-scrollable-list (have to npm install) but not working, will troubleshoot
+- TODO: in app/utils/fetchEnums.js, in getExercisesArray()
+    - group exercises by muscle group
+    - working in server.js app.post('/api/enums/byCurrentUser'), but not in getExercisesArray()
+- TODO: move data fetching of enums from Forms.jsx to App.js, pass as props down the tree
+- there isn't much that's new and working, I am doing commit so I can move between machines oops
+
+JUNE 30 6PM - CHINO
+- added 'owner'' column to Exercises table, referencing User(id) (appUser(id) for now)
+    - added a button in AddSet to toggle the list of exercises the user can see:
+        - all exercises logged by all users ever, OR
+        - exercises logged by the currently logged in user
+        FRONTEND:
+            - required fetching user.id in App.js and passing this down to Forms.jsx
+            - required a new state variable in AddSet.jsx called 'exercisesByUser', in addition to 'exercises' (all exercises ever)
+        BACKEND:
+            - see app.get(/api/enums/byCurrentUser) in server.js
+            - may want to write a method for exercises logged by current user in app/utils/fetchEnums
+- moved add Exercise route out of server.js, into its own routes file 'exerciseRoutes.js'
+    - in preparation for Exercise UPDATE and DELETE implementation
+
+
+JUNE 29 PM - CHINO
+- added a dummy option in Dropdown.jsx "select an ..."
+    - fixes our problem of the dropdowns NOT auto-selecting the first element in the list
+    - instead if the user ignores the dropdown, they are prompted to select from the list
+- formatted avgWeight and avgReps (app/routes/statRoutes.js)
+    - avgWeight rounds to nearest integer; two decimals would be too messy imo
+    - avgReps rounds to one decimal place
+- changed AddSet.jsx onSubmit property from customHandleSubmit to handleSubmit
+    - such that form inputs are not cleared when form is submitted
+    - temporary measure, makes it easy to log duplicate sets
+    - maybe we'll make a "Log last set" or "anotha one" button with DJ Khaled's face on it?
+
+(JUNE 29) - CHINO
+- organized setup.sql to be runnable in one go
 - updated filter route (app/routes/statRoutes.js -- get('/setsPerMuscle)) a little bit
     - added documentation
     - added fetching average weight and reps, maximum weight for matching sets
         - display this extra data in src/components/tables/NumSetsTable.jsx
 - added TODO:s in src/components/forms/AddSet.jsx to represent decisions on clearing form fields on submit
-- 
 
-WHAT'S NEW (JUNE 28)
+WHAT'S NEW (JUNE 28) - CHINO
 - organized src/components directory in app/client into Pages, Forms, and Tables where applicable
 - abstracted fetching of Exercises and muscleGroups enums out of AddSet and AddExercise form components
     - instead fetched in src/components/pages/Forms.jsx and passed as props into the two forms
-    - Exercises Dropdown in AddSet does not update after AddExercise adds an exercise
+    - FIX:Exercises Dropdown in AddSet does not update after AddExercise adds an exercise
         - UNLESS we go to a different route like Filters, then come back to Forms
 - renamed authFormControl to useAuthForm (src/components/hooks/useAuthForm.js)
 - shows 'Register or Login' first if a user visits the Forms, Filters, or Home pages
@@ -31,7 +149,7 @@ WHAT'S NEW (JUNE 28)
     
 
 
-WHAT'S NEW (JUNE 27)
+WHAT'S NEW (JUNE 27) - CHINO
 - implemented logout (app/routes/authRoutes.js)
 - modified navbar to render different links depending on whether a user is logged in
     - simple hook in App.js to fetch the currently logged in user and display that data as debug text for now
@@ -39,7 +157,7 @@ WHAT'S NEW (JUNE 27)
     - we query the DB to ensure that the most recent row matches what the user entered
     - only send success message if row and user-entered data match
 
-WHAT'S NEW (JUNE 25)
+WHAT'S NEW (JUNE 25) - CHINO
 - implemented auth using passport.js. see:
     - Backend:
         - app/routes/authRoutes.js

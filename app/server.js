@@ -2,17 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
+const methodOverride = require("method-override");
 const {
     getExerciseMap,
     getExercisesArray,
     getMuscleGroups,
 } = require("./utils/fetchEnums");
 const { performQuery } = require("./utils/dbModule");
+const { isLoggedIn } = require("./utils/middleware");
 //const errorController = require('./utils/errorController');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride("_method"));
 
 // ---------- CORS SETUP ----------
 const homeUrl = process.env.HOMEPAGE_URL || "http://localhost:3000";
@@ -33,8 +36,8 @@ app.use(cors(corsConfig));
 const secret = process.env.SECRET || "alwaysHungry";
 const sessionConfig = {
     secret,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
@@ -50,7 +53,9 @@ const getEnums = async () => {
     map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    // console.log(map);
+    console.log("map");
+    console.log(map);
+
     // console.log(exercises);
     // console.log(muscleGroups);
 };
@@ -66,10 +71,14 @@ const setRoutes = require("./routes/setRoutes");
 const statRoutes = require("./routes/statRoutes");
 const sessionRoutes = require("./routes/sessionRoutes");
 const authRoutes = require("./routes/authRoutes");
+const exerciseRoutes = require("./routes/exerciseRoutes");
+const errorController = require("./utils/errorController");
 app.use("/api/sets", setRoutes);
 app.use("/api/stats", statRoutes);
-app.use("/api/sessions", sessionRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/exercises", exerciseRoutes);
+app.use(errorController);
 
 // --- DEBUGGING AUTH ---
 // app.use((req, res, next) => {
@@ -94,38 +103,20 @@ app.get("/api/enums", (req, res) => {
     res.send({ message: "enums requested", exercises, muscleGroups });
 });
 
-// ADD AN EXERCISE TO ENUMS -- TODO: move this elsewhere
-app.post("/api/exercises/add", async (req, res) => {
-    let { exercise, muscleGroup } = req.body;
-
-    // Format exercise and muscle group to store in database
-    exercise = exercise.toLowerCase();
-    exercise = exercise.split(" ").join("_");
-    muscleGroup = muscleGroup.toLowerCase();
-    muscleGroup = muscleGroup.split(" ").join("_");
-
-    if (muscleGroups.indexOf(muscleGroup) === -1) {
-        const error = `Error: ${muscleGroup} is not a valid muscle group.`;
-        console.log(error);
-        return res.send({ message: error });
+// This route is hit when the Forms page loads
+// Returns the list of exercises added by the currently logged in user
+app.post("/api/enums/byCurrentUser", isLoggedIn, async (req, res) => {
+    const { id } = req.body;
+    console.log(id);
+    const query = `SELECT muscleGroup, name FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
+    const data = await performQuery(query);
+    //console.log(data.rows);
+    const exercisesByUser = [];
+    for (let row of data.rows) {
+        exercisesByUser.push(row.name);
     }
-
-    const entry = `${exercise}:${muscleGroup}`;
-    const query = `ALTER TYPE exercise ADD VALUE '${entry}';
-                   ALTER TABLE set1 ALTER COLUMN exercise TYPE exercise;`;
-    await performQuery(query);
-
-    await getEnums(); // update local 'Exercises' array
-
-    // Verify that the last element of the local 'Exercises' array matches user entry
-    const response = { message: "" };
-    if (exercises[exercises.length - 1] === exercise) {
-        console.log("exercises matched");
-        response.message = `Successfully added exercise ${req.body.exercise}`;
-    } else {
-        response.message = "Exercise was not added";
-    }
-    return res.send(response);
+    ///res.send({ message: 'enums requested', exercisesByUser });
+    res.send({ exercisesByUser });
 });
 
 // ---------- ERROR HANDLING ----------
