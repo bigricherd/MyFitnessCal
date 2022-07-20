@@ -67,7 +67,7 @@ export default function useForm({ initialValues }) {
             })
         } catch (err) {
             console.log(err);
-            if (!prevError || (prevError !== error)) {
+            if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {
                 setPrevError(null);
