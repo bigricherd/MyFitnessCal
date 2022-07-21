@@ -28,7 +28,6 @@
 -- DROP TABLE SESSION;
 -- CREATE TABLE SESSION (
 --    id UUID PRIMARY KEY NOT NULL,
---    insertorder serial NOT NULL,
 --    title varchar(15) NOT NULL,
 --    startdatetime timestamptz NOT NULL,
 --    enddatetime timestamptz NOT NULL,
@@ -55,11 +54,11 @@
 --                    musclegroup MUSCLEGROUP NOT NULL,
 --                    owner UUID NOT NULL,
 --                    CONSTRAINT fk_owner
---                                    FOREIGN KEY(owner)
---                                   REFERENCES appUser(id)
---                                  session UUID NOT NULL,
---                                    CONSTRAINT fk_session
---                                    FOREIGN KEY(session)
+--                                   FOREIGN KEY(owner)
+--                                   REFERENCES appUser(id),
+--                    session UUID NOT NULL,
+--                     CONSTRAINT fk_session
+--                                   FOREIGN KEY(session)
 --                                   REFERENCES session(id)
 --                                   ON DELETE CASCADE
 -- );
