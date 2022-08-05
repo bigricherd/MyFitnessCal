@@ -29,6 +29,7 @@ function Dropdown(props) {
         dropdownLabel = "Exercise";
     }
 
+    // Add options from props to array
     for (let option of options) {
         optionsArr.push(
             <MenuItem value={option} key={option}>

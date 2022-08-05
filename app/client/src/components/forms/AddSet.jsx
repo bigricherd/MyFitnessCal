@@ -16,7 +16,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 function AddSet(props) {
-    const [exercises, setExercises] = useState(props.exercises); // TODO: update exercises when a new one is added by AddExercise
+    const [exercises, setExercises] = useState(props.exercises);
     const [exercisesByUser, setExercisesByUser] = useState(
         props.exercisesByUser
     );
@@ -51,14 +51,7 @@ function AddSet(props) {
             console.log(inputField);
         }
 
-        // TODO: START HERE FOR DUPLICATING LAST SET -- with a button like "anotha one" or something like that
-        // tempValues = {
-        //     reps: values.reps,
-        //     weight: values.weight,
-        //     date: values.date,
-        //     exercise: values.exercise,
-        // }
-
+        // --- We currently do not clear fields to make it easy to test logging multiple sets --- 
         // Clear values fields. Without this, input fields will clear on submit but revert to previous contents on next change
         // values.reps = '';
         // values.weight = '';
@@ -72,10 +65,15 @@ function AddSet(props) {
 
     return (
         <Container>
+
+            {/* Heading */}
             <Typography variant="h2" gutterBottom component="div">
                 Add Set
             </Typography>
+
             <Box component="form" autoComplete="on">
+
+                {/** Button that gives the user the option to view all exercises in the database or only the ones that they added*/}
                 <Button
                     type="button"
                     variant="contained"
@@ -87,7 +85,7 @@ function AddSet(props) {
                         : "Show my exercises"}
                 </Button>
 
-                {/** We give the user the option to view all exercises in the database or only the ones that they added*/}
+                {/* Exercise dropdown */}
                 {showByUserOnly ? (
                     <Dropdown
                         name="exercise"
@@ -108,19 +106,10 @@ function AddSet(props) {
                     />
                 )}
 
-                {/* see AddExercise.jsx line 74 for a note on this input */}
-                {/* <input
-                    type="text"
-                    className="form-control d-none"
-                    placeholder=""
-                    id="exercise"
-                    name="exercise"
-                    value={values.exercise}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}
-                    required
-                /> */}
+                {/* All other form fields except Exercise, which is above */}
                 <Stack spacing={2}>
+
+                    {/* Reps input */}
                     <FormControl>
                         <TextField
                             id="reps"
@@ -133,6 +122,8 @@ function AddSet(props) {
                             required
                         />
                     </FormControl>
+
+                    {/* Weight input */}
                     <FormControl>
                         <TextField
                             id="weight"
@@ -145,6 +136,8 @@ function AddSet(props) {
                             required
                         />
                     </FormControl>
+
+                    {/* Date input */}
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <FormControl>
                             <DatePicker
@@ -170,6 +163,8 @@ function AddSet(props) {
                         </FormControl>
                     </LocalizationProvider>
                 </Stack>
+
+                {/* Submit button */}
                 <Button
                     type="submit"
                     variant="contained"
@@ -178,6 +173,8 @@ function AddSet(props) {
                 >
                     Add Set
                 </Button>
+
+                {/* Feedback message -- success */}
                 {successMsg && <Alert severity="success">{successMsg}</Alert>}
             </Box>
         </Container>

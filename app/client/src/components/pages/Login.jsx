@@ -16,12 +16,15 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function Login() {
+
+    // State variable and handler that represents password visibility
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     }
 
+    // Login hook
     const { values, handleChange, handleKeyDown, handleSubmit, error, prevError } = useForm({
         initialValues: {
             username: '',
@@ -30,6 +33,7 @@ function Login() {
         slug: 'api/auth/login'
     });
 
+    // Setup to display feedback message -- error
     const [showError, setShowError] = useState(false);
 
     const handleCloseError = () => {
@@ -47,10 +51,16 @@ function Login() {
             alignItems="center"
             minHeight="100vh">
             <Container>
+
+                {/* Heading */}
                 <Typography variant="h3" gutterBottom>
                     Login
                 </Typography>
+
+                {/* Form fields */}
                 <Stack spacing={2} sx={{ mb: '1rem' }}>
+
+                    {/* Username input */}
                     <FormControl>
                         <FormLabel>Username</FormLabel>
                         <TextField
@@ -62,6 +72,7 @@ function Login() {
                         </TextField>
                     </FormControl>
 
+                    {/* Password input */}
                     <FormControl>
                         <FormLabel>Password</FormLabel>
                         <TextField
@@ -70,6 +81,8 @@ function Login() {
                             value={values.password}
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}
+
+                            // endAdornment represents show / hide password button
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">
                                     <IconButton
@@ -83,6 +96,8 @@ function Login() {
                         </TextField>
                     </FormControl>
                 </Stack>
+
+                {/* Submit button */}
                 <Button
                     onClick={handleSubmit}
                     type="submit"
@@ -91,6 +106,8 @@ function Login() {
                     sx={{ mb: '1rem' }}
                 > Login
                 </Button>
+
+                {/* Feedback message -- error */}
                 {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
             </Container>
         </Box>
