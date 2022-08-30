@@ -3,7 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const methodOverride = require('method-override');
-const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
+const { getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
 const { performQuery } = require('./utils/dbModule');
 const { isLoggedIn } = require('./utils/middleware');
 //const errorController = require('./utils/errorController');
@@ -41,18 +41,11 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 // ---------- SET LOCAL VARIABLES REPRESENTING ENUMS (exercise, muscleGroup) ----------
-let map = {};
 let exercises, muscleGroups = [];
 
 const getEnums = async () => {
-    map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    console.log('map');
-    console.log(map);
-
-    // console.log(exercises);
-    // console.log(muscleGroups);
 }
 getEnums();
 
@@ -101,12 +94,12 @@ app.get('/api/enums', (req, res) => {
 app.post('/api/enums/byCurrentUser', isLoggedIn, async (req, res) => {
     const { id } = req.body;
     console.log(id);
-    const query = `SELECT muscleGroup, name FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
+    const query = `SELECT nameandmusclegroup FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
     const data = await performQuery(query);
-    //console.log(data.rows);
+
     const exercisesByUser = [];
     for (let row of data.rows) {
-        exercisesByUser.push(row.name);
+        exercisesByUser.push(row.nameandmusclegroup);
     }
     ///res.send({ message: 'enums requested', exercisesByUser });
     res.send({ exercisesByUser });
