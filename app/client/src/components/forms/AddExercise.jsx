@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useForm from "../../hooks/useForm";
+import addExercise from "../../hooks/addExercise";
 import Dropdown from "../Dropdown";
 import {
     Typography,
@@ -11,7 +11,6 @@ import {
     Box,
     Alert
 } from "@mui/material";
-import formatEnum from "../../helpers/formatEnum";
 
 function AddExercise(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
@@ -26,12 +25,11 @@ function AddExercise(props) {
         exercisesPostAdd,
         error,
         prevError
-    } = useForm({
+    } = addExercise({
         initialValues: {
             exercise: "",
             muscleGroup: "",
-        },
-        slug: "api/exercises/add",
+        }
     });
 
     // Update state when props changes, i.e., when muscleGroups in Forms.jsx changes
@@ -43,7 +41,7 @@ function AddExercise(props) {
     useEffect(() => {
         if (exercisesPostAdd && exercisesPostAdd.length > 0) {
             console.log("going to lift state");
-            props.liftState(formatEnum(exercisesPostAdd));
+            props.liftState(exercisesPostAdd);
         }
     }, [exercisesPostAdd]);
 

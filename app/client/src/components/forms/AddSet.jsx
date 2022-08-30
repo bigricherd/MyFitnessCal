@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useForm from "../../hooks/useForm";
+import addSet from "../../hooks/addSet";
 import Dropdown from "../Dropdown";
 import {
     Typography,
@@ -29,15 +29,13 @@ function AddSet(props) {
     }, [props]);
 
     const { values, handleChange, handleKeyDown, handleSubmit, successMsg } =
-        useForm({
+        addSet({
             initialValues: {
                 reps: 0,
                 weight: 0,
                 date: null,
-                exercise: "",
-                muscleGroup: "",
-            },
-            slug: "api/sets/add",
+                exercise: ""
+            }
         });
 
     const customHandleSubmit = (e) => {
