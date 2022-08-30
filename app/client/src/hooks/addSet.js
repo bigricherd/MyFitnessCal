@@ -2,13 +2,12 @@ import { useState } from "react";
 import axios from "axios";
 
 // ------ Custom form control: submits AddSet and AddExercise forms and redirects to home if successful or login if unsuccessful ------
-export default function useForm({ initialValues, slug }) {
+export default function useForm({ initialValues }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
     const [prevError, setPrevError] = useState(null);
     const [successMsg, setSuccessMsg] = useState(null);
     const [prevSuccessMsg, setPrevSuccessMsg] = useState(null);
-    const [exercisesPostAdd, setExercisesPostAdd] = useState([]);
 
     //track form values
     const handleChange = (event) => {
@@ -46,13 +45,12 @@ export default function useForm({ initialValues, slug }) {
         try {
             await axios({
                 method: "POST",
-                url: `${baseUrl}/${slug}`,
+                url: `${baseUrl}/api/sets/add`,
                 data: {
                     reps,
                     weight,
                     date,
-                    exercise,
-                    muscleGroup,
+                    exercise
                 },
                 headers: new Headers({
                     "Content-Type": "application/json",
@@ -60,21 +58,13 @@ export default function useForm({ initialValues, slug }) {
                 }),
                 withCredentials: true,
             }).then((res) => {
-                console.log(res.data);
-                if (res.data.redirect === "/") {
-                    window.location = "/";
-                } else if (res.data.redirect === "/login") {
-                    window.location = "/login";
-                } else if (res.data.redirect === "/forms") {
-                    window.location = "/forms";
-                }
+
                 if (!prevSuccessMsg || (successMsg !== prevSuccessMsg)) {
                     setPrevSuccessMsg(successMsg);
                 } else {
                     setPrevSuccessMsg(null);
                 }
                 setSuccessMsg(res.data.message);
-                setExercisesPostAdd(res.data.exercises);
                 setError(null);
             });
         } catch (err) {
@@ -95,7 +85,6 @@ export default function useForm({ initialValues, slug }) {
         error,
         prevError,
         successMsg,
-        prevSuccessMsg,
-        exercisesPostAdd,
+        prevSuccessMsg
     };
 }
