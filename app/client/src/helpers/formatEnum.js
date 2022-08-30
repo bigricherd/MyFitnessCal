@@ -9,7 +9,6 @@ const formatEnum = (arr, delimiter = '_') => {
     // Sorry for using a nested loop
     for (let item of arr) {
         let tmp = item.split(delimiter);
-        console.log(tmp);
         for (let i = 0; i < tmp.length; i++) {
             if (tmp[i] === 'bb') tmp[i] = 'BB';
             else if (tmp[i] === 'db') tmp[i] = 'DB';
@@ -17,7 +16,6 @@ const formatEnum = (arr, delimiter = '_') => {
             else tmp[i] = tmp[i].charAt(0).toUpperCase() + tmp[i].slice(1);
         }
         newList.push(tmp.join(' '));
-        console.log(newList);
     }
     return newList;
 }
