@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AddExercise from '../forms/AddExercise';
 import ManageExercisesList from '../ManageExercisesList';
-import formatEnum from '../../helpers/formatEnum';
 import { Box, Grid } from '@mui/material';
 
 
@@ -32,7 +31,7 @@ function Exercises(props) {
             withCredentials: true
 
         });
-        exercisesByUserArr = formatEnum(userExercises.data.exercisesByUser);
+        exercisesByUserArr = userExercises.data.exercisesByUser;
         setExercisesByUser(exercisesByUserArr);
     }, [url])
 

@@ -4,11 +4,6 @@ import {
     Grid,
     Button,
     Box,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
     Alert,
     Typography,
     FormControl,
@@ -16,8 +11,9 @@ import {
     TextField
 } from '@mui/material';
 import Dropdown from './Dropdown';
-import useForm from '../hooks/useDeleteForm';
-import editExercise from '../hooks/editExercise';
+import deleteExercise from '../hooks/deleteExercise';
+import ConfirmDeleteDialog from './ConfirmDeleteDialog';
+//import editExercise from '../hooks/editExercise';
 
 function ManageExercisesList(props) {
 
@@ -47,7 +43,7 @@ function ManageExercisesList(props) {
     }
 
     // Delete form hook and handler
-    const { values, handleSubmit, error, prevError, successMsg, prevSuccessMsg, exercisesPostDelete } = useForm(
+    const { values, handleSubmit, error, prevError, successMsg, prevSuccessMsg, exercisesPostDelete } = deleteExercise(
         { exercise: '' }
     )
 
@@ -104,14 +100,14 @@ function ManageExercisesList(props) {
 
     // Function that lifts updated list of exercises to the parent component -- pages/Exercises.jsx
     const liftState = useCallback(() => {
-        props.liftState(formatEnum(exercisesPostDelete));
+        props.liftState(exercisesPostDelete);
     }, [exercisesPostDelete])
 
     // State variable that represents the list of exercises created by the current user
     const [list, setList] = useState(props.exercisesByUser.map((item, index) =>
         <Grid container key={index} className="manageExercisesListItem">
             <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
-                {item}
+                {(formatEnum([item.split(':')[0]]))}
             </Box>
 
             <Button fullWidth variant="contained" color='success' onClick={(e) => handleClickOpen(e, index)}>
@@ -123,11 +119,18 @@ function ManageExercisesList(props) {
     useEffect(() => {
         setList(props.exercisesByUser.map((item, index) =>
             <Grid container key={index} className="manageExercisesListItem" >
+
+                {/* Exercise name */}
                 <Box component={Grid} item xs={7} sm={8} bgcolor={'white'} color={'gray'}>
-                    {item}
+                    {(formatEnum([item.split(':')[0]]))}
                 </Box>
+
                 {/* <Button component={Grid} item xs={3} sm={2} fullWidth variant="contained" color='info' onClick={(e) => handleClickEdit(e, index)}>Edit</Button> */}
-                <Button component={Grid} item xs={2} variant="contained" onClick={(e) => handleClickOpen(e, index)}>X</Button>
+
+                {/* Delete button */}
+                <Button component={Grid} item xs={2} variant="contained" onClick={(e) => handleClickOpen(e, index)}>
+                    X
+                </Button>
             </Grid >
         ));
         // setMuscleGroups(props.muscleGroups);
@@ -161,21 +164,9 @@ function ManageExercisesList(props) {
         <Grid item xs={10} sm={8}>
 
             {/* Confirm delete dialog, which opens when a user clicks the 'X' button corresponding to some exercise */}
-            <Dialog
-                open={open}
-                onClose={handleClose}
-            >
-                <DialogTitle>Delete exercise {props.exercisesByUser[indexToDelete]}?</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        This cannot be undone.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Back</Button>
-                    <Button onClick={handleConfirmDelete} sx={{ color: 'red' }}>Delete</Button>
-                </DialogActions>
-            </Dialog>
+
+            <ConfirmDeleteDialog open={open} onClose={handleClose} name={props.exercisesByUser[indexToDelete]}
+                backOnClick={handleClose} deleteOnClick={handleConfirmDelete} />
 
             {/* Edit dialog */}
             {/* <Dialog
