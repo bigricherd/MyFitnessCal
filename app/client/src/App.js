@@ -4,7 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Register from './components/pages/Register';
 import Login from './components/pages/Login';
-import Forms from './components/pages/Forms';
+import Sets from './components/pages/Sets';
 import HomePage from './components/pages/HomePage';
 import NavMUI from './components/NavMUI';
 import Filters from './components/pages/Filters';
@@ -86,7 +86,7 @@ function App() {
           <NavMUI user={user} />
           <Routes>
             <Route exact path='/' element={<HomePage user={user} />} />
-            <Route exact path='/forms' element={<Forms user={user} userId={userId} muscleGroups={muscleGroups} />} />
+            <Route exact path='/sets' element={<Sets user={user} userId={userId} />} />
             <Route exact path='/exercises' element={<Exercises user={user} userId={userId} muscleGroups={muscleGroups} />} />
             <Route exact path='/filters' element={<Filters user={user} muscleGroups={muscleGroupsForFilters} />} />
             <Route exact path='/register' element={<Register />} />
