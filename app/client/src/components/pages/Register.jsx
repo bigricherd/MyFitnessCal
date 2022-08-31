@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import authHook from '../../hooks/registerLogin';
+import authHook from '../../hooks/auth';
 import {
     Box,
     Container,
