@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useForm from "../../hooks/useFilterForm";
+import volumeCounter from "../../hooks/volumeCounter";
 import NumSetsTable from "../tables/NumSetsTable";
 import Dropdown from "../Dropdown";
 import {
@@ -24,7 +24,7 @@ function MuscleGroupFilter(props) {
 
     // Filter hook
     const { values, handleChange, handleKeyDown, handleSubmit, error, data } =
-        useForm({
+        volumeCounter({
             initialValues: {
                 fromDate: null,
                 toDate: null,

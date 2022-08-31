@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import useForm from '../../hooks/useAuthForm';
+import authHook from '../../hooks/auth';
 import {
     Box,
     Container,
@@ -25,7 +25,7 @@ function Login() {
     }
 
     // Login hook
-    const { values, handleChange, handleKeyDown, handleSubmit, error, prevError } = useForm({
+    const { values, handleChange, handleKeyDown, handleSubmit, error, prevError } = authHook({
         initialValues: {
             username: '',
             password: '',
