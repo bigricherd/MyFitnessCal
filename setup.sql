@@ -40,7 +40,7 @@
 
 -- select * from session
 
--- DROP TABLE set1;
+-- DROP TABLE set;
 --  CREATE TABLE IF NOT EXISTS SET (
 --                    id UUID NOT NULL,
 --                    reps INT NOT NULL,
@@ -86,29 +86,6 @@
 --                                      FOREIGN KEY(session)
 --                                      REFERENCES session(id)
 --                                      ON DELETE CASCADE
--- );
-
--- For testing sets alone, while Sets + Sessions integration is pending
---  CREATE TABLE IF NOT EXISTS SET (
---                    id UUID NOT NULL,
---                    reps INT NOT NULL,
---                    weight INT NOT NULL,
---                    date DATE NOT NULL,
---                    exercise varchar(45) NOT NULL,
---                                   CONSTRAINT fk_exercise
---                                      FOREIGN KEY(exercise)
---                                      REFERENCES exercises(nameandmusclegroup)
---                                      ON DELETE CASCADE,
---                    musclegroup MUSCLEGROUP NOT NULL,
---                    owner UUID NOT NULL,
---                    CONSTRAINT fk_owner
---                                   FOREIGN KEY(owner)
---                                   REFERENCES appUser(id),
---                    session UUID NOT NULL,
---                     CONSTRAINT fk_session
---                                   FOREIGN KEY(session)
---                                   REFERENCES session(id)
---                                   ON DELETE CASCADE
 -- );
 
 -- SELECT * FROM set

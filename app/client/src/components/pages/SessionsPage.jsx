@@ -23,7 +23,7 @@ function SessionsPage(props) {
     const fetchExercises = useCallback(async () => {
         const data = await fetch(`${baseUrl}/api/enums`);
         const json = await data.json();
-        exercisesArr = formatEnum(json.exercises);
+        exercisesArr = json.exercises;
         setExercises(exercisesArr);
         console.log(exercisesArr);
     }, []);
@@ -42,7 +42,7 @@ function SessionsPage(props) {
                 withCredentials: true
 
             });
-            exercisesByUserArr = formatEnum(userExercises.data.exercisesByUser);
+            exercisesByUserArr = userExercises.data.exercisesByUser;
             setExercisesByUser(exercisesByUserArr);
             console.log(exercisesByUserArr);
         }
@@ -84,7 +84,7 @@ function SessionsPage(props) {
         setUser(props.user);
         setUserId(props.userId);
         fetchExercises();
-        fetchExercisesByUser(userId);
+        fetchExercisesByUser(props.userId);
     }, [props]);
 
     useEffect(() => {

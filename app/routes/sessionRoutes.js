@@ -2,35 +2,29 @@ const express = require("express");
 const router = express.Router();
 const { performQuery } = require("../utils/dbModule");
 const {
-    getExerciseMap,
     getExercisesArray,
     getMuscleGroups,
 } = require("../utils/fetchEnums");
 const { v4: uuid } = require("uuid");
 const { isLoggedIn } = require("../utils/middleware");
 
+let exercises, muscleGroups = [];
+
 const getEnums = async () => {
-    map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
 };
 
 const addSet = async (sessionId, userId, set, date) => {
-    const { reps, weight } = set;
-    let { exercise } = set;
+    const { reps, weight, exercise } = set;
     const id = uuid();
 
-    // Format exercise data to work with the database
-    exercise = exercise.toLowerCase(); // because enum is all in lower case
-    exercise = exercise.split(' ').join('_'); // because enums don't have whitespaces, only underscores. We do the opposite (replace _ with whitespace) in the Client -- see client/src/helpers/formatEnum.js.
+    const muscleGroup = exercise.split(":")[1];
 
-    const muscleGroup = map.get(exercise);
-    exercise = `${exercise}:${muscleGroup}`; // more formatting
-
-    const query = `INSERT INTO set1(id, reps, weight, date, exercise, musclegroup, owner, session) VALUES ('${id}', ${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${userId}', '${sessionId}')`;
+    const query = `INSERT INTO set(id, reps, weight, date, exercise, musclegroup, owner, session) VALUES ('${id}', ${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${userId}', '${sessionId}')`;
     console.log(query);
     await performQuery(query);
-    const sets = await performQuery('SELECT * FROM set1');
+    const sets = await performQuery('SELECT * FROM set');
     console.log(sets.rows);
 
 }
@@ -45,7 +39,6 @@ const addManySets = (sessionId, userId, sets, date) => {
 router.post("/add", isLoggedIn, async (req, res) => {
     await getEnums(); // we need these for creating sets
     const { title, date, startdatetime, enddatetime, comments = "", sets = [] } = req.body;
-    console.log(date);
     const userId = req.user.id;
 
     // no need to format timestamps since postgres will do it for you
@@ -112,7 +105,7 @@ router.get("/", async (req, res) => {
     const session = all.rows[0];
     console.log(session);
 
-    const getSets = `SELECT id, reps, weight, exercise from set1 WHERE session = '${id}' ORDER BY exercise`;
+    const getSets = `SELECT id, reps, weight, exercise from set WHERE session = '${id}' ORDER BY exercise`;
     const sets = await performQuery(getSets);
     console.log(sets.rows);
 
@@ -157,10 +150,10 @@ router.delete("/", isLoggedIn, async (req, res) => {
 router.delete("/set", isLoggedIn, async (req, res) => {
     const { setId, sessionId } = req.body;
 
-    const query = `DELETE from set1 WHERE id = '${setId}'`;
+    const query = `DELETE from set WHERE id = '${setId}'`;
     await performQuery(query);
 
-    const all = await performQuery(`SELECT count(id) from set1 WHERE session = '${sessionId}'`);
+    const all = await performQuery(`SELECT count(id) from set WHERE session = '${sessionId}'`);
     res.send({ count: all.rows[0].count });
 })
 
@@ -171,7 +164,7 @@ router.post("/addSets", isLoggedIn, async (req, res) => {
 
     addManySets(sessionId, userId, sets, date);
 
-    const c = await performQuery(`SELECT count(id) FROM set1 WHERE session = '${sessionId}'`);
+    const c = await performQuery(`SELECT count(id) FROM set WHERE session = '${sessionId}'`);
 
     res.send({ numSets: c.rows[0].count });
 })
