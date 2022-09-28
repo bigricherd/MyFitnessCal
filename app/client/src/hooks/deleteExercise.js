@@ -41,11 +41,6 @@ export default function useForm({ initialValues }) {
         const dataObject = formValues.values;
         let { exercise } = dataObject;
 
-        // Format to match db strings
-        // exercise = exercise.toLowerCase();
-        // exercise = exercise.toString();
-        // exercise = exercise.split(' ').join('_');
-
         try {
             await axios({
                 method: 'DELETE',
@@ -54,8 +49,6 @@ export default function useForm({ initialValues }) {
                 withCredentials: true
 
             }).then(res => {
-                console.log(res.data);
-                // const exercisesFormatted = formatEnum(res.data.exercises);
                 setExercisesPostDelete(res.data.exercises);
                 if (!prevSuccessMsg || (prevSuccessMsg !== successMsg)) {
                     setPrevSuccessMsg(successMsg);

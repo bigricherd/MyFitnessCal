@@ -83,6 +83,6 @@ export default function useForm({ initialValues }) {
         prevError,
         successMsg,
         prevSuccessMsg,
-        exercisesPostAdd,
+        exercisesPostAdd
     };
 }

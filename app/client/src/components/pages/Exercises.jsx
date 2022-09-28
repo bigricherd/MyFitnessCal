@@ -33,7 +33,7 @@ function Exercises(props) {
         });
         exercisesByUserArr = userExercises.data.exercisesByUser;
         setExercisesByUser(exercisesByUserArr);
-    }, [url])
+    }, [url]);
 
     // Update user information, muscle groups list, and exercisesByUser when props changes
     useEffect(() => {
@@ -41,7 +41,7 @@ function Exercises(props) {
         setUserId(props.userId);
         setMuscleGroups(props.muscleGroups);
         fetchExercisesByUser();
-    }, [props, fetchExercisesByUser])
+    }, [props, fetchExercisesByUser]);
 
 
     // If there is no logged in user, show the prompt with links to Login and Register pages

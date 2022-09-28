@@ -76,24 +76,31 @@ router.delete('/', isLoggedIn, async (req, res) => {
     const { nameandmusclegroup } = req.query;
     const name = nameandmusclegroup.split(':')[0];
 
+    const response = { message: '' };
 
-    const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${nameandmusclegroup}'`;
-    await performQuery(query);
-    const msg = `Successfully deleted exercise ${name.toLowerCase().split('_').map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' ')}`;
-
-    let exercisesPostDelete = [];
     try {
+        const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${nameandmusclegroup}'`;
+        await performQuery(query);
+        const msg = `Successfully deleted exercise ${name.toLowerCase().split('_').map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' ')}`;
+
+        response.message = msg;
+        await getEnums();
+
         const postDelete = await performQuery(`SELECT nameandmusclegroup FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
 
         await getEnums();
 
+        let exercisesPostDelete = [];
         for (let row of postDelete.rows) {
             exercisesPostDelete.push(row.nameandmusclegroup);
         }
+
+        response.exercises = exercisesPostDelete;
     } catch (err) {
         return next(err);
     }
-    return res.send({ exercises: exercisesPostDelete, message: msg });
+
+    return res.send(response);
 })
 
 module.exports = router;

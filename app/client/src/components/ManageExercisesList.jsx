@@ -98,11 +98,6 @@ function ManageExercisesList(props) {
 
     // ------ LIST OF EXERCISES ------
 
-    // Function that lifts updated list of exercises to the parent component -- pages/Exercises.jsx
-    const liftState = useCallback(() => {
-        props.liftState(exercisesPostDelete);
-    }, [exercisesPostDelete])
-
     // State variable that represents the list of exercises created by the current user
     const [list, setList] = useState(props.exercisesByUser.map((item, index) =>
         <Grid container key={index} className="manageExercisesListItem">
@@ -137,9 +132,8 @@ function ManageExercisesList(props) {
     }, [props]); // React complains that onDeleteClick is a missing dependency, but adding it results in "maximum update depth exceeded"
 
     useEffect(() => {
-        console.log(exercisesPostDelete);
-        liftState();
-    }, [exercisesPostDelete, liftState]);
+        props.liftState(exercisesPostDelete);
+    }, [exercisesPostDelete]);
 
 
     // ----- FEEDBACK MESSAGES ------
