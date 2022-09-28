@@ -1,3 +1,37 @@
+AUGUST 30 7pm - CHINO
+- (!! IMPORTANT !!) - rerun setup.sql
+    - renamed table set1 to set
+    - wrote a separate CREATE TABLE command to test Sets while we await Sets + Sessions integration
+- renamed auth (now 'auth') and filter (now 'volumeCounter') hooks
+    - also updated imports in Register, Login, and MuscleGroupFilter components
+
+AUGUST 29 ~11:30pm - CHINO
+- (**BIG CHANGE**) refactored API to send all exercises and exercisesByUser to frontend as 'name:musclegroup' instead of 'name' like it was before
+    - eliminated the Map (exercise:muscleGroup) that we were using to store the list of Exercises
+    - solves the problem of having two different Exercises with the same name, but different muscle group
+    [BACKEND]
+    - in fetchEnums.js: getExercisesArray and in server.js: app.post('/api/enums/byCurrentUser'):
+        - changed query from SELECT 'name, musclegroup' to SELECT 'nameandmusclegroup,' the PK of the Exercises table
+    - updated various route handlers to reflect this change
+        - in setRoutes.js: .post('/add)
+        - in exerciseRoutes.js: .post('/add'), .delete('/')
+        - in statRoutes.js: .get('/setsPerMuscle')
+    [FRONTEND]
+    - updated components to reflect this change; formatEnum is now called when the exercise is being rendered, not on the data from the server response
+        - ManageExercisesList.jsx
+        - Exercises.jsx
+        - Sets.jsx
+        - Dropdown.jsx
+- renamed deleteExercise, addExercise and addSet hooks
+    - addExercise and addSet were separated into their own files
+    - I learned that hook filenames need not start with 'use' but the hook itself, i.e., the exported function, must.
+- renamed 'Forms' page to 'Sets'
+    - removed button group to toggle between addSet and addExercise
+- in authRoutes.js:
+    - temporarily removed password strength requirement for easier testing
+- moved ConfirmDeleteDialog out of ManageExercisesList.jsx into its own component
+    
+
 JULY 13 8:38PM - CHINO
 - added Register error handling:
     - Username already taken (Postgres error (duplicate PK) with useful fields such as code and constraint)
@@ -24,7 +58,7 @@ JULY 10 9:54PM - TRICIA
 - [FRONTEND]
     - in MuscleGroupFilter: replaced bootstrap with MUI components 
         - changed type of fromDate and toDate to null / Date to accommodate for MUI Date Picker values
-        - useFilterForm needs to convert these Date type toISOString before submitting values to allow for db date comparison 
+        - useFilterForm (now volumeCounter.js) needs to convert these Date type toISOString before submitting values to allow for db date comparison 
     - Set: same thing, replaced with MUI components 
         - also has a Date Picker component so same thing 
 - in setup.sql 

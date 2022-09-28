@@ -4,7 +4,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
-import Forms from "./components/pages/Forms";
+import Sets from "./components/pages/Sets";
 import HomePage from "./components/pages/HomePage";
 import SessionsPage from "./components/pages/SessionsPage";
 import NavMUI from "./components/NavMUI";
@@ -99,9 +99,9 @@ function App() {
                         />
                         <Route
                             exact
-                            path="/forms"
+                            path="/sets"
                             element={
-                                <Forms
+                                <Sets
                                     user={user}
                                     userId={userId}
                                     muscleGroups={muscleGroups}

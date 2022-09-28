@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import useForm from "../../hooks/useForm";
+import addExercise from "../../hooks/addExercise";
 import Dropdown from "../Dropdown";
 import {
+    Typography,
     Button,
     FormLabel,
     FormControl,
@@ -10,7 +11,6 @@ import {
     Box,
     Alert
 } from "@mui/material";
-import formatEnum from "../../helpers/formatEnum";
 
 function AddExercise(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
@@ -25,15 +25,14 @@ function AddExercise(props) {
         exercisesPostAdd,
         error,
         prevError
-    } = useForm({
+    } = addExercise({
         initialValues: {
             exercise: "",
             muscleGroup: "",
-        },
-        slug: "api/exercises/add",
+        }
     });
 
-    // Update state every time props changes, i.e., when muscleGroups in Forms.jsx changes
+    // Update state when props changes, i.e., when muscleGroups in Forms.jsx changes
     useEffect(() => {
         setMuscleGroups(props.muscleGroups);
     }, [props]);
@@ -42,10 +41,11 @@ function AddExercise(props) {
     useEffect(() => {
         if (exercisesPostAdd && exercisesPostAdd.length > 0) {
             console.log("going to lift state");
-            props.liftState(formatEnum(exercisesPostAdd));
+            props.liftState(exercisesPostAdd);
         }
     }, [exercisesPostAdd]);
 
+    // Add exercise handler
     const customHandleSubmit = (e) => {
         handleSubmit(e);
 
@@ -61,7 +61,7 @@ function AddExercise(props) {
         values.exercise = "";
     };
 
-    // User feedback -- success and error
+    // Setup to show feedback messages -- success
     const [showSuccessMsg, setShowSuccessMsg] = useState(false);
 
     const handleCloseSuccessMsg = () => {
@@ -72,6 +72,7 @@ function AddExercise(props) {
         if (successMsg) setShowSuccessMsg(true);
     }, [successMsg, prevSuccessMsg]);
 
+    // Setup to show feedback messages -- error
     const [showError, setShowError] = useState(false);
 
     const handleCloseError = () => {
@@ -85,7 +86,13 @@ function AddExercise(props) {
     return (
         <Grid item xs={10} sm={8}>
             <Box onSubmit={customHandleSubmit} component="form" noValidate>
-                <h1>Add Exercise</h1>
+
+                {/* Heading */}
+                <Typography variant="h3" gutterBottom>
+                    Add Exercise
+                </Typography>
+
+                {/* Exercise name input */}
                 <FormControl required fullWidth>
                     <FormLabel>Name</FormLabel>
                     <TextField
@@ -97,8 +104,8 @@ function AddExercise(props) {
                     ></TextField>
                 </FormControl>
 
+                {/* Muscle group dropdown */}
                 <FormControl required fullWidth>
-                    {/* <FormLabel>Muscle Group</FormLabel> */}
                     <Dropdown
                         name="muscleGroup"
                         id="muscleGroup"
@@ -109,6 +116,7 @@ function AddExercise(props) {
                     />
                 </FormControl>
 
+                {/* Submit button */}
                 <Button className="mb-3"
                     onClick={customHandleSubmit}
                     type="submit"
@@ -117,6 +125,8 @@ function AddExercise(props) {
                 > Add exercise
                 </Button>
             </Box>
+
+            {/* Feedback messages */}
             {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg}>{successMsg}</Alert>}
             {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
         </Grid>

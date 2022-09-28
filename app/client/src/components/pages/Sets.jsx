@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AddSet from '../forms/AddSet';
-import AddExercise from '../forms/AddExercise';
-import formatEnum from '../../helpers/formatEnum';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-// ------ A forms page with a button group to select which form to view: AddSet or AddExercise ------
-function Forms(props) {
-
-    const [showAddSet, setShowAddSet] = useState(true);
+// ------ A page to test the AddSet form, which will be integrated into the Add Session form (and possibly also when viewing an existing Session) ------
+function Sets(props) {
 
     const [user, setUser] = useState(props.user);
     const [userId, setUserId] = useState(props.userId);
-    const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
     // Fetching exercises by logged in user could not be done in App.js because user begins as undefined
     // Instead we do it here where user can be passed in as props
@@ -32,30 +27,28 @@ function Forms(props) {
             withCredentials: true
 
         });
-        exercisesByUserArr = formatEnum(userExercises.data.exercisesByUser);
+        exercisesByUserArr = userExercises.data.exercisesByUser;
         setExercisesByUser(exercisesByUserArr);
     }, [url])
 
+    // --- FETCH EXERCISES ---
     const exercisesUrl = `${baseUrl}/api/enums`;
     let exercisesArr = [];
     const [exercises, setExercises] = useState([]);
+
     const fetchExercises = useCallback(async () => {
         const data = await fetch(exercisesUrl);
         const json = await data.json();
-        exercisesArr = formatEnum(json.exercises);
+        exercisesArr = json.exercises;
         setExercises(exercisesArr);
     }, [exercisesUrl]);
 
     useEffect(() => {
         setUser(props.user);
         setUserId(props.userId);
-        setMuscleGroups(props.muscleGroups);
         fetchExercisesByUser();
         fetchExercises();
     }, [props, fetchExercisesByUser, fetchExercises])
-
-    const addSet = <AddSet exercises={exercises} exercisesByUser={exercisesByUser} />;
-    const addExercise = "Put whatever here";
 
     // If there is no logged in user, show the prompt with links to Login and Register pages
     if (!user) {
@@ -68,18 +61,8 @@ function Forms(props) {
 
     // Show the user the AddSet or AddExercise form, depending on which button they select
     else return (
-        <div className="mt-5 pt-5">
-            <div className="btn-group mb-3" role="group" aria-label="Toggle between two components">
-                <input type="radio" className="btn-check" name="btnradio" id="pending" checked={showAddSet} onChange={() => setShowAddSet(true)}></input>
-                <label className="btn btn-outline-light" htmlFor="pending">Add Set</label>
-
-                <input type="radio" className="btn-check" name="btnradio" id="completed" checked={!showAddSet} onChange={() => setShowAddSet(false)}></input>
-                <label className="btn btn-outline-light" htmlFor="completed">Add Exercise</label>
-            </div>
-
-            {showAddSet ? addSet : addExercise}
-        </div>
+        <AddSet exercises={exercises} exercisesByUser={exercisesByUser} />
     )
 }
 
-export default Forms;
+export default Sets;

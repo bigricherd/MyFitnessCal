@@ -1,25 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { performQuery } = require('../utils/dbModule');
-const { getExerciseMap, getExercisesArray, getMuscleGroups } = require('../utils/fetchEnums');
+const { getExercisesArray, getMuscleGroups } = require('../utils/fetchEnums');
 const { isLoggedIn } = require('../utils/middleware');
 
-let map = {};
 let exercises, muscleGroups = [];
 
 const getEnums = async () => {
-    map = await getExerciseMap();
     exercises = await getExercisesArray();
     muscleGroups = await getMuscleGroups();
-    // console.log(map);
-    // console.log(exercises);
-    // console.log(muscleGroups);
 }
 getEnums();
-
-router.get('/viewData', (req, res) => {
-    res.send(`${map}`);
-})
 
 // Get total number of sets performed for given date range across all muscle groups
 // TODO: We'll probably need to refactor this handler, it's long as hell lmao
@@ -36,7 +27,7 @@ router.get("/setsPerMuscle", isLoggedIn, async (req, res) => {
 
     if (muscleGroup === 'all') {
         for (let muscleGroup of muscleGroups) {
-            const query = `SELECT COUNT(*) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
+            const query = `SELECT COUNT(*) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
             const data = await performQuery(query);
             const count = data.rows[0].count;
             muscleGroup = muscleGroup.split('_').join(' ');
@@ -46,49 +37,39 @@ router.get("/setsPerMuscle", isLoggedIn, async (req, res) => {
         return res.send({ results: numSets });
     } else {
         //TODO: verify that the user entered a valid muscle group
-        const mgQuery = `SELECT COUNT(*) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
+        const mgQuery = `SELECT COUNT(*) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
         console.log(mgQuery);
         const mgData = await performQuery(mgQuery);
         const mgCount = mgData.rows[0].count;
         muscleGroup = muscleGroup.split('_').join(' ');
         numSets[muscleGroup] = mgCount;
-        console.log(numSets);
 
         await getEnums();
 
         // Get all exercises for the given muscle group
-        const filteredMap = new Map(
-            Array.from(map).filter(([key, value]) => {
-                if (value === muscleGroup.split(' ').join('_')) {
-                    return true;
-                }
-                return false;
-            })
-        )
+        const getExercisesQuery = `SELECT nameandmusclegroup FROM Exercises WHERE muscleGroup = '${muscleGroup}'`;
+        const exercises = await performQuery(getExercisesQuery);
 
-        console.log(filteredMap);
-        const exerciseList = Array.from(filteredMap.keys());
+        const exerciseList = [];
+        for (let exercise of exercises.rows) {
+            exerciseList.push(exercise.nameandmusclegroup);
+        }
+
         for (let exercise of exerciseList) {
-            // Use exerciseTmp to mutate exercise to match string format in database 
-            let exerciseTmp = exercise.toLowerCase(); // because enum is all in lower case
-            exerciseTmp = exerciseTmp.split(' ').join('_'); // and separated by underscores, not spaces
-            const muscleGroup = map.get(exerciseTmp);
-            exerciseTmp = `${exerciseTmp}:${muscleGroup}`;
 
-            const query = `SELECT count(*), AVG(weight), MAX(weight) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exerciseTmp}') AND owner = '${req.user.id}'`;
+            const query = `SELECT count(*), AVG(weight), MAX(weight) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exercise}') AND owner = '${req.user.id}'`;
             const data = await performQuery(query);
-            //console.log(data.rows);
             const count = data.rows[0].count;
             const avgWeight = parseInt(data.rows[0].avg); // Round to integer
-            //const avgWeight = parseFloat(data.rows[0].avg).toFixed(1);
             const maxWeight = data.rows[0].max;
 
-            const avgRepsQuery = `SELECT AVG(reps) FROM set1 WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exerciseTmp}') AND owner = '${req.user.id}'`;
+            const avgRepsQuery = `SELECT AVG(reps) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${exercise}') AND owner = '${req.user.id}'`;
             const avgRepsData = await performQuery(avgRepsQuery);
             const avgReps = parseFloat(avgRepsData.rows[0].avg).toFixed(1);
 
             // Only include an exercise if user did at least one set of it
             if (count > 0) {
+                exercise = exercise.split(':')[0];
                 exercise = exercise.split('_').join(' ');
                 numSetsPerE[exercise] = { count, avgWeight, maxWeight, avgReps };
             }
@@ -108,9 +89,9 @@ router.get('/setsPerExercise', isLoggedIn, async (req, res) => {
 
     exercise = exercise.toLowerCase();
     exercise = exercise.split(' ').join('_');
-    let exerciseF = `${exercise}:${map.get(exercise)}`;
+    // TODO: send exercise as "name:musclegroup" from frontend; the route handler expects it to come in this formar
 
-    const query = `SELECT COUNT(*) FROM set1 WHERE ((date >= ${fromDate} AND date <= ${toDate}) AND exercise='${exerciseF}') AND owner = '${req.user.id}'`;
+    const query = `SELECT COUNT(*) FROM set1 WHERE ((date >= ${fromDate} AND date <= ${toDate}) AND exercise='${exercise}') AND owner = '${req.user.id}'`;
     const data = await performQuery(query);
     const count = data.rows[0].count;
 

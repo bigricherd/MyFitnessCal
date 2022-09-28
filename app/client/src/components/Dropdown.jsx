@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Select, MenuItem, InputLabel, Box, Container, TextField } from "@mui/material";
+import formatEnum from '../helpers/formatEnum';
 
 // Returns a <select> element to be used in a form as a dropdown
 // Used in AddExercise, MuscleGroupFilter to show muscleGroups
@@ -29,10 +30,11 @@ function Dropdown(props) {
         dropdownLabel = "Exercise";
     }
 
+    // Add options from props to array
     for (let option of options) {
         optionsArr.push(
             <MenuItem value={option} key={option}>
-                {option}
+                {formatEnum([option.split(':')[0]])}
             </MenuItem>
         );
     }

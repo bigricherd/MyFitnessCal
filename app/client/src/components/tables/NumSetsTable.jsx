@@ -19,17 +19,22 @@ function NumSetsTable(props) {
     let avgRepsHeading = null;
     let tableBody = null;
 
+    // Set title depending on type of data -- total sets per muscle group OR breakdown of exercises for that muscle group
     let title = <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
         {(props.type === 'perMuscleGroup') ? '# Sets per Muscle Group' : 'Breakdown of Exercises'}
     </Typography>
 
+    // Set table content depending on type of data
     if (props.type === 'perMuscleGroup') {
         heading = 'Muscle Group';
         tableBody = <TableBody>
             {props.data.map((item, i) => (
                 <TableRow key={i}>
-                    {/* FormatEnum here at item[0] */}
+
+                    {/* item[0] is the muscle group */}
                     <TableCell>{formatEnum([item[0]], ' ')}</TableCell>
+
+                    {/* item[1] is the number of sets performed for that muscle group */}
                     <TableCell>{item[1]}</TableCell>
                 </TableRow>
             ))}
@@ -44,8 +49,11 @@ function NumSetsTable(props) {
         tableBody = <TableBody>
             {props.data.map((item, i) => (
                 <TableRow key={i}>
-                    {/* FormatEnum here at item[0] */}
+
+                    {/* item[0] is the exercise name */}
                     <TableCell>{formatEnum([item[0]], ' ')}</TableCell>
+
+                    {/* item[1] is an object that contains the statistics for that exercise */}
                     <TableCell>{item[1].count}</TableCell>
                     <TableCell>{item[1].avgWeight}</TableCell>
                     <TableCell>{item[1].maxWeight}</TableCell>

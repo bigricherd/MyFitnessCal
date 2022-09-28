@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useForm from "../../hooks/useFilterForm";
+import volumeCounter from "../../hooks/volumeCounter";
 import NumSetsTable from "../tables/NumSetsTable";
 import Dropdown from "../Dropdown";
 import {
@@ -22,8 +22,9 @@ function MuscleGroupFilter(props) {
         setMuscleGroups(props.muscleGroups);
     }, [props]);
 
+    // Filter hook
     const { values, handleChange, handleKeyDown, handleSubmit, error, data } =
-        useForm({
+        volumeCounter({
             initialValues: {
                 fromDate: null,
                 toDate: null,
@@ -34,12 +35,19 @@ function MuscleGroupFilter(props) {
 
     return (
         <Container fixed>
+
+            {/* Heading */}
             <Typography variant="h4" gutterBottom component="div">
                 View Total Sets per Muscle Group
             </Typography>
+
             <Box component="form" autoComplete="on">
+
+                {/* Form inputs */}
                 <Stack spacing={2}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                        {/* From date input */}
                         <FormControl>
                             <DatePicker
                                 views={["day"]}
@@ -61,6 +69,8 @@ function MuscleGroupFilter(props) {
                                 required
                             />
                         </FormControl>
+
+                        {/* To date input */}
                         <FormControl>
                             <DatePicker
                                 views={["day"]}
@@ -82,6 +92,8 @@ function MuscleGroupFilter(props) {
                                 required
                             />
                         </FormControl>
+
+                        {/* Muscle group input */}
                         <FormControl>
                             <Dropdown
                                 name="muscleGroup"
@@ -94,6 +106,8 @@ function MuscleGroupFilter(props) {
                         </FormControl>
                     </LocalizationProvider>
                 </Stack>
+
+                {/* Submit button */}
                 <Button
                     type="submit"
                     variant="contained"
@@ -102,7 +116,10 @@ function MuscleGroupFilter(props) {
                 >
                     Crunch the numbers
                 </Button>
+
                 {/* {error && <Error error={error.messages} />} */}
+
+                {/* Show number of sets for selected muscle group */}
                 {data && data.results && (
                     <NumSetsTable
                         data={Object.entries(data.results)}
@@ -110,6 +127,8 @@ function MuscleGroupFilter(props) {
                         className="mb-2"
                     />
                 )}
+
+                {/* Show per-exercise breakdown of sets, as well as statistics for each exercise */}
                 {data && data.perExercise && (
                     <NumSetsTable
                         data={Object.entries(data.perExercise)}
