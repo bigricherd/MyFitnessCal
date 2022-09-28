@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select, MenuItem, InputLabel, Box, Container } from "@mui/material";
+import { Select, MenuItem, InputLabel, Box, Container, TextField } from "@mui/material";
 
 // Returns a <select> element to be used in a form as a dropdown
 // Used in AddExercise, MuscleGroupFilter to show muscleGroups
@@ -43,21 +43,20 @@ function Dropdown(props) {
 
     return (
         <>
-            <InputLabel id="dropdown-label">{dropdownLabel}</InputLabel>
-            <Select
+            {/* <InputLabel id="dropdown-label">{dropdownLabel}</InputLabel> */}
+            <TextField select
                 rules={{ required: true }}
                 name={props.name}
-                labelId="dropdown-label"
                 id={props.id}
                 value={props.value}
                 label={dropdownLabel}
                 onChange={props.onChange}
                 onKeyDown={props.onKeyDown}
-                sx={{ display: "block" }}
+                // sx={{ display: "block" }}
                 required
             >
                 {optionsArr}
-            </Select>
+            </TextField>
         </>
     );
 }

@@ -15,10 +15,10 @@ router.post('/register', async (req, res, next) => {
 
     // Password requirements: at least 6 characters, one digit, one lowercase letter, one uppercase letter, one symbol
     // This might be overkill, we can maybe remove the symbol requirement.
-    const regex = /(?=^.{6,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-    console.log('regex test result follows');
-    console.log(regex.test(password));
-    if (regex.test(password) === false) return next(new Error('Password is not strong enough'));
+    // const regex = /(?=^.{6,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    // console.log('regex test result follows');
+    // console.log(regex.test(password));
+    // if (regex.test(password) === false) return next(new Error('Password is not strong enough'));
 
     let newId = uuid();
     try {
