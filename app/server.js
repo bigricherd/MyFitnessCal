@@ -11,33 +11,33 @@ const { isLoggedIn } = require('./utils/middleware');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 
 // ---------- CORS SETUP ----------
-const homeUrl = process.env.HOMEPAGE_URL || 'http://localhost:3000';
-const whitelist = [homeUrl, 'http://localhost:3000', 'http://localhost:5000'];
+const homeUrl = process.env.HOMEPAGE_URL || "http://localhost:3000";
+const whitelist = [homeUrl, "http://localhost:3000", "http://localhost:5000"];
 const corsConfig = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
         } else {
-            callback(new Error('Not allowed by CORS'));
+            callback(new Error("Not allowed by CORS"));
         }
     },
-    credentials: true
-}
+    credentials: true,
+};
 app.use(cors(corsConfig));
 
 // ---------- SESSION SETUP ----------
-const secret = process.env.SECRET || 'alwaysHungry';
+const secret = process.env.SECRET || "alwaysHungry";
 const sessionConfig = {
     secret,
     resave: true,
     saveUninitialized: true,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 // 1 day
-    }
-}
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+};
 app.use(session(sessionConfig));
 
 // ---------- SET LOCAL VARIABLES REPRESENTING ENUMS (exercise, muscleGroup) ----------
@@ -50,23 +50,25 @@ const getEnums = async () => {
 getEnums();
 
 // ---------- PASSPORT CONFIG ----------
-require('./utils/passportLocal');
+require("./utils/passportLocal");
 app.use(passport.initialize());
 app.use(passport.session());
 
 // ---------- ROUTES ----------
-const setRoutes = require('./routes/setRoutes');
-const statRoutes = require('./routes/statRoutes');
-const authRoutes = require('./routes/authRoutes');
-const exerciseRoutes = require('./routes/exerciseRoutes');
-const errorController = require('./utils/errorController');
-app.use('/api/sets', setRoutes);
-app.use('/api/stats', statRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/exercises', exerciseRoutes);
+const setRoutes = require("./routes/setRoutes");
+const statRoutes = require("./routes/statRoutes");
+const sessionRoutes = require("./routes/sessionRoutes");
+const authRoutes = require("./routes/authRoutes");
+const exerciseRoutes = require("./routes/exerciseRoutes");
+const errorController = require("./utils/errorController");
+app.use("/api/sets", setRoutes);
+app.use("/api/stats", statRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/exercises", exerciseRoutes);
 app.use(errorController);
 
-// --- DEBUGGING AUTH --- 
+// --- DEBUGGING AUTH ---
 // app.use((req, res, next) => {
 //     console.log('req.session is currently:');
 //     console.log(req.session);
@@ -84,14 +86,14 @@ app.use(errorController);
 //     res.send(req.user);
 // })
 
-app.get('/api/enums', (req, res) => {
+app.get("/api/enums", (req, res) => {
     getEnums();
-    res.send({ message: 'enums requested', exercises, muscleGroups })
-})
+    res.send({ message: "enums requested", exercises, muscleGroups });
+});
 
 // This route is hit when the Forms page loads
 // Returns the list of exercises added by the currently logged in user
-app.post('/api/enums/byCurrentUser', isLoggedIn, async (req, res) => {
+app.post("/api/enums/byCurrentUser", isLoggedIn, async (req, res) => {
     const { id } = req.body;
     console.log(id);
     const query = `SELECT nameandmusclegroup FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
@@ -103,21 +105,22 @@ app.post('/api/enums/byCurrentUser', isLoggedIn, async (req, res) => {
     }
     ///res.send({ message: 'enums requested', exercisesByUser });
     res.send({ exercisesByUser });
-})
+});
 
 // ---------- ERROR HANDLING ----------
 //app.use(errorController);
 // catch-all error handler
 app.use((err, req, res, next) => {
     if (!err.statusCode) err.statusCode = 500;
-    if (!err.message) err.message = 'Something went wrong';
-    console.log('you hit the catch-all error middleware');
+    if (!err.message) err.message = "Something went wrong";
+    console.log("you hit the catch-all error middleware");
     console.log(err.statusCode, err.message);
     console.log(err.name);
     return res.status(err.statusCode).send({ messages: err.message });
-})
-
+});
 
 // ---------- LISTEN ----------
 const port = process.env.PORT || 5000;
-app.listen(port, (req, res) => { console.log(`Listening on port ${port} `) });
+app.listen(port, (req, res) => {
+    console.log(`Listening on port ${port} `);
+});

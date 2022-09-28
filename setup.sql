@@ -28,7 +28,6 @@
 -- DROP TABLE SESSION;
 -- CREATE TABLE SESSION (
 --    id UUID PRIMARY KEY NOT NULL,
---    insertorder serial NOT NULL,
 --    title varchar(15) NOT NULL,
 --    startdatetime timestamptz NOT NULL,
 --    enddatetime timestamptz NOT NULL,
@@ -78,10 +77,38 @@
 --                                      ON DELETE CASCADE,
 --                    musclegroup MUSCLEGROUP NOT NULL,
 --                    owner UUID NOT NULL,
---                                   CONSTRAINT fk_owner
+--                                  CONSTRAINT fk_owner
 --                                      FOREIGN KEY(owner)
 --                                      REFERENCES appUser(id)
+--                                      ON DELETE CASCADE,
+--                    session UUID NOT NULL,
+--                                  CONSTRAINT fk_session
+--                                      FOREIGN KEY(session)
+--                                      REFERENCES session(id)
 --                                      ON DELETE CASCADE
+-- );
+
+-- For testing sets alone, while Sets + Sessions integration is pending
+--  CREATE TABLE IF NOT EXISTS SET (
+--                    id UUID NOT NULL,
+--                    reps INT NOT NULL,
+--                    weight INT NOT NULL,
+--                    date DATE NOT NULL,
+--                    exercise varchar(45) NOT NULL,
+--                                   CONSTRAINT fk_exercise
+--                                      FOREIGN KEY(exercise)
+--                                      REFERENCES exercises(nameandmusclegroup)
+--                                      ON DELETE CASCADE,
+--                    musclegroup MUSCLEGROUP NOT NULL,
+--                    owner UUID NOT NULL,
+--                    CONSTRAINT fk_owner
+--                                   FOREIGN KEY(owner)
+--                                   REFERENCES appUser(id),
+--                    session UUID NOT NULL,
+--                     CONSTRAINT fk_session
+--                                   FOREIGN KEY(session)
+--                                   REFERENCES session(id)
+--                                   ON DELETE CASCADE
 -- );
 
 -- SELECT * FROM set
