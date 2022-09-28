@@ -1,34 +1,42 @@
 import React from "react";
 import Kalend, { CalendarView } from "kalend";
 import "kalend/dist/styles/index.css";
+import SessionPopup from "../popups/SessionPopup";
 
 function DefaultCalendarView(props) {
+    console.log('calendar render');
     const [calEvents, setCalEvents] = React.useState([]);
     const [dbEvents, setDbEvents] = React.useState([]);
+    const [popupOpen, setPopupOpen] = React.useState(false);
+    const [sessionId, setSessionId] = React.useState(null);
 
     React.useEffect(() => {
         setCalEvents(props.calEvents);
         setDbEvents(props.dbEvents);
     }, [props]);
 
+    // setRefresh in SessionsPage to be value
+    const liftState = (value) => {
+        props.liftState(value);
+    }
+
+
     const onEventClick = (data) => {
         console.log("event click");
+        console.log(data);
         let currentDbEvent = dbEvents.find((dbEvent) => {
             return dbEvent.id === data.id;
         });
-        alert(
-            "You have clicked event with: id: " +
-                data.id +
-                ", and title: " +
-                data.summary +
-                ", between " +
-                data.startAt +
-                " and " +
-                data.endAt +
-                " with comments: " +
-                currentDbEvent.comments
-        );
+        console.log(currentDbEvent); // coming out undefined
+
+        setSessionId(data.id);
+        setPopupOpen(true);
     };
+
+    const handlePopupClose = () => {
+        setSessionId(null);
+        setPopupOpen(false);
+    }
 
     const onNewEventClick = (data) => {
         // console.log(data.event);
@@ -60,13 +68,21 @@ function DefaultCalendarView(props) {
                 width: "80vw",
             }}
         >
+            <SessionPopup
+                id={sessionId}
+                idSetter={setSessionId}
+                open={popupOpen}
+                openSetter={setPopupOpen}
+                onClose={handlePopupClose}
+                liftState={liftState}
+                exercises={props.exercises} />
             <Kalend
                 onEventClick={onEventClick}
                 onNewEventClick={onNewEventClick}
                 events={calEvents}
                 initialDate={new Date().toISOString()}
                 hourHeight={60}
-                initialView={CalendarView.WEEK}
+                initialView={CalendarView.MONTH}
                 onPageChange={onPageChange}
                 timeFormat={"24"}
                 weekDayStart={"Monday"}

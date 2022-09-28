@@ -90,7 +90,12 @@ function App() {
                         <Route
                             exact
                             path="/sessions"
-                            element={<SessionsPage user={user} />}
+                            element={
+                                <SessionsPage
+                                    user={user}
+                                    userId={userId}
+                                />
+                            }
                         />
                         <Route
                             exact
