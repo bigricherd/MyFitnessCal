@@ -6,9 +6,9 @@ import {
     DialogContentText,
     DialogActions,
 } from '@mui/material';
-import formatEnum from '../helpers/formatEnum';
+import formatEnum from '../../helpers/formatEnum';
 
-function ConfirmDeleteDialog(props) {
+function DeleteExercisePopup(props) {
     return (
         <Dialog
             open={props.open}
@@ -28,4 +28,4 @@ function ConfirmDeleteDialog(props) {
     )
 }
 
-export default ConfirmDeleteDialog;
+export default DeleteExercisePopup;

@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Dropdown from './Dropdown';
 import deleteExercise from '../hooks/deleteExercise';
-import ConfirmDeleteDialog from './ConfirmDeleteDialog';
+import DeleteExercisePopup from './popups/DeleteExercisePopup';
 //import editExercise from '../hooks/editExercise';
 
 function ManageExercisesList(props) {
@@ -159,7 +159,7 @@ function ManageExercisesList(props) {
 
             {/* Confirm delete dialog, which opens when a user clicks the 'X' button corresponding to some exercise */}
 
-            <ConfirmDeleteDialog open={open} onClose={handleClose} name={props.exercisesByUser[indexToDelete]}
+            <DeleteExercisePopup open={open} onClose={handleClose} name={props.exercisesByUser[indexToDelete]}
                 backOnClick={handleClose} deleteOnClick={handleConfirmDelete} />
 
             {/* Edit dialog */}
