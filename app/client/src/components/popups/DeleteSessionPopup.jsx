@@ -17,7 +17,7 @@ function DeleteSessionPopup(props) {
                     This cannot be undone.
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.handleClose}>Back</Button>
+                    <Button onClick={props.onClose}>Back</Button>
                     <Button
                         onClick={props.handleDelete}
                         variant="contained"

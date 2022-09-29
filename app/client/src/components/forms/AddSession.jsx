@@ -188,7 +188,6 @@ function AddSession(props) {
                                 value={values.comments}
                                 onChange={handleChange}
                                 onKeyDown={handleKeyDown}
-                                required
                             >
                             </TextField>
                         </FormControl>

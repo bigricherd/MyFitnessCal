@@ -10,11 +10,8 @@ import {
 import addSetsToSession from '../../hooks/addSetsToSession';
 import { useEffect } from 'react';
 import SetRow from '../forms/SetRow';
+import { formatDateHyphens } from '../../helpers/formatDate';
 
-const formatDate = (date) => {
-    const pieces = date.split("/");
-    return pieces[2] + "-" + pieces[0] + "-" + pieces[1];
-}
 
 function AddSetsToSessionPopup(props) {
 
@@ -49,7 +46,7 @@ function AddSetsToSessionPopup(props) {
         setValues({
             sets: sets,
             sessionId: props.session ? props.session.id : null,
-            date: props.session ? formatDate(props.session.date) : null
+            date: props.session ? formatDateHyphens(props.session.date) : null
         });
         setSets([]);
     }
@@ -58,7 +55,7 @@ function AddSetsToSessionPopup(props) {
         initialValues: {
             sets,
             sessionId: props.session ? props.session.id : null,
-            date: props.session ? formatDate(props.session.date) : null
+            date: props.session ? formatDateHyphens(props.session.date) : null
         }
     });
 
