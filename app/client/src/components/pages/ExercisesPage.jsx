@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AddExercise from '../forms/AddExercise';
-import ManageExercisesList from '../ManageExercisesList';
+import MyExercises from '../MyExercises';
 import { Box, Grid } from '@mui/material';
 
 
-function Exercises(props) {
+function ExercisesPage(props) {
 
     const [user, setUser] = useState(props.user);
     const [userId, setUserId] = useState(props.userId);
@@ -66,10 +66,10 @@ function Exercises(props) {
 
             {/* Manage exercises list where a user can delete exercises; offset columns on both sides */}
             <Grid item xs={1} sm={3} md={6} lg={8}></Grid>
-            <ManageExercisesList exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />
+            <MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />
             <Grid item xs={1} sm={3} md={6} lg={8}></Grid>
         </Grid >
     )
 }
 
-export default Exercises;
+export default ExercisesPage;

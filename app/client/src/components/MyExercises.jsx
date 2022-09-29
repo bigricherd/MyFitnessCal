@@ -15,7 +15,7 @@ import deleteExercise from '../hooks/deleteExercise';
 import DeleteExercisePopup from './popups/DeleteExercisePopup';
 //import editExercise from '../hooks/editExercise';
 
-function ManageExercisesList(props) {
+function MyExercises(props) {
 
     // ------ DELETE EXERCISE ------
 
@@ -100,7 +100,7 @@ function ManageExercisesList(props) {
 
     // State variable that represents the list of exercises created by the current user
     const [list, setList] = useState(props.exercisesByUser.map((item, index) =>
-        <Grid container key={index} className="manageExercisesListItem">
+        <Grid container key={index} className="myExercisesItem">
             <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
                 {(formatEnum([item.split(':')[0]]))}
             </Box>
@@ -113,10 +113,10 @@ function ManageExercisesList(props) {
 
     useEffect(() => {
         setList(props.exercisesByUser.map((item, index) =>
-            <Grid container key={index} className="manageExercisesListItem" >
+            <Grid container key={index} className="myExercisesItem" >
 
                 {/* Exercise name */}
-                <Box component={Grid} item xs={7} sm={8} bgcolor={'white'} color={'gray'}>
+                <Box component={Grid} item xs={10} bgcolor={'white'} color={'gray'}>
                     {(formatEnum([item.split(':')[0]]))}
                 </Box>
 
@@ -206,10 +206,10 @@ function ManageExercisesList(props) {
 
             {/* List of exercises (main component content) */}
             <Typography variant="h3" gutterBottom>
-                Manage Exercises
+                My Exercises
             </Typography>
 
-            <div className="manageExercisesList">
+            <div className="myExercises">
                 {list}
             </div>
 
@@ -220,4 +220,4 @@ function ManageExercisesList(props) {
     )
 }
 
-export default ManageExercisesList;
+export default MyExercises;

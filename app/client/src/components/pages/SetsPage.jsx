@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 // ------ A page to test the AddSet form, which will be integrated into the Add Session form (and possibly also when viewing an existing Session) ------
-function Sets(props) {
+function SetsPage(props) {
 
     const [user, setUser] = useState(props.user);
     const [userId, setUserId] = useState(props.userId);
@@ -58,11 +58,9 @@ function Sets(props) {
             </div>
         )
     }
-
-    // Show the user the AddSet or AddExercise form, depending on which button they select
     else return (
         <AddSet exercises={exercises} exercisesByUser={exercisesByUser} />
     )
 }
 
-export default Sets;
+export default SetsPage;

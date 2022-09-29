@@ -15,7 +15,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-function MuscleGroupFilter(props) {
+function VolumeCounter(props) {
     const [muscleGroups, setMuscleGroups] = useState([]);
 
     useEffect(() => {
@@ -140,4 +140,4 @@ function MuscleGroupFilter(props) {
     );
 }
 
-export default MuscleGroupFilter;
+export default VolumeCounter;

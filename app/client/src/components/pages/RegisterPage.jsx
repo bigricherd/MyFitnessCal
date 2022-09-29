@@ -17,7 +17,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
-function Register() {
+function RegisterPage() {
 
     // State variable and handler that represents password visibility
     const [showPassword, setShowPassword] = useState(false);
@@ -132,4 +132,4 @@ function Register() {
     )
 }
 
-export default Register;
+export default RegisterPage;

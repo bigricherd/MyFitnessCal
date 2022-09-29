@@ -2,14 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Register from "./components/pages/Register";
-import Login from "./components/pages/Login";
-import Sets from "./components/pages/Sets";
+import RegisterPage from "./components/pages/RegisterPage";
+import LoginPage from "./components/pages/LoginPage";
+import SetsPage from "./components/pages/SetsPage";
 import HomePage from "./components/pages/HomePage";
 import SessionsPage from "./components/pages/SessionsPage";
-import NavMUI from "./components/NavMUI";
-import Filters from "./components/pages/Filters";
-import Exercises from "./components/pages/Exercises";
+import Nav from "./components/Nav";
+import AnalyticsPage from "./components/pages/AnalyticsPage";
+import ExercisesPage from "./components/pages/ExercisesPage";
 import formatEnum from "./helpers/formatEnum";
 
 function App() {
@@ -39,20 +39,20 @@ function App() {
     }, [fetchUserUrl]);
 
     let muscleGroupsArr = [];
-    let muscleGroupsForFiltersArr = [];
+    let muscleGroupsForAnalyticsArr = [];
     const [muscleGroups, setMuscleGroups] = useState([]);
-    const [muscleGroupsForFilters, setMuscleGroupsForFilters] = useState([]);
+    const [muscleGroupsForAnalytics, setMuscleGroupsForAnalytics] = useState([]);
     const fetchMuscleGroupsUrl = `${baseUrl}/api/enums`;
 
     const fetchMuscleGroups = useCallback(async () => {
         const data = await fetch(fetchMuscleGroupsUrl);
         const json = await data.json();
         muscleGroupsArr = formatEnum(json.muscleGroups);
-        muscleGroupsForFiltersArr = formatEnum(json.muscleGroups);
-        muscleGroupsForFiltersArr.unshift("All");
+        muscleGroupsForAnalyticsArr = formatEnum(json.muscleGroups);
+        muscleGroupsForAnalyticsArr.unshift("All");
 
         setMuscleGroups(muscleGroupsArr);
-        setMuscleGroupsForFilters(muscleGroupsForFiltersArr);
+        setMuscleGroupsForAnalytics(muscleGroupsForAnalyticsArr);
     }, [fetchMuscleGroupsUrl]);
 
     useEffect(() => {
@@ -80,7 +80,7 @@ function App() {
         <Router>
             <div className="App">
                 <header className="App-header">
-                    <NavMUI user={user} />
+                    <Nav user={user} />
                     <Routes>
                         <Route
                             exact
@@ -99,20 +99,9 @@ function App() {
                         />
                         <Route
                             exact
-                            path="/sets"
-                            element={
-                                <Sets
-                                    user={user}
-                                    userId={userId}
-                                    muscleGroups={muscleGroups}
-                                />
-                            }
-                        />
-                        <Route
-                            exact
                             path="/exercises"
                             element={
-                                <Exercises
+                                <ExercisesPage
                                     user={user}
                                     userId={userId}
                                     muscleGroups={muscleGroups}
@@ -121,18 +110,29 @@ function App() {
                         />
                         <Route
                             exact
-                            path="/filters"
+                            path="/analytics"
                             element={
-                                <Filters
+                                <AnalyticsPage
                                     user={user}
-                                    muscleGroups={muscleGroupsForFilters}
+                                    muscleGroups={muscleGroupsForAnalytics}
                                 />
                             }
                         />
-                        <Route exact path="/register" element={<Register />} />
-                        <Route exact path="/login" element={<Login />} />
+                        <Route
+                            exact
+                            path="/sets"
+                            element={
+                                <SetsPage
+                                    user={user}
+                                    userId={userId}
+                                    muscleGroups={muscleGroups}
+                                />
+                            }
+                        />
+                        <Route exact path="/register" element={<RegisterPage />} />
+                        <Route exact path="/login" element={<LoginPage />} />
                     </Routes>
-                    {debugText}
+                    {/* {debugText} */}
                 </header>
             </div>
         </Router>

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-function Login() {
+function LoginPage() {
 
     // State variable and handler that represents password visibility
     const [showPassword, setShowPassword] = useState(false);
@@ -114,4 +114,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default LoginPage;

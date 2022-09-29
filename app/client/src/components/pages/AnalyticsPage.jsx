@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import MuscleGroupFilter from '../forms/MuscleGroupFilter';
+import VolumeCounter from '../forms/VolumeCounter';
 
-function Filters(props) {
+function AnalyticsPage(props) {
     const [user, setUser] = useState(props.user);
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
@@ -24,9 +24,9 @@ function Filters(props) {
     // Show the user a form to assess their volume (# of sets performed) for some date range, filtered by muscle group 
     else return (
         <div>
-            <MuscleGroupFilter muscleGroups={muscleGroups} />
+            <VolumeCounter muscleGroups={muscleGroups} />
         </div>
     )
 }
 
-export default Filters;
+export default AnalyticsPage;
