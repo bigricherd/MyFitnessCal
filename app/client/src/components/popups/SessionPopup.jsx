@@ -24,6 +24,9 @@ function SessionPopup(props) {
     // Add sets
     const [numSets, setNumSets] = useState(null);
 
+    //Edit session
+    const [edited, setEdited] = useState(null);
+
     const handleOpen = (e) => {
         setOpen(true);
         setIdToDelete(props.id);
@@ -67,9 +70,13 @@ function SessionPopup(props) {
         getSessionInfo();
     }, [props, numSets]);
 
+    useEffect(() => {
+        props.liftNumEdits(edited);
+    }, [edited]);
+
     // Propagate numSessions to CalendarView, which will lift it to SessionsPage, incuding a re-fetch of sessions and re-render of events on the CalendarView
     useEffect(() => {
-        props.liftState(numSessions);
+        props.liftNumSessions(numSessions);
     }, [numSessions])
 
     return (
@@ -82,7 +89,7 @@ function SessionPopup(props) {
                 {/* Session information */}
                 <DialogContent>
                     {/* Populate the dialog with session data */}
-                    {data && <SessionData session={data.session} sets={data.sets} liftState={setNumSets} exercises={props.exercises} />}
+                    {data && <SessionData session={data.session} sets={data.sets} liftNumSets={setNumSets} liftEdited={setEdited} exercises={props.exercises} />}
                 </DialogContent>
 
                 <DialogActions>

@@ -16,6 +16,9 @@ import {
 import formatEnum from '../helpers/formatEnum';
 import CollapsibleTable from "./tables/CollapsibleTable";
 import AddSetsToSessionPopup from './popups/AddSetsToSessionPopup';
+import EditSessionPopup from './popups/EditSessionPopup';
+import { formatDateSlashes } from "../helpers/formatDate";
+import formatTime from '../helpers/formatTime';
 
 function SessionData(props) {
     console.log('SessionData render');
@@ -24,61 +27,32 @@ function SessionData(props) {
     // Add sets popup
     const [showAddSetsPopup, setShowAddSetsPopup] = useState(false);
 
-    const convertTime = (t) => {
-        const date = new Date(t);
-        let ap = 'AM';
-        let hours = date.getHours();
-
-        if (hours >= 12) ap = 'PM';
-        if (hours !== 12) {
-            hours = (hours % 12).toString();
-        }
-        let minutes = date.getMinutes().toString();
-        if (minutes < 10) minutes = "0" + minutes;
-
-        return hours + ":" + minutes + " " + ap;
-
-    }
-
-    const getDate = (t) => {
-        const date = new Date(t);
-
-        let month = date.getMonth() + 1;
-        if (month < 10) month = "0" + month;
-
-        let day = date.getDate();
-        if (day < 10) day = "0" + day;
-
-        const year = date.getFullYear();
-
-        return month + "/" + day + "/" + year;
-    }
-
     const [session, setSession] = useState({
         id: props.session.id,
         title: props.session.title,
-        date: getDate(props.session.start),
-        start: convertTime(props.session.start),
-        end: convertTime(props.session.end),
+        date: new Date(props.session.start),
+        start: new Date(props.session.start),
+        end: new Date(props.session.end),
+        comments: props.comments,
         sets: props.sets
     });
     const [exercises, setExercises] = useState(Object.keys(props.sets));
+
+    // Edit Session popup
+    const [showEditSessionPopup, setShowEditSessionPopup] = useState(false);
 
     useEffect(() => {
         setSession({
             id: props.session.id,
             title: props.session.title,
-            date: getDate(props.session.start),
-            start: convertTime(props.session.start),
-            end: convertTime(props.session.end),
+            date: new Date(props.session.start),
+            start: new Date(props.session.start),
+            end: new Date(props.session.end),
+            comments: props.session.comments,
             sets: props.sets
         });
         setExercises(Object.keys(props.sets));
-    }, [props])
-
-    const liftState = (value) => {
-        props.liftState(value);
-    }
+    }, [props]);
 
     return (
         <>
@@ -93,20 +67,29 @@ function SessionData(props) {
 
                 <Grid item xs={4}>
                     <Typography variant="h5" align="right" sx={{ paddingTop: "5px" }}>
-                        {session.date}
+                        {formatDateSlashes(session.date)}
                     </Typography>
 
                 </Grid>
 
                 {/* Start time on new line */}
-                <Grid item xs={8}>
+                <Grid item xs={6}>
                     <strong>Start: </strong>
-                    {session.start}
+                    {formatTime(session.start)}
+                </Grid>
+
+                <Grid item xs={6} align="right">
+                    <Button
+                        onClick={() => { setShowEditSessionPopup(true) }}
+                        variant="contained"
+                    >
+                        Edit Session
+                    </Button>
                 </Grid>
 
                 {/* End time on new line */}
                 <Grid item xs={6}>
-                    <strong>End:</strong> {session.end}
+                    <strong>End:</strong> {formatTime(session.end)}
                 </Grid>
 
                 <Grid item xs={6} align="right">
@@ -118,8 +101,18 @@ function SessionData(props) {
                     </Button>
                 </Grid>
 
+                {session.comments &&
+                    <Grid item xs={6}>
+                        <strong>Comments:</strong> {session.comments}
+                    </Grid>
+                }
+
+
+
                 {/* Popup that is triggered when "Add Sets" button (above) is clicked */}
-                {session && <AddSetsToSessionPopup session={session} open={showAddSetsPopup} setOpen={setShowAddSetsPopup} liftState={liftState} exercises={props.exercises} />}
+                {session && <AddSetsToSessionPopup session={session} open={showAddSetsPopup} setOpen={setShowAddSetsPopup} liftState={props.liftNumSets} exercises={props.exercises} />}
+
+                {session && <EditSessionPopup session={session} open={showEditSessionPopup} setOpen={setShowEditSessionPopup} liftState={props.liftEdited} />}
 
             </Grid>
 
@@ -145,11 +138,9 @@ function SessionData(props) {
 
                         {/* Array of collapsible tables, one per exercise, each showing the sets of that exercise */}
                         <TableBody>
-                            {session && exercises.map((exercise, index) => {
-                                console.log(exercise);
-                                console.log(index);
-                                return <CollapsibleTable key={index} exercise={exercise} sets={session.sets[exercise]} session={session} liftState={liftState} />
-                            })
+                            {session && exercises.map((exercise, index) =>
+                                <CollapsibleTable key={index} exercise={exercise} sets={session.sets[exercise]} session={session} liftState={props.liftNumSets} />
+                            )
                             }
                         </TableBody>
                     </Table>

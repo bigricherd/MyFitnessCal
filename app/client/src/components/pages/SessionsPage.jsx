@@ -14,7 +14,10 @@ function SessionsPage(props) {
     const [userId, setUserId] = useState(null);
     const [calEvents, setCalEvents] = useState([]);
     const [dbEvents, setDbEvents] = useState([]);
-    const [refresh, setRefresh] = useState(null);
+
+    // To detect changes in child components
+    const [numSessions, setNumSessions] = useState(null);
+    const [numEdits, setNumEdits] = useState(0);
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
 
@@ -51,7 +54,6 @@ function SessionsPage(props) {
 
     const getAllSessions = async () => {
         console.log('Fetching sessions');
-        console.log(refresh);
         const baseUrl = "http://localhost:5000";
         const data = await fetch(`${baseUrl}/api/sessions/all`, {
             credentials: "include",
@@ -89,7 +91,7 @@ function SessionsPage(props) {
 
     useEffect(() => {
         getAllSessions();
-    }, [refresh]);
+    }, [numSessions, numEdits]);
 
     const [showAddSession, setShowAddSession] = useState(false);
 
@@ -98,11 +100,12 @@ function SessionsPage(props) {
             {user ? (
                 <div className="ms-5 mt-5 pt-5">
                     <Button variant="contained" onClick={() => { setShowAddSession(true) }}>Create Session</Button>
-                    <AddSession open={showAddSession} onClose={() => setShowAddSession(false)} exercises={exercises} liftState={setRefresh} />
+                    <AddSession open={showAddSession} onClose={() => setShowAddSession(false)} exercises={exercises} liftState={setNumSessions} />
                     <DefaultCalendarView
                         calEvents={calEvents}
                         dbEvents={dbEvents}
-                        liftState={setRefresh}
+                        liftNumSessions={setNumSessions}
+                        liftNumEdits={setNumEdits}
                         getSessions={getAllSessions}
                         exercises={exercises}
                     />

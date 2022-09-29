@@ -15,12 +15,6 @@ function DefaultCalendarView(props) {
         setDbEvents(props.dbEvents);
     }, [props]);
 
-    // setRefresh in SessionsPage to be value
-    const liftState = (value) => {
-        props.liftState(value);
-    }
-
-
     const onEventClick = (data) => {
         console.log("event click");
         console.log(data);
@@ -74,7 +68,8 @@ function DefaultCalendarView(props) {
                 open={popupOpen}
                 openSetter={setPopupOpen}
                 onClose={handlePopupClose}
-                liftState={liftState}
+                liftNumSessions={props.liftNumSessions}
+                liftNumEdits={props.liftNumEdits}
                 exercises={props.exercises} />
             <Kalend
                 onEventClick={onEventClick}

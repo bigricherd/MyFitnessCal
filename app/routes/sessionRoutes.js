@@ -22,11 +22,7 @@ const addSet = async (sessionId, userId, set, date) => {
     const muscleGroup = exercise.split(":")[1];
 
     const query = `INSERT INTO set(id, reps, weight, date, exercise, musclegroup, owner, session) VALUES ('${id}', ${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${userId}', '${sessionId}')`;
-    console.log(query);
     await performQuery(query);
-    const sets = await performQuery('SELECT * FROM set');
-    console.log(sets.rows);
-
 }
 
 const addManySets = (sessionId, userId, sets, date) => {
@@ -39,7 +35,9 @@ const addManySets = (sessionId, userId, sets, date) => {
 router.post("/add", isLoggedIn, async (req, res) => {
     await getEnums(); // we need these for creating sets
     const { title, date, startdatetime, enddatetime, comments = "", sets = [] } = req.body;
+    console.log(title, date, startdatetime, enddatetime, comments);
     const userId = req.user.id;
+
 
     // no need to format timestamps since postgres will do it for you
     const id = uuid();
@@ -58,7 +56,6 @@ router.post("/add", isLoggedIn, async (req, res) => {
     // VALIDATION
     const all = await performQuery("select * from session");
     const newestSession = all.rows[all.rows.length - 1];
-    console.log(newestSession);
 
     // TODO: figure out how to format start & end timestampts to compare without format error
     const sessionsMatch =
@@ -98,16 +95,13 @@ router.get("/all", isLoggedIn, async (req, res) => {
 // Fetches data of session with given id, to be displayed on a SessionPopup
 router.get("/", async (req, res) => {
     const { id } = req.query;
-    console.log(id);
 
     const query = `SELECT * FROM session WHERE id = '${id}'`;
     const all = await performQuery(query);
     const session = all.rows[0];
-    console.log(session);
 
     const getSets = `SELECT id, reps, weight, exercise from set WHERE session = '${id}' ORDER BY exercise`;
     const sets = await performQuery(getSets);
-    console.log(sets.rows);
 
     const s = {
         id: session.id,
@@ -138,6 +132,7 @@ router.get("/", async (req, res) => {
 
 });
 
+// Delete session
 router.delete("/", isLoggedIn, async (req, res) => {
     const { id } = req.body;
 
@@ -147,6 +142,7 @@ router.delete("/", isLoggedIn, async (req, res) => {
     res.send({ count: all.rows[0].count });
 });
 
+// Delete a set with given ID from a session
 router.delete("/set", isLoggedIn, async (req, res) => {
     const { setId, sessionId } = req.body;
 
@@ -155,8 +151,9 @@ router.delete("/set", isLoggedIn, async (req, res) => {
 
     const all = await performQuery(`SELECT count(id) from set WHERE session = '${sessionId}'`);
     res.send({ count: all.rows[0].count });
-})
+});
 
+// Add sets to an existing session
 router.post("/addSets", isLoggedIn, async (req, res) => {
     await getEnums();
     const { sets, sessionId, date } = req.body;
@@ -167,6 +164,28 @@ router.post("/addSets", isLoggedIn, async (req, res) => {
     const c = await performQuery(`SELECT count(id) FROM set WHERE session = '${sessionId}'`);
 
     res.send({ numSets: c.rows[0].count });
-})
+});
+
+// Edit a session (not including sets)
+router.patch("/", isLoggedIn, async (req, res) => {
+    const { id } = req.query;
+    const { title, date, startdatetime, enddatetime, comments = '', edited } = req.body;
+    console.log(edited);
+    console.log(id);
+    console.log(title, date, startdatetime, enddatetime, comments);
+
+    const query = `UPDATE session SET
+                    title = '${title}',
+                    startdatetime = '${startdatetime}',
+                    enddatetime = '${enddatetime}',
+                    comments = '${comments}'
+                    WHERE id = '${id}'`;
+    await performQuery(query);
+
+    const row = await performQuery(`SELECT * FROM session WHERE id = '${id}'`);
+    console.log(row.rows[0]);
+
+    res.send({ count: edited + 1 });
+});
 
 module.exports = router;
