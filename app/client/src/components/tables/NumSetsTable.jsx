@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Paper,
     TableContainer,
@@ -9,73 +8,68 @@ import {
     TableBody,
     Typography
 } from '@mui/material';
-import formatEnum from '../../helpers/formatEnum';
+import { useEffect, useState } from 'react';
+import VolumeCollapse from './VolumeCollapse';
 
 function NumSetsTable(props) {
 
-    let heading = null;
-    let avgWeightHeading = null;
-    let maxWeightHeading = null;
-    let avgRepsHeading = null;
-    let tableBody = null;
+    const entries = Object.entries(props.data);
 
-    // Set title depending on type of data -- total sets per muscle group OR breakdown of exercises for that muscle group
-    let title = <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
-        {(props.type === 'perMuscleGroup') ? '# Sets per Muscle Group' : 'Breakdown of Exercises'}
-    </Typography>
+    const [data, setData] = useState(entries.map((item) =>
+        [item[0], item[1].count, item[1].exercises]
+    ));
 
-    // Set table content depending on type of data
-    if (props.type === 'perMuscleGroup') {
-        heading = 'Muscle Group';
-        tableBody = <TableBody>
-            {props.data.map((item, i) => (
-                <TableRow key={i}>
+    useEffect(() => {
+        const entries = Object.entries(props.data);
+        setData(
+            entries.map((item) =>
+                [item[0], item[1].count, item[1].exercises]
+            )
+        );
 
-                    {/* item[0] is the muscle group */}
-                    <TableCell>{formatEnum([item[0]], ' ')}</TableCell>
+    }, [props]);
 
-                    {/* item[1] is the number of sets performed for that muscle group */}
-                    <TableCell>{item[1]}</TableCell>
-                </TableRow>
-            ))}
-        </TableBody>;
-    } else if (props.type === 'perExercise') {
-        heading = 'Exercise';
-        avgWeightHeading = <TableCell className="px-3">Avg Weight</TableCell>;
-        maxWeightHeading = <TableCell className="px-3">Max Weight</TableCell>;
-        avgRepsHeading = <TableCell className="px-3">Avg Reps</TableCell>;
-
-        console.log(props.data);
-        tableBody = <TableBody>
-            {props.data.map((item, i) => (
-                <TableRow key={i}>
-
-                    {/* item[0] is the exercise name */}
-                    <TableCell>{formatEnum([item[0]], ' ')}</TableCell>
-
-                    {/* item[1] is an object that contains the statistics for that exercise */}
-                    <TableCell>{item[1].count}</TableCell>
-                    <TableCell>{item[1].avgWeight}</TableCell>
-                    <TableCell>{item[1].maxWeight}</TableCell>
-                    <TableCell>{item[1].avgReps}</TableCell>
-                </TableRow>
-            ))}
-        </TableBody>;
-    }
     return (
         <TableContainer component={Paper} sx={{ mt: '1rem' }}>
-            {title}
+            <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
+                # Sets Per Muscle Group
+            </Typography>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell className="px-3">{heading}</TableCell>
+                        <TableCell></TableCell>
+                        <TableCell className="px-3">Muscle Group</TableCell>
                         <TableCell className="px-3"># Sets</TableCell>
-                        {avgWeightHeading}
-                        {maxWeightHeading}
-                        {avgRepsHeading}
                     </TableRow>
                 </TableHead>
-                {tableBody}
+
+                {/* Currently being assigned above */}
+                {/* {tableBody} */}
+
+                <TableBody>
+                    {
+                        data && (data.length > 1 ?
+                            // 'All' muscle groups selected
+                            data.map((item) => (
+                                item[1] > 0 ?
+                                    <VolumeCollapse
+                                        key={item[0]}
+                                        volume={[item[0], item[1]]}
+                                        exercises={item[2]}
+                                    />
+                                    : null
+                            ))
+                            :
+                            // A single muscle group was selected
+                            <VolumeCollapse key={data[0][0]} volume={[data[0][0], data[0][1]]} exercises={data[0][2]} />
+                        )
+
+
+                    }
+
+                </TableBody>
+
+
             </Table>
         </TableContainer>
     )

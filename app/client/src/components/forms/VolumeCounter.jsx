@@ -36,9 +36,10 @@ function VolumeCounter(props) {
     return (
         <Container fixed>
 
+
             {/* Heading */}
-            <Typography variant="h4" gutterBottom component="div">
-                View Total Sets per Muscle Group
+            <Typography variant="h4" gutterBottom component="div" sx={{ paddingTop: "100px" }}>
+                Training Volume Calculator
             </Typography>
 
             <Box component="form" autoComplete="on">
@@ -102,6 +103,7 @@ function VolumeCounter(props) {
                                 value={values.muscleGroup}
                                 onChange={handleChange}
                                 onKeyDown={handleKeyDown}
+                                required
                             />
                         </FormControl>
                     </LocalizationProvider>
@@ -119,20 +121,11 @@ function VolumeCounter(props) {
 
                 {/* {error && <Error error={error.messages} />} */}
 
-                {/* Show number of sets for selected muscle group */}
-                {data && data.results && (
+                {/* Show number of sets for selected muscle group; rows are collapsible and show exercise breakdowns */}
+                {data && (
                     <NumSetsTable
-                        data={Object.entries(data.results)}
-                        type={"perMuscleGroup"}
+                        data={data}
                         className="mb-2"
-                    />
-                )}
-
-                {/* Show per-exercise breakdown of sets, as well as statistics for each exercise */}
-                {data && data.perExercise && (
-                    <NumSetsTable
-                        data={Object.entries(data.perExercise)}
-                        type={"perExercise"}
                     />
                 )}
             </Box>

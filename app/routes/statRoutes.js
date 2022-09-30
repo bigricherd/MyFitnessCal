@@ -21,33 +21,29 @@ router.get("/setsPerMuscle", isLoggedIn, async (req, res) => {
     // Format muscle group to match string format in database
     muscleGroup = muscleGroup.toLowerCase();
     muscleGroup = muscleGroup.split(' ').join('_');
-    console.log(req.query);
-    let numSets = {};
-    let numSetsPerE = {};
+
+    let result = {};
+    let chosenGroups = [];
 
     if (muscleGroup === 'all') {
-        for (let muscleGroup of muscleGroups) {
-            const query = `SELECT COUNT(*) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
-            const data = await performQuery(query);
-            const count = data.rows[0].count;
-            muscleGroup = muscleGroup.split('_').join(' ');
-            numSets[muscleGroup] = count;
-        }
-        console.log(numSets);
-        return res.send({ results: numSets });
+        chosenGroups = muscleGroups.slice();
     } else {
+        chosenGroups.push(muscleGroup);
+    }
+
+    for (let group of chosenGroups) {
         //TODO: verify that the user entered a valid muscle group
-        const mgQuery = `SELECT COUNT(*) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${muscleGroup}') AND owner = '${req.user.id}'`;
-        console.log(mgQuery);
+        const mgQuery = `SELECT COUNT(*) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND muscleGroup = '${group}') AND owner = '${req.user.id}'`;
         const mgData = await performQuery(mgQuery);
         const mgCount = mgData.rows[0].count;
-        muscleGroup = muscleGroup.split('_').join(' ');
-        numSets[muscleGroup] = mgCount;
+        let groupTemp = group.split('_').join(' ');
+        result[groupTemp] = { 'count': 0, 'exercises': {} };
+        result[groupTemp]['count'] = mgCount;
 
         await getEnums();
 
         // Get all exercises for the given muscle group
-        const getExercisesQuery = `SELECT nameandmusclegroup FROM Exercises WHERE muscleGroup = '${muscleGroup}'`;
+        const getExercisesQuery = `SELECT nameandmusclegroup FROM Exercises WHERE muscleGroup = '${group}'`;
         const exercises = await performQuery(getExercisesQuery);
 
         const exerciseList = [];
@@ -71,14 +67,11 @@ router.get("/setsPerMuscle", isLoggedIn, async (req, res) => {
             if (count > 0) {
                 exercise = exercise.split(':')[0];
                 exercise = exercise.split('_').join(' ');
-                numSetsPerE[exercise] = { count, avgWeight, maxWeight, avgReps };
+                result[groupTemp]['exercises'][exercise] = { count, avgWeight, maxWeight, avgReps };
             }
         }
-        console.log(numSetsPerE);
-
-        return res.send({ results: numSets, perExercise: numSetsPerE });
     }
-
+    return res.send(result);
 })
 
 // Get total number of sets performed for given Exercise and date range
