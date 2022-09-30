@@ -16,6 +16,7 @@ export default function useForm({ initialValues, slug }) {
             ...values,
             [name]: value,
         });
+        console.log(values);
     };
 
     //submit form when enter key is pressed
@@ -29,10 +30,6 @@ export default function useForm({ initialValues, slug }) {
     //submit form when submit button is clicked
     const handleSubmit = (event) => {
         event.preventDefault();
-        // convert dates from Date object to ISO String
-        values.fromDate = values.fromDate.toISOString();
-        values.toDate = values.toDate.toISOString();
-        console.log(values);
         submitData({ values });
     };
 
@@ -48,7 +45,7 @@ export default function useForm({ initialValues, slug }) {
         try {
             await axios({
                 method: "GET",
-                url: `${baseUrl}/${slug}?fromDate=${fromDate}&toDate=${toDate}&muscleGroup=${muscleGroup}`,
+                url: `${baseUrl}/${slug}?fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}&muscleGroup=${muscleGroup}`,
                 headers: new Headers({
                     "Content-Type": "application/json",
                     Accept: "application/json",
