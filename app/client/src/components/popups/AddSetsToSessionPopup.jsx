@@ -23,7 +23,6 @@ function AddSetsToSessionPopup(props) {
         const emptySet = {
             'reps': 0,
             'weight': 0,
-
             exercise: ''
         }
         if (sets.length === 0) {
@@ -51,6 +50,7 @@ function AddSetsToSessionPopup(props) {
         setSets([]);
     }
 
+    // Hook
     const { handleSetChange, handleSubmit, values, setValues, numSets, error, prevError } = addSetsToSession({
         initialValues: {
             sets,
@@ -59,6 +59,7 @@ function AddSetsToSessionPopup(props) {
         }
     });
 
+    // Lift numSets to SessionData
     useEffect(() => {
         props.liftState(numSets);
     }, [numSets]);
@@ -67,11 +68,13 @@ function AddSetsToSessionPopup(props) {
 
         <>
             <Dialog open={props.open} >
+
                 <DialogTitle>
                     Add Sets to Session {props.session.title}
                 </DialogTitle>
+
                 <DialogContent>
-                    {/* on click: add a new form row  */}
+                    {/* Add a new set (adds a SetRow)  */}
                     <Button
                         type="submit"
                         onClick={addSet}
