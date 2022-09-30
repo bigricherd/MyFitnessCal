@@ -12,9 +12,11 @@ import deleteSession from '../../hooks/deleteSession';
 import DeleteSessionPopup from './DeleteSessionPopup';
 
 function SessionPopup(props) {
-    console.log('SessionPopup render');
-
+    // Session data
     const [data, setData] = useState(null);
+
+    // Confirm back popup
+    const [showConfirmBack, setShowConfirmBack] = useState(false);
 
     // Confirm delete popup
     const [open, setOpen] = useState(false);
@@ -27,13 +29,13 @@ function SessionPopup(props) {
     //Edit session
     const [edited, setEdited] = useState(null);
 
-    const handleOpen = (e) => {
+    const handleOpenDelete = (e) => {
         setOpen(true);
         setIdToDelete(props.id);
         setDeleteEvent(e);
     }
 
-    const handleClose = () => {
+    const handleCloseDelete = () => {
         setIdToDelete(null);
         setDeleteEvent(null);
         setOpen(false);
@@ -66,24 +68,35 @@ function SessionPopup(props) {
         } else setData(null);
     }
 
+
+
     useEffect(() => {
         getSessionInfo();
     }, [props, numSets]);
 
+    // Propagate numSessions to CalendarView, which will lift it to SessionsPage, incuding a re-fetch of sessions and re-render of events on the CalendarView
+    useEffect(() => {
+        props.liftNumSessions(numSessions);
+    }, [numSessions]);
+
+    // Same as numSessions above; this matters when the user edits session time. Without lifting to SessionsPage, the Calendar will not update.
     useEffect(() => {
         props.liftNumEdits(edited);
     }, [edited]);
 
-    // Propagate numSessions to CalendarView, which will lift it to SessionsPage, incuding a re-fetch of sessions and re-render of events on the CalendarView
-    useEffect(() => {
-        props.liftNumSessions(numSessions);
-    }, [numSessions])
+    const handleClose = (e, reason) => {
+        if (reason && (reason === 'backdropClick' || reason === 'escapeKeyDown')) {
+            setShowConfirmBack(true);
+            return;
+        }
+        props.onClose();
+    }
 
     return (
         <>
             <Dialog
                 open={props.open}
-                onClose={props.onClose}
+                onClose={(e, reason) => { handleClose(e, reason) }}
             >
 
                 {/* Session information */}
@@ -93,12 +106,14 @@ function SessionPopup(props) {
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={props.onClose}>
+                    <Button onClick={() => {
+                        setShowConfirmBack(true)
+                    }}>
                         Back
                     </Button>
 
                     <Button
-                        onClick={(e) => { handleOpen(e) }}
+                        onClick={(e) => { handleOpenDelete(e) }}
                         variant="contained"
                         sx={{ backgroundColor: "red" }}
                     >
@@ -107,7 +122,37 @@ function SessionPopup(props) {
                 </DialogActions>
 
                 {/* Confirm dialog that appears onClick of Delete button, just above */}
-                {data && <DeleteSessionPopup open={open} onClose={handleClose} handleDelete={handleDelete} title={data.session.title} />}
+                {data && <DeleteSessionPopup open={open} onClose={handleCloseDelete} handleDelete={handleDelete} title={data.session.title} />}
+
+                {/* Confirm back dialog */}
+                <Dialog open={showConfirmBack}>
+                    <DialogTitle>
+                        Are you sure?
+                    </DialogTitle>
+
+                    <DialogContent>
+                        Unsaved changes will be lost.
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button
+                            onClick={() => { setShowConfirmBack(false) }}
+                        >
+                            Back
+                        </Button>
+
+                        <Button
+                            onClick={() => {
+                                setShowConfirmBack(false);
+                                handleClose();
+                            }}
+                            variant="contained"
+                            sx={{ backgroundColor: "red" }}
+                        >
+                            Exit
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
             </Dialog>
         </>

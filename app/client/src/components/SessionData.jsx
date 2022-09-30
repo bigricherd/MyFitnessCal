@@ -21,9 +21,6 @@ import { formatDateSlashes } from "../helpers/formatDate";
 import formatTime from '../helpers/formatTime';
 
 function SessionData(props) {
-    console.log('SessionData render');
-    console.log(props);
-
     // Add sets popup
     const [showAddSetsPopup, setShowAddSetsPopup] = useState(false);
 
@@ -108,11 +105,10 @@ function SessionData(props) {
                 }
 
 
-
                 {/* Popup that is triggered when "Add Sets" button (above) is clicked */}
                 {session && <AddSetsToSessionPopup session={session} open={showAddSetsPopup} setOpen={setShowAddSetsPopup} liftState={props.liftNumSets} exercises={props.exercises} />}
 
-                {session && <EditSessionPopup session={session} open={showEditSessionPopup} setOpen={setShowEditSessionPopup} liftState={props.liftEdited} />}
+                {session && <EditSessionPopup session={session} comments={session.comments} open={showEditSessionPopup} setOpen={setShowEditSessionPopup} liftState={props.liftEdited} />}
 
             </Grid>
 
