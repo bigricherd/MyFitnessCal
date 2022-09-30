@@ -19,8 +19,6 @@ import editSession from '../../hooks/editSession';
 import { useEffect } from 'react';
 
 function EditSessionPopup(props) {
-    console.log('Edit session popup render');
-    const session = { props };
 
     const handleEdit = (e) => {
         console.log('will call handleSubmit from editSession hook here');
@@ -38,14 +36,22 @@ function EditSessionPopup(props) {
         edited
     } = editSession({
         initialValues: {
-            sessionId: props.session.id,
-            title: props.session.title,
+            sessionId: props.session.id || '',
+            title: props.session.title || '',
             comments: props.session.comments || '',
-            date: props.session.date,
-            startdatetime: props.session.start,
-            enddatetime: props.session.end
+            date: props.session.date || '',
+            startdatetime: props.session.start || '',
+            enddatetime: props.session.end || ''
         }
     });
+
+    // Without this, the comments field does not pre-fill. Still not sure why.
+    useEffect(() => {
+        setValues({
+            ...values,
+            'comments': props.session.comments
+        })
+    }, [props]);
 
     useEffect(() => {
         props.liftState(edited);
