@@ -108,7 +108,7 @@ function SessionData(props) {
                 {/* Popup that is triggered when "Add Sets" button (above) is clicked */}
                 {session && <AddSetsToSessionPopup session={session} open={showAddSetsPopup} setOpen={setShowAddSetsPopup} liftState={props.liftNumSets} exercises={props.exercises} />}
 
-                {session && <EditSessionPopup session={session} comments={session.comments} open={showEditSessionPopup} setOpen={setShowEditSessionPopup} liftState={props.liftEdited} />}
+                {session && <EditSessionPopup session={session} open={showEditSessionPopup} setOpen={setShowEditSessionPopup} liftState={props.liftEdited} />}
 
             </Grid>
 
