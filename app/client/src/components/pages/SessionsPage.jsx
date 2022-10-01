@@ -4,14 +4,27 @@ import DefaultCalendarView from "../views/CalendarView";
 import axios from 'axios';
 import formatEnum from "../../helpers/formatEnum";
 import {
-    Button
+    Button,
+    Tab,
+    Box
 } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import AddSession from "../forms/AddSession";
 
 function SessionsPage(props) {
     console.log('Sessions page render');
+
+    // Views
+    const [view, setView] = useState(0);
+    const handleChange = (event, newValue) => {
+        setView(newValue);
+    }
+
+    // User
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(null);
+
+    // Calendar
     const [calEvents, setCalEvents] = useState([]);
     const [dbEvents, setDbEvents] = useState([]);
 
@@ -87,7 +100,7 @@ function SessionsPage(props) {
         setUserId(props.userId);
         fetchExercises();
         fetchExercisesByUser(props.userId);
-    }, [props]);
+    }, [props, view]);
 
     useEffect(() => {
         getAllSessions();
@@ -98,18 +111,47 @@ function SessionsPage(props) {
     return (
         <>
             {user ? (
-                <div className="ms-5 mt-5 pt-5">
-                    <Button variant="contained" onClick={() => { setShowAddSession(true) }}>Create Session</Button>
+                <>
+                    <Button
+                        variant="contained"
+                        onClick={() => { setShowAddSession(true) }}
+                        sx={{
+                            marginTop: "5rem",
+                            marginBottom: "1rem"
+                        }}
+                    >
+                        Create Session
+                    </Button>
                     <AddSession open={showAddSession} onClose={() => setShowAddSession(false)} exercises={exercises} liftState={setNumSessions} />
-                    <DefaultCalendarView
-                        calEvents={calEvents}
-                        dbEvents={dbEvents}
-                        liftNumSessions={setNumSessions}
-                        liftNumEdits={setNumEdits}
-                        getSessions={getAllSessions}
-                        exercises={exercises}
-                    />
-                </div>
+
+                    <Box>
+                        <TabContext value={view} aria-label="tabs" centered>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <TabList aria-label="tabs" onChange={handleChange} centered>
+                                    <Tab label="Calendar" value={0} />
+                                    <Tab label="Cards" value={1} />
+                                </TabList>
+                            </Box>
+
+
+                            <TabPanel value={0}>
+                                <DefaultCalendarView
+                                    calEvents={calEvents}
+                                    dbEvents={dbEvents}
+                                    liftNumSessions={setNumSessions}
+                                    liftNumEdits={setNumEdits}
+                                    getSessions={getAllSessions}
+                                    exercises={exercises}
+                                />
+                            </TabPanel>
+
+                            <TabPanel value={1}>
+                                Card View
+                            </TabPanel>
+                        </TabContext>
+                    </Box>
+                </>
+
             ) : (
                 <div>
                     <p>

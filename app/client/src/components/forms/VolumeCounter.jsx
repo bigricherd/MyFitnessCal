@@ -36,9 +36,15 @@ function VolumeCounter(props) {
     return (
         <Container fixed>
 
-
             {/* Heading */}
-            <Typography variant="h4" gutterBottom component="div" sx={{ paddingTop: "100px" }}>
+            <Typography
+                component="div"
+                sx={{
+                    marginTop: "1rem",
+                    marginBottom: "1rem",
+                    fontWeight: "400",
+                    fontSize: "1.5em"
+                }}>
                 Training Volume Calculator
             </Typography>
 
@@ -115,8 +121,11 @@ function VolumeCounter(props) {
                     variant="contained"
                     color="primary"
                     onClick={handleSubmit}
+                    sx={{
+                        marginTop: "1rem"
+                    }}
                 >
-                    Crunch the numbers
+                    Count
                 </Button>
 
                 {/* {error && <Error error={error.messages} />} */}
