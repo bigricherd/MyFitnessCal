@@ -55,7 +55,7 @@ function ProgressCollapse(props) {
 
             </TableRow>
 
-            {/* Collapse showing exercise breakdown */}
+            {/* Collapse showing sets */}
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
@@ -70,7 +70,7 @@ function ProgressCollapse(props) {
                                     </TableRow>
                                 </TableHead>
 
-                                {/* Sets of {props.exercise} performed in this session, shown as rows */}
+                                {/* Sets performed in this session, shown as rows */}
                                 <TableBody>
                                     {sets && sets.map((set) =>
                                         <TableRow key={set.id} sx={{ '& > *': { border: '0px solid' } }}>

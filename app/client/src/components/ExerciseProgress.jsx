@@ -162,7 +162,7 @@ function ExerciseProgress(props) {
 
                 </Box>
 
-                {data && <ProgressTable data={data} />}
+                {data && <ProgressTable data={data} exercise={values.exercise} />}
             </Container>
         </>
     )

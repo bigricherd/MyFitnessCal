@@ -10,19 +10,22 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ProgressCollapse from './ProgressCollapse';
+import formatEnum from '../../helpers/formatEnum';
 
 function ProgressTable(props) {
 
     const [data, setData] = useState(Object.entries(props.data));
+    const [exercise, setExercise] = useState(formatEnum([props.exercise.split(":")[0]]));
 
     useEffect(() => {
         setData(Object.entries(props.data));
-    }, [props]);
+        setExercise(formatEnum([props.exercise.split(":")[0]]))
+    }, [props.data]);
 
     return (
         <TableContainer component={Paper} sx={{ mt: '1rem' }}>
             <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
-                Progress for Exercise
+                {exercise}
             </Typography>
             <Table>
                 <TableHead>
