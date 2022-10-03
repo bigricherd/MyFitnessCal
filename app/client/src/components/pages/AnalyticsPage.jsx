@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import VolumeCounter from '../forms/VolumeCounter';
-// import ExerciseProgress from '../ExerciseProgress';
+import ExerciseProgress from '../ExerciseProgress';
 import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
@@ -51,7 +51,7 @@ function AnalyticsPage(props) {
                     </TabPanel>
 
                     <TabPanel value={"1"}>
-                        {/* <ExerciseProgress muscleGroups={muscleGroups} /> */}
+                        <ExerciseProgress muscleGroups={muscleGroups} />
                     </TabPanel>
                 </TabContext>
             </Box>

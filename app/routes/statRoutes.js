@@ -95,4 +95,65 @@ router.get('/setsPerExercise', isLoggedIn, async (req, res) => {
     res.send(numSets);
 })
 
+router.get('/setsOfExercise', isLoggedIn, async (req, res) => {
+    const { fromDate, toDate } = req.query;
+    let { exercise } = req.query;
+
+    // Format muscle group to match string format in database
+    exercise = exercise.toLowerCase();
+    exercise = exercise.split(' ').join('_');
+
+    const query = `SELECT * FROM set WHERE (exercise = '${exercise}' AND (date >= '${fromDate}' AND date <= '${toDate}'))`;
+    const data = await performQuery(query);
+
+    let sets = {};
+    for (let row of data.rows) {
+        const session = await performQuery(`SELECT title FROM session WHERE id = '${row.session}'`);
+        const title = session.rows[0].title;
+
+        let set = {
+            id: row.id,
+            reps: row.reps,
+            weight: row.weight,
+        }
+
+        if (sets[row.session]) {
+            let temp = sets[row.session]['sets'];
+            temp.push(set);
+            sets[row.session]['sets'] = temp;
+        } else {
+            let newSession = {
+                title: title,
+                date: row.date,
+                sets: [set]
+            }
+            sets[row.session] = newSession;
+        }
+    }
+
+    res.send(sets);
+});
+
+router.get('/exercisesGrouped', isLoggedIn, async (req, res) => {
+    // TODO query DB get exercises grouped by muscle Group as keys of an object
+    const query = `SELECT nameandmusclegroup, musclegroup FROM exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup`;
+    const data = await performQuery(query);
+    console.log(data.rows);
+
+    const exercises = {};
+
+    for (let row of data.rows) {
+        if (!exercises[row.musclegroup]) {
+            exercises[row.musclegroup] = [row.nameandmusclegroup];
+        } else {
+            let temp = exercises[row.musclegroup];
+            temp.push(row.nameandmusclegroup);
+            exercises[row.musclegroup] = temp;
+        }
+    }
+
+    res.send(exercises);
+
+})
+
 module.exports = router;
