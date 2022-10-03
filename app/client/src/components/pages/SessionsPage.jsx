@@ -15,7 +15,7 @@ function SessionsPage(props) {
     console.log('Sessions page render');
 
     // Views
-    const [view, setView] = useState(0);
+    const [view, setView] = useState("0");
     const handleChange = (event, newValue) => {
         setView(newValue);
     }
@@ -128,13 +128,13 @@ function SessionsPage(props) {
                         <TabContext value={view} aria-label="tabs" centered>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList aria-label="tabs" onChange={handleChange} centered>
-                                    <Tab label="Calendar" value={0} />
-                                    <Tab label="Cards" value={1} />
+                                    <Tab label="Calendar" value={"0"} />
+                                    <Tab label="Cards" value={"1"} />
                                 </TabList>
                             </Box>
 
 
-                            <TabPanel value={0}>
+                            <TabPanel value={"0"}>
                                 <DefaultCalendarView
                                     calEvents={calEvents}
                                     dbEvents={dbEvents}
@@ -145,7 +145,7 @@ function SessionsPage(props) {
                                 />
                             </TabPanel>
 
-                            <TabPanel value={1}>
+                            <TabPanel value={"1"}>
                                 Card View
                             </TabPanel>
                         </TabContext>

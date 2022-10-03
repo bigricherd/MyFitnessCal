@@ -10,7 +10,7 @@ function AnalyticsPage(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
     // Views
-    const [view, setView] = useState(0);
+    const [view, setView] = useState("0");
     const handleChange = (event, newValue) => {
         setView(newValue);
     }
@@ -41,18 +41,17 @@ function AnalyticsPage(props) {
                 <TabContext value={view} aria-label="tabs" centered>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList aria-label="tabs" onChange={handleChange} centered>
-                            <Tab label="Volume calculator" value={0} />
-                            <Tab label="Lifts Progress" value={1} />
+                            <Tab label="Volume calculator" value={"0"} />
+                            <Tab label="Lifts Progress" value={"1"} />
                         </TabList>
                     </Box>
 
-                    <TabPanel value={0}>
+                    <TabPanel value={"0"}>
                         <VolumeCounter muscleGroups={muscleGroups} />
                     </TabPanel>
 
-                    <TabPanel value={1}>
-                        {/* <ExerciseProgress /> */}
-                        Progress page here
+                    <TabPanel value={"1"}>
+                        {/* <ExerciseProgress muscleGroups={muscleGroups} /> */}
                     </TabPanel>
                 </TabContext>
             </Box>

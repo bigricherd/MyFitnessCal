@@ -27,7 +27,10 @@ function ExercisesPage(props) {
             data: {
                 id: userId
             },
-            headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }),
             withCredentials: true
 
         });

@@ -29,8 +29,7 @@ function VolumeCounter(props) {
                 fromDate: null,
                 toDate: null,
                 muscleGroup: "",
-            },
-            slug: "api/stats/setsPerMuscle",
+            }
         });
 
     return (

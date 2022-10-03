@@ -3,7 +3,7 @@ import axios from "axios";
 
 // ------ This hook submits the forms in the MuscleGroupFilter component with a GET reqyest; its values are {fromDate, toDate} ------
 // form values are passed in the query string as they do not contain sensitive information, simply user selections of the filters
-export default function useForm({ initialValues, slug }) {
+export default function useForm({ initialValues }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
     const [data, setData] = useState(null);
@@ -45,7 +45,7 @@ export default function useForm({ initialValues, slug }) {
         try {
             await axios({
                 method: "GET",
-                url: `${baseUrl}/${slug}?fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}&muscleGroup=${muscleGroup}`,
+                url: `${baseUrl}/api/stats/setsPerMuscle?fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}&muscleGroup=${muscleGroup}`,
                 headers: new Headers({
                     "Content-Type": "application/json",
                     Accept: "application/json",
