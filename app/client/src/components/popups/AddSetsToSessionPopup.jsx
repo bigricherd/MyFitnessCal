@@ -5,55 +5,81 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Grid
+    Grid,
+    Table,
+    TableBody
 } from '@mui/material';
 import addSetsToSession from '../../hooks/addSetsToSession';
 import { useEffect } from 'react';
 import SetRow from '../forms/SetRow';
+import AddSetsCollapse from '../forms/AddSetsCollapse';
 import { formatDateHyphens } from '../../helpers/formatDate';
 
 
 function AddSetsToSessionPopup(props) {
+    const [exercises, setExercises] = useState([]);
 
-    const [sets, setSets] = useState([]);
+    let exercisesTemp = exercises.slice();
 
-    let setsTemp = sets.slice();
-
-    const addSet = () => {
-        const emptySet = {
-            'reps': 0,
-            'weight': 0,
-            exercise: ''
-        }
-        if (sets.length === 0) {
-            setSets([emptySet]);
-            values.sets = [emptySet];
+    const addExercise = () => {
+        const emptyExercise = {
+            name: '',
+            sets: []
+        };
+        if (exercises.length === 0) {
+            setExercises([emptyExercise]);
         } else {
-            setsTemp.push(emptySet);
-            setSets(setsTemp);
-            values.sets = setsTemp;
+            exercisesTemp.push(emptyExercise);
+            setExercises(exercisesTemp);
         }
     }
 
-    const removeSet = (i) => {
-        setsTemp = [...setsTemp.slice(0, i), ...setsTemp.slice(i + 1)];
-        setSets(setsTemp);
-        values.sets = setsTemp;
+    const removeExercise = (i) => {
+        exercisesTemp = [...exercisesTemp.slice(0, i), ...exercisesTemp.slice(i + 1)];
+        setExercises(exercisesTemp);
+    }
+
+    const handleExerciseChange = (event) => {
+        let exists = false;
+        for (let exercise of exercises) {
+            console.log(exercise);
+            if (exercise.name === event.target.value) {
+                exists = true;
+                break;
+            }
+        }
+
+        // Only change the value if the exercise has not already been selected
+        if (!exists) {
+            const index = event.target.name.split("_")[1];
+            exercisesTemp[index]['name'] = event.target.value;
+        }
+
+        setExercises(exercisesTemp);
     }
 
     const resetFormFields = () => {
         setValues({
-            sets: sets,
+            sets: [],
             sessionId: props.session ? props.session.id : null,
             date: props.session ? formatDateHyphens(props.session.date) : null
         });
-        setSets([]);
+        setExercises([]);
+    }
+
+    const customHandleSubmit = (event) => {
+        const allSets = [];
+        for (let exercise of exercises) {
+            allSets.push(...exercise.sets);
+        }
+        values.sets = allSets;
+        handleSubmit(event);
     }
 
     // Hook
-    const { handleSetChange, handleSubmit, values, setValues, numSets, error, prevError } = addSetsToSession({
+    const { handleSubmit, values, setValues, numSets, error, prevError } = addSetsToSession({
         initialValues: {
-            sets,
+            sets: [],
             sessionId: props.session ? props.session.id : null,
             date: props.session ? formatDateHyphens(props.session.date) : null
         }
@@ -74,25 +100,35 @@ function AddSetsToSessionPopup(props) {
                 </DialogTitle>
 
                 <DialogContent>
-                    {/* Add a new set (adds a SetRow)  */}
+                    {/* Add a new collapse containing SetRows (AddSetsCollapse)  */}
                     <Button
                         type="submit"
-                        onClick={addSet}
+                        onClick={addExercise}
                         variant="contained"
                     >
-                        Add set
+                        Add exercise
                     </Button>
 
-                    {/* Rows of sets to be added */}
+                    {/* Sets to be added, grouped by exercise */}
                     <Grid container>
-                        {sets.map((set, i) => (
-                            <Grid item xs={12} key={i}>
-                                <SetRow set={set} index={i} value={values.sets[i]} handleChange={handleSetChange} onDelete={removeSet} exercises={props.exercises} />
-                            </Grid>
-                        ))}
+                        <Table>
+                            <TableBody>
+                                {exercises.map((exercise, index) => (
+                                    <AddSetsCollapse
+                                        key={exercise.name}
+                                        exerciseOptions={props.exercises}
+                                        index={index}
+                                        exercise={exercise}
+                                        exercises={exercises}
+                                        setExercises={setExercises}
+                                        onChange={handleExerciseChange}
+                                        onDelete={removeExercise} />
+                                ))}
+                            </TableBody>
+                        </Table>
                     </Grid>
-
                 </DialogContent>
+
                 <DialogActions>
                     <Button
                         onClick={() => { props.setOpen(false) }}
@@ -104,11 +140,10 @@ function AddSetsToSessionPopup(props) {
                         color="success"
                         onClick={(e) => {
                             values.sessionId = props.session.id;
-                            handleSubmit(e);
+                            customHandleSubmit(e);
                             props.setOpen(false);
                             resetFormFields();
                         }}
-
                     >
                         Add Sets
                     </Button>

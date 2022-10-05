@@ -11,41 +11,57 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    Table,
+    TableBody,
 } from '@mui/material';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import addSession from './../../hooks/addSession';
-import SetRow from './SetRow';
+//import SetRow from './SetRow';
+import AddSetsCollapse from './AddSetsCollapse';
 
 function AddSession(props) {
+    const [exercises, setExercises] = useState([]);
 
-    const [sets, setSets] = useState([]);
+    let exercisesTemp = exercises.slice();
 
-    let setsTemp = sets.slice();
-
-    const addSet = () => {
-        const emptySet = {
-            'reps': 0,
-            'weight': 0,
-            exercise: ''
-        }
-
-        if (sets.length === 0) {
-            setSets([emptySet]);
-            values.sets = [emptySet];
+    const addExercise = () => {
+        const emptyExercise = {
+            name: '',
+            sets: []
+        };
+        if (exercises.length === 0) {
+            setExercises([emptyExercise]);
         } else {
-            setsTemp.push(emptySet);
-            setSets(setsTemp);
-            values.sets = setsTemp;
+            exercisesTemp.push(emptyExercise);
+            setExercises(exercisesTemp);
         }
     }
 
-    const removeSet = (i) => {
-        setsTemp = [...setsTemp.slice(0, i), ...setsTemp.slice(i + 1)];
-        setSets(setsTemp);
-        values.sets = setsTemp;
+    const removeExercise = (i) => {
+        exercisesTemp = [...exercisesTemp.slice(0, i), ...exercisesTemp.slice(i + 1)];
+        setExercises(exercisesTemp);
+    }
+
+    const handleExerciseChange = (event) => {
+        let exists = false;
+        for (let exercise of exercises) {
+            console.log(exercise);
+            if (exercise.name === event.target.value) {
+                exists = true;
+                break;
+            }
+        }
+
+        // Only change the value if the exercise has not already been selected
+        if (!exists) {
+            const index = event.target.name.split("_")[1];
+            exercisesTemp[index]['name'] = event.target.value;
+        }
+
+        setExercises(exercisesTemp);
     }
 
     const resetFormFields = () => {
@@ -55,19 +71,28 @@ function AddSession(props) {
             date: '',
             startdatetime: '',
             enddatetime: '',
-            sets: sets
+            sets: []
         });
-        setSets([]);
+        setExercises([]);
     }
 
-    const { handleChange, handleSetChange, handleKeyDown, values, setValues, handleSubmit, error, prevError, numSessions } = addSession({
+    const customHandleSubmit = (event) => {
+        const allSets = [];
+        for (let exercise of exercises) {
+            allSets.push(...exercise.sets);
+        }
+        values.sets = allSets;
+        handleSubmit(event);
+    }
+
+    const { handleChange, handleKeyDown, values, setValues, handleSubmit, error, prevError, numSessions } = addSession({
         initialValues: {
             title: '',
             comments: '',
             date: '',
             startdatetime: '',
             enddatetime: '',
-            sets: sets
+            sets: []
         }
     });
 
@@ -86,7 +111,7 @@ function AddSession(props) {
             <DialogContent>
 
                 {/* Add session form; consider creating a separate component */}
-                <Grid container spacing={2} onSubmit={handleSubmit} component="form" noValidate sx={{
+                <Grid container spacing={2} onSubmit={customHandleSubmit} component="form" noValidate sx={{
                     "marginBottom": "1.5rem"
                 }}>
 
@@ -204,28 +229,36 @@ function AddSession(props) {
 
                     <Grid item xs={6}>
 
-                        {/* on click: add a new form row  */}
+                        {/* Add a new collapse containing SetRows (AddSetsCollapse)  */}
                         <Button
-                            type="submit"
-                            onClick={addSet}
+                            onClick={addExercise}
                             variant="contained"
                         >
-                            Add set
+                            Add exercise
                         </Button>
                     </Grid>
 
                     <Grid item xs={12}>
-                        {sets.map((set, i) => (
-                            <Grid item xs={12} key={i}>
-                                <SetRow set={set} index={i} value={values.sets[i]} handleChange={handleSetChange} onDelete={removeSet} exercises={props.exercises} />
-                            </Grid>
-                        ))}
+                        <Table>
+                            <TableBody>
+                                {exercises.map((exercise, index) => (
+                                    <AddSetsCollapse
+                                        key={exercise.name}
+                                        exerciseOptions={props.exercises}
+                                        index={index}
+                                        exercise={exercise}
+                                        exercises={exercises}
+                                        setExercises={setExercises}
+                                        onChange={handleExerciseChange}
+                                        onDelete={removeExercise} />
+                                ))}
+                            </TableBody>
+                        </Table>
                     </Grid>
 
                 </Grid>
-
-
             </DialogContent>
+
             <DialogActions>
                 <Button onClick={props.onClose}>Back</Button>
 
@@ -233,7 +266,7 @@ function AddSession(props) {
                 <Button
                     type="submit"
                     onClick={(e) => {
-                        handleSubmit(e);
+                        customHandleSubmit(e);
                         props.onClose();
                         resetFormFields();
                     }}

@@ -15,11 +15,9 @@ export default function useForm({ initialValues }) {
             ...values,
             [name]: value
         });
-        console.log(values);
     };
 
     const handleSetChange = event => {
-        console.log('set value changed');
         const value = event.target.value;
         const name = event.target.name.split("_")[0];
         const index = event.target.name.split("_")[1];
@@ -30,8 +28,6 @@ export default function useForm({ initialValues }) {
             ...values,
             sets: setsTemp
         });
-        console.log(index);
-        console.log(values);
     }
 
     //submit form when submit button is clicked
@@ -62,8 +58,6 @@ export default function useForm({ initialValues }) {
                 withCredentials: true
 
             }).then(res => {
-                console.log("numSets:");
-                console.log(res.data.numSets);
                 setNumSets(res.data.numSets);
                 setError(null);
             })

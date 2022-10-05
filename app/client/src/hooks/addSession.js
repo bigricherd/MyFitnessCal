@@ -46,6 +46,7 @@ export default function useForm({ initialValues }) {
     //submit form when submit button is clicked
     const handleSubmit = event => {
         event.preventDefault();
+        console.log(values);
         submitData({ values });
     };
 

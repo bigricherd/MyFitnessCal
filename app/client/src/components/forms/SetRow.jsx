@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { DoDisturbOnOutlined } from '@mui/icons-material';
-import Dropdown from '../Dropdown';
 
 function SetRow(props) {
 
@@ -58,17 +57,6 @@ function SetRow(props) {
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={7}>
-                        <FormControl fullWidth>
-                            <Dropdown
-                                id="exercise"
-                                name={`exercise_${props.index}`}
-                                options={props.exercises}
-                                value={props.value.exercise}
-                                onChange={props.handleChange}
-                            />
-                        </FormControl>
-                    </Grid>
                 </Stack>
 
                 <Grid item xs={1}>
