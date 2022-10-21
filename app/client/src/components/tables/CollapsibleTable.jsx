@@ -57,7 +57,7 @@ function CollapsibleTable(props) {
     const handleCloseDialog = () => {
         setSetToDelete(null);
         values.setId = '';
-        values.sessoinId = '';
+        values.sessionId = '';
         setShowDialog(false);
     }
 

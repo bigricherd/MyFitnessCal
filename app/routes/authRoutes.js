@@ -48,7 +48,12 @@ router.post('/register', async (req, res, next) => {
 })
 
 router.post('/login', passport.authenticate('local', { successRedirect: '/api/auth/login-success' }), (err, req, res, next) => {
-    if (err) return res.status(401).send({ message: err.message }); // Error is sent to client
+    if (err) {
+        let msg = err.message;
+        let status = err.status || 401;
+        if (err.message === "Bad Request" && err.name === "AuthenticationError") msg = 'Invalid credentials. Please try again.';
+        return res.status(status).send({ message: msg }); // Error is sent to client
+    }
     return res.json({ redirect: '/' });
 })
 

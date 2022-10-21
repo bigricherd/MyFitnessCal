@@ -108,7 +108,6 @@ app.post("/api/enums/byCurrentUser", isLoggedIn, async (req, res) => {
 });
 
 // ---------- ERROR HANDLING ----------
-//app.use(errorController);
 // catch-all error handler
 app.use((err, req, res, next) => {
     if (!err.statusCode) err.statusCode = 500;
