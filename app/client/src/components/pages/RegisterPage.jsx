@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import authHook from '../../hooks/auth';
 import {
-    Box,
-    Container,
     Typography,
     Stack,
     FormControl,
@@ -57,78 +56,78 @@ function RegisterPage() {
     }, [error, prevError]);
 
     return (
-
-        <Box
-            display="flex"
+        <Stack
+            direction="column"
             justifyContent="center"
             alignItems="center"
-            minHeight="100vh">
-            <Container component="div">
+            minHeight="100vh"
+        >
 
-                {/* Heading */}
-                <Typography variant="h3" gutterBottom>
-                    Register
-                </Typography>
+            {/* Heading */}
+            <Typography variant="h4" gutterBottom>
+                Register
+            </Typography>
 
-                {/* Form fields */}
-                <Stack spacing={2} sx={{ mb: '1rem' }}>
+            {/* Form fields */}
+            <Stack spacing={2} sx={{ mb: '1rem' }}>
 
-                    {/* Username input */}
-                    <FormControl>
-                        <FormLabel>Username</FormLabel>
+                {/* Username input */}
+                <FormControl>
+                    <FormLabel>Username</FormLabel>
+                    <TextField
+                        name="username"
+                        value={values.username}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        required >
+                    </TextField>
+                </FormControl>
+
+                {/* Password input */}
+                <FormControl>
+                    <FormLabel>Password</FormLabel>
+                    <Tooltip
+                        title={passwordFieldHover}
+                        arrow>
                         <TextField
-                            name="username"
-                            value={values.username}
+                            name="password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={values.password}
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}
-                            required >
+
+                            // endAdornment represents show / hide password button
+                            InputProps={{
+                                endAdornment:
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                        > {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                            }}
+                            required>
                         </TextField>
-                    </FormControl>
+                    </Tooltip>
+                </FormControl>
+            </Stack>
 
-                    {/* Password input */}
-                    <FormControl>
-                        <FormLabel>Password</FormLabel>
-                        <Tooltip
-                            title={passwordFieldHover}
-                            arrow>
-                            <TextField
-                                name="password"
-                                type={showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                onChange={handleChange}
-                                onKeyDown={handleKeyDown}
+            {/* Submit button */}
+            <Button
+                onClick={handleSubmit}
+                type="submit"
+                color="primary"
+                variant="contained"
+                sx={{ mb: '1rem' }}
+            > Register
+            </Button>
 
-                                // endAdornment represents show / hide password button
-                                InputProps={{
-                                    endAdornment:
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                onClick={handleClickShowPassword}
-                                            > {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                }}
-                                required>
-                            </TextField>
-                        </Tooltip>
-                    </FormControl>
-                </Stack>
+            {/* Feedback message -- error */}
+            {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ mb: '1rem' }}>{error}</Alert>}
 
-                {/* Submit button */}
-                <Button
-                    onClick={handleSubmit}
-                    type="submit"
-                    color="primary"
-                    variant="contained"
-                    sx={{ mb: '1rem' }}
-                > Register
-                </Button>
-
-                {/* Feedback message -- error */}
-                {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ mb: '1rem' }}>{error}</Alert>}
-            </Container>
-
-        </Box >
+            {/* Link to Login page */}
+            <Typography>Already have an account? <Link to="/login">Login</Link></Typography>
+        </Stack>
     )
 }
 

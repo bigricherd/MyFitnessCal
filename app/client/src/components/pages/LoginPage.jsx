@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import authHook from '../../hooks/auth';
 import {
-    Box,
-    Container,
     Typography,
     Stack,
     FormControl,
@@ -45,72 +44,74 @@ function LoginPage() {
     }, [error, prevError]);
 
     return (
-        <Box
-            display="flex"
+        <Stack
+            direction="column"
             justifyContent="center"
             alignItems="center"
-            minHeight="100vh">
-            <Container>
+            minHeight="100vh"
+        >
 
-                {/* Heading */}
-                <Typography variant="h3" gutterBottom>
-                    Login
-                </Typography>
+            {/* Heading */}
+            <Typography variant="h4" gutterBottom>
+                Login
+            </Typography>
 
-                {/* Form fields */}
-                <Stack spacing={2} sx={{ mb: '1rem' }}>
+            {/* Form fields */}
+            <Stack spacing={2} sx={{ mb: '1rem' }}>
 
-                    {/* Username input */}
-                    <FormControl>
-                        <FormLabel>Username</FormLabel>
-                        <TextField
-                            name="username"
-                            value={values.username}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                            required >
-                        </TextField>
-                    </FormControl>
+                {/* Username input */}
+                <FormControl>
+                    <FormLabel>Username</FormLabel>
+                    <TextField
+                        name="username"
+                        value={values.username}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        required >
+                    </TextField>
+                </FormControl>
 
-                    {/* Password input */}
-                    <FormControl>
-                        <FormLabel>Password</FormLabel>
-                        <TextField
-                            name="password"
-                            type={showPassword ? 'text' : 'password'}
-                            value={values.password}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
+                {/* Password input */}
+                <FormControl>
+                    <FormLabel>Password</FormLabel>
+                    <TextField
+                        name="password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={values.password}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
 
-                            // endAdornment represents show / hide password button
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={handleClickShowPassword}
-                                    >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }}
-                            required>
-                        </TextField>
-                    </FormControl>
-                </Stack>
+                        // endAdornment represents show / hide password button
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">
+                                <IconButton
+                                    onClick={handleClickShowPassword}
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        }}
+                        required>
+                    </TextField>
+                </FormControl>
+            </Stack>
 
-                {/* Submit button */}
-                <Button
-                    onClick={handleSubmit}
-                    type="submit"
-                    color="primary"
-                    variant="contained"
-                    sx={{ mb: '1rem' }}
-                > Login
-                </Button>
+            {/* Submit button */}
+            <Button
+                onClick={handleSubmit}
+                type="submit"
+                color="primary"
+                variant="contained"
+                sx={{ mb: '1rem' }}
+            > Login
+            </Button>
 
-                {/* Feedback message -- error */}
-                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
-            </Container>
-        </Box>
+            {/* Feedback message -- error */}
+            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+
+            {/* Link to Register page */}
+            <Typography>New user? <Link to="/register">Register</Link></Typography>
+        </Stack>
     )
 }
 

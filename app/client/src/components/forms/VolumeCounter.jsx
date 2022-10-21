@@ -49,83 +49,96 @@ function VolumeCounter(props) {
 
             <Box component="form" autoComplete="on">
 
-                {/* Form inputs */}
-                <Stack spacing={2}>
+                <Stack
+                    spacing={2}
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+
+                    {/* Form inputs */}
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                        {/* From date input */}
-                        <FormControl>
-                            <DatePicker
-                                views={["day"]}
-                                label="From Date"
-                                value={values.fromDate}
-                                onChange={(newValue) => {
-                                    let event = {
-                                        target: {
-                                            value: newValue,
-                                            name: "fromDate",
-                                        },
-                                    };
-                                    handleChange(event);
-                                }}
-                                renderInput={(params) => (
-                                    <TextField {...params} />
-                                )}
-                                onKeyDown={handleKeyDown}
-                                required
-                            />
-                        </FormControl>
+                        <Stack spacing={2}>
 
-                        {/* To date input */}
-                        <FormControl>
-                            <DatePicker
-                                views={["day"]}
-                                label="To Date"
-                                value={values.toDate}
-                                onChange={(newValue) => {
-                                    let event = {
-                                        target: {
-                                            value: newValue,
-                                            name: "toDate",
-                                        },
-                                    };
-                                    handleChange(event);
-                                }}
-                                renderInput={(params) => (
-                                    <TextField {...params} />
-                                )}
-                                onKeyDown={handleKeyDown}
-                                required
-                            />
-                        </FormControl>
+                            {/* From date input */}
+                            <FormControl >
+                                <DatePicker
+                                    views={["day"]}
+                                    label="From Date"
+                                    value={values.fromDate}
+                                    onChange={(newValue) => {
+                                        let event = {
+                                            target: {
+                                                value: newValue,
+                                                name: "fromDate",
+                                            },
+                                        };
+                                        handleChange(event);
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} />
+                                    )}
+                                    onKeyDown={handleKeyDown}
+                                    required
+                                />
+                            </FormControl>
 
-                        {/* Muscle group input */}
-                        <FormControl>
-                            <Dropdown
-                                name="muscleGroup"
-                                id="muscleGroup"
-                                options={muscleGroups}
-                                value={values.muscleGroup}
-                                onChange={handleChange}
-                                onKeyDown={handleKeyDown}
-                                required
-                            />
-                        </FormControl>
+                            {/* To date input */}
+                            <FormControl>
+                                <DatePicker
+                                    views={["day"]}
+                                    label="To Date"
+                                    value={values.toDate}
+                                    onChange={(newValue) => {
+                                        let event = {
+                                            target: {
+                                                value: newValue,
+                                                name: "toDate",
+                                            },
+                                        };
+                                        handleChange(event);
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} />
+                                    )}
+                                    onKeyDown={handleKeyDown}
+                                    required
+                                />
+                            </FormControl>
+
+                            <FormControl fullWidth>
+                                <Dropdown
+                                    name="muscleGroup"
+                                    id="muscleGroup"
+                                    options={muscleGroups}
+                                    value={values.muscleGroup}
+                                    onChange={handleChange}
+                                    onKeyDown={handleKeyDown}
+                                    required
+                                />
+                            </FormControl>
+                        </Stack>
                     </LocalizationProvider>
-                </Stack>
 
-                {/* Submit button */}
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                    sx={{
-                        marginTop: "1rem"
-                    }}
-                >
-                    Count
-                </Button>
+                    {/* Muscle group input */}
+
+
+
+                    {/* Submit button */}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                        sx={{
+                            marginTop: "1rem"
+                        }}
+                    >
+                        Count
+                    </Button>
+
+                </Stack>
 
                 {/* {error && <Error error={error.messages} />} */}
 

@@ -64,10 +64,8 @@ export default function useForm({ initialValues, slug }) {
                     withCredentials: true
 
                 }).then(res => {
-                    if (res.data.redirect === '/') {
-                        window.location = '/sessions';
-                    } else if (res.data.redirect === '/login') {
-                        window.location = '/login';
+                    if (res.data.redirect) {
+                        window.location = res.data.redirect;
                     }
                     setError(null);
                 })

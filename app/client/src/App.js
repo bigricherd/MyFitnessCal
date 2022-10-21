@@ -4,8 +4,6 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import RegisterPage from "./components/pages/RegisterPage";
 import LoginPage from "./components/pages/LoginPage";
-import SetsPage from "./components/pages/SetsPage";
-import HomePage from "./components/pages/HomePage";
 import SessionsPage from "./components/pages/SessionsPage";
 import Nav from "./components/Nav";
 import AnalyticsPage from "./components/pages/AnalyticsPage";
@@ -85,7 +83,10 @@ function App() {
                         <Route
                             exact
                             path="/"
-                            element={<HomePage user={user} />}
+                            element={<SessionsPage
+                                user={user}
+                                userId={userId}
+                            />}
                         />
                         <Route
                             exact
@@ -115,17 +116,6 @@ function App() {
                                 <AnalyticsPage
                                     user={user}
                                     muscleGroups={muscleGroupsForAnalytics}
-                                />
-                            }
-                        />
-                        <Route
-                            exact
-                            path="/sets"
-                            element={
-                                <SetsPage
-                                    user={user}
-                                    userId={userId}
-                                    muscleGroups={muscleGroups}
                                 />
                             }
                         />

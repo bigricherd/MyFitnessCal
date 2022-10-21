@@ -6,7 +6,6 @@ const methodOverride = require('method-override');
 const { getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
 const { performQuery } = require('./utils/dbModule');
 const { isLoggedIn } = require('./utils/middleware');
-//const errorController = require('./utils/errorController');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));

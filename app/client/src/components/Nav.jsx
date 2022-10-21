@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // This is what we are using right now, as MUILink refreshes the page and logs the user out. Seems like a session problem.
 
 //const drawerWidth = 240;
-const navItems = ['Sessions', 'Exercises', 'Analytics', 'Sets'];
+const navItems = ['Sessions', 'Exercises', 'Analytics'];
 const authPages = ['Register', 'Login'];
 
 const Nav = (props) => {

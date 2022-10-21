@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
 import DefaultCalendarView from "../views/CalendarView";
 import axios from 'axios';
-import formatEnum from "../../helpers/formatEnum";
 import {
     Button,
     Tab,
@@ -10,6 +8,7 @@ import {
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import AddSession from "../forms/AddSession";
+import LoginPage from "./LoginPage";
 
 function SessionsPage(props) {
     console.log('Sessions page render');
@@ -153,18 +152,7 @@ function SessionsPage(props) {
                 </>
 
             ) : (
-                <div>
-                    <p>
-                        <Link to={"/register"} className="text-decoration-none">
-                            Register
-                        </Link>{" "}
-                        or{" "}
-                        <Link to={"/login"} className="text-decoration-none">
-                            Login
-                        </Link>{" "}
-                        first
-                    </p>
-                </div>
+                <LoginPage />
             )}
         </>
     );

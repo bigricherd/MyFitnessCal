@@ -71,7 +71,7 @@ router.get('/logout', (req, res) => {
 
 // Redirect user to home page on login success.
 router.get('/login-success', (req, res) => {
-    res.json({ redirect: '/' });
+    res.json({ redirect: '/sessions' });
 })
 
 router.get('/getUser', (req, res) => {

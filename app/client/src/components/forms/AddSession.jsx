@@ -243,7 +243,7 @@ function AddSession(props) {
                             <TableBody>
                                 {exercises.map((exercise, index) => (
                                     <AddSetsCollapse
-                                        key={exercise.name}
+                                        key={index}
                                         exerciseOptions={props.exercises}
                                         index={index}
                                         exercise={exercise}
