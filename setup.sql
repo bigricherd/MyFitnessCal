@@ -28,7 +28,7 @@
 -- DROP TABLE SESSION;
 -- CREATE TABLE SESSION (
 --    id UUID PRIMARY KEY NOT NULL,
---    title varchar(15) NOT NULL,
+--    title varchar(35) NOT NULL,
 --    startdatetime timestamptz NOT NULL,
 --    enddatetime timestamptz NOT NULL,
 --    owner uuid NOT NULL,
