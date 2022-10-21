@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from 'react';
 import VolumeCollapse from './VolumeCollapse';
 
-function NumSetsTable(props) {
+function VolumeTable(props) {
 
     const entries = Object.entries(props.data);
 
@@ -43,9 +43,6 @@ function NumSetsTable(props) {
                     </TableRow>
                 </TableHead>
 
-                {/* Currently being assigned above */}
-                {/* {tableBody} */}
-
                 <TableBody>
                     {
                         data && (data.length > 1 ?
@@ -63,16 +60,12 @@ function NumSetsTable(props) {
                             // A single muscle group was selected
                             <VolumeCollapse key={data[0][0]} volume={[data[0][0], data[0][1]]} exercises={data[0][2]} />
                         )
-
-
                     }
 
                 </TableBody>
-
-
             </Table>
         </TableContainer>
     )
 }
 
-export default NumSetsTable;
+export default VolumeTable;

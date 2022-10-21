@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import volumeCounter from "../../hooks/volumeCounter";
-import NumSetsTable from "../tables/NumSetsTable";
+import VolumeTable from "../tables/VolumeTable";
 import Dropdown from "../Dropdown";
 import {
     FormControl,
@@ -131,7 +131,7 @@ function VolumeCounter(props) {
 
                 {/* Show number of sets for selected muscle group; rows are collapsible and show exercise breakdowns */}
                 {data && (
-                    <NumSetsTable
+                    <VolumeTable
                         data={data}
                         className="mb-2"
                     />
