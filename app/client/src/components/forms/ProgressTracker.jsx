@@ -12,11 +12,12 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import Dropdown from './Dropdown';
-import exerciseProgress from '../hooks/exerciseProgress';
-import ProgressTable from './tables/ProgressTable';
+import Dropdown from '../Dropdown';
+import exerciseProgress from '../../hooks/exerciseProgress';
+import ProgressTable from '../tables/ProgressTable';
+import ProgressChart from '../ProgressChart';
 
-function ExerciseProgress(props) {
+function ProgressTracker(props) {
     const [exercises, setExercises] = useState(null);
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups.slice(1));
@@ -163,9 +164,11 @@ function ExerciseProgress(props) {
                 </Box>
 
                 {data && <ProgressTable data={data} exercise={values.exercise} />}
+
+                {/* {data && <ProgressChart data={data} exercise={values.exercise} />} */}
             </Container>
         </>
     )
 }
 
-export default ExerciseProgress;
+export default ProgressTracker;

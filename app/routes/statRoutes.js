@@ -103,7 +103,7 @@ router.get('/setsOfExercise', isLoggedIn, async (req, res) => {
     exercise = exercise.toLowerCase();
     exercise = exercise.split(' ').join('_');
 
-    const query = `SELECT * FROM set WHERE (exercise = '${exercise}' AND (date >= '${fromDate}' AND date <= '${toDate}'))`;
+    const query = `SELECT * FROM set WHERE (exercise = '${exercise}' AND (date >= '${fromDate}' AND date <= '${toDate}')) ORDER BY date DESC`;
     const data = await performQuery(query);
 
     let sets = {};
@@ -135,7 +135,6 @@ router.get('/setsOfExercise', isLoggedIn, async (req, res) => {
 });
 
 router.get('/exercisesGrouped', isLoggedIn, async (req, res) => {
-    // TODO query DB get exercises grouped by muscle Group as keys of an object
     const query = `SELECT nameandmusclegroup, musclegroup FROM exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup`;
     const data = await performQuery(query);
     console.log(data.rows);
