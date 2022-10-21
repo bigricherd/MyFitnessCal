@@ -45,7 +45,6 @@ export default function useForm({ initialValues }) {
             await axios({
                 method: 'DELETE',
                 url: `${baseUrl}/api/exercises/?nameandmusclegroup=${exercise}`,
-                headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
                 withCredentials: true
 
             }).then(res => {

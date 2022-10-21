@@ -32,12 +32,7 @@ export default function useForm({ initialValues }) {
         try {
             await axios({
                 method: 'DELETE',
-                url: `${baseUrl}/api/sessions/set`,
-                data: {
-                    setId,
-                    sessionId
-                },
-                headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
+                url: `${baseUrl}/api/sessions/set?setId=${setId}&sessionId=${sessionId}`,
                 withCredentials: true
 
             }).then(res => {

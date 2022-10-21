@@ -38,7 +38,6 @@ router.post("/add", isLoggedIn, async (req, res) => {
     console.log(title, date, startdatetime, enddatetime, comments);
     const userId = req.user.id;
 
-
     // no need to format timestamps since postgres will do it for you
     const id = uuid();
     const query = `INSERT INTO session(id, title, startdatetime, enddatetime, comments, owner) VALUES ('${id}', '${title}', '${startdatetime}', '${enddatetime}', '${comments}', '${userId}')`;
@@ -134,9 +133,9 @@ router.get("/", async (req, res) => {
 
 // Delete session
 router.delete("/", isLoggedIn, async (req, res) => {
-    const { id } = req.body;
+    const { sessionId } = req.query;
 
-    const query = `DELETE FROM session WHERE id = '${id}'`;
+    const query = `DELETE FROM session WHERE id = '${sessionId}'`;
     await performQuery(query);
     const all = await performQuery('SELECT count(id) from session');
     res.send({ count: all.rows[0].count });
@@ -144,7 +143,7 @@ router.delete("/", isLoggedIn, async (req, res) => {
 
 // Delete a set with given ID from a session
 router.delete("/set", isLoggedIn, async (req, res) => {
-    const { setId, sessionId } = req.body;
+    const { setId, sessionId } = req.query;
 
     const query = `DELETE from set WHERE id = '${setId}'`;
     await performQuery(query);
