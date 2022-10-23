@@ -6,7 +6,7 @@ import {
     FormControl,
     Button,
     TextField,
-    Grid,
+    Stack,
     Container
 } from '@mui/material';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -45,9 +45,10 @@ function ProgressTracker(props) {
     const { values, handleChange, handleKeyDown, handleSubmit, error, response } = exerciseProgress({
         muscleGroup: 'Select a muscle group',
         exercise: '',
-        fromDate: new Date(Date.now()),
+        fromDate: null,
         toDate: null
-    });
+    }
+    );
 
     useEffect(() => {
         setData(response);
@@ -64,47 +65,50 @@ function ProgressTracker(props) {
     return (
         <>
             <Container>
-                <Box onSubmit={handleSubmit} component="form">
-
+                <Stack
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    {/* Heading */}
                     <Typography variant="h5" gutterBottom> Progress Tracker for Lifts </Typography>
 
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <Grid container columns={{ xs: 13, md: 21 }}>
-                            <Grid item xs={5} md={4}>
-                                {/* Muscle group dropdown */}
-                                <FormControl required fullWidth>
-                                    <Dropdown
-                                        name="muscleGroup"
-                                        id="muscleGroup"
-                                        options={muscleGroups}
-                                        value={values.muscleGroup || ''}
-                                        onChange={handleChange}
-                                        onKeyDown={handleKeyDown}
-                                    />
-                                </FormControl>
-                            </Grid>
+                    {/* Form */}
+                    <Box onSubmit={handleSubmit} component="form" autoComplete="off">
+                        <Stack spacing={2}>
+                            {/* Muscle group dropdown */}
+                            <FormControl required fullWidth>
+                                <Dropdown
+                                    name="muscleGroup"
+                                    id="muscleGroup"
+                                    options={muscleGroups}
+                                    value={values.muscleGroup || ''}
+                                    onChange={handleChange}
+                                    onKeyDown={handleKeyDown}
+                                />
+                            </FormControl>
 
-                            <Grid item xs={5} md={4}>
-                                {/* Exercise dropdown */}
-                                <FormControl required fullWidth>
-                                    <Dropdown
-                                        name="exercise"
-                                        id="exercise"
-                                        options={exerciseOptions}
-                                        value={values.exercise || ''}
-                                        onChange={handleChange}
-                                        onKeyDown={handleKeyDown}
-                                    />
-                                </FormControl>
-                            </Grid>
+                            {/* Exercise dropdown */}
+                            <FormControl required fullWidth>
+                                <Dropdown
+                                    name="exercise"
+                                    id="exercise"
+                                    options={exerciseOptions}
+                                    value={values.exercise || ''}
+                                    onChange={handleChange}
+                                    onKeyDown={handleKeyDown}
+                                />
+                            </FormControl>
 
-                            <Grid item xs={5} md={4}>
+                            {/* Date pickers */}
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+
                                 {/* From date input */}
-                                <FormControl required fullWidth>
+                                <FormControl>
                                     <DatePicker
                                         views={["day"]}
                                         label="From Date"
-                                        value={values.fromDate}
+                                        value={values.fromDate || null}
                                         onChange={(newValue) => {
                                             let event = {
                                                 target: {
@@ -118,20 +122,16 @@ function ProgressTracker(props) {
                                             <TextField {...params} />
                                         )}
                                         onKeyDown={handleKeyDown}
-                                        required
+                                        required="no"
                                     />
                                 </FormControl>
-                            </Grid>
 
-                            <Grid item xs={1}></Grid>
-
-                            <Grid item xs={5} md={4}>
                                 {/* To date input */}
-                                <FormControl required fullWidth>
+                                <FormControl>
                                     <DatePicker
                                         views={["day"]}
                                         label="To Date"
-                                        value={values.toDate}
+                                        value={values.toDate || null}
                                         onChange={(newValue) => {
                                             let event = {
                                                 target: {
@@ -148,22 +148,32 @@ function ProgressTracker(props) {
                                         required
                                     />
                                 </FormControl>
-                            </Grid>
 
-                            <Grid item xs={1}></Grid>
-                        </Grid>
-                    </LocalizationProvider>
+                            </LocalizationProvider>
+                        </Stack>
 
-                    <Button
-                        type="submit"
-                        variant="contained"
-                    >
-                        Apply
-                    </Button>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                marginTop: "1rem"
+                            }}
+                        >
+                            Apply
+                        </Button>
 
-                </Box>
+                    </Box>
 
-                {data && <ProgressTable data={data} exercise={values.exercise} />}
+                    {/* Results */}
+                    <Stack>
+                        {data && <ProgressTable data={data} exercise={values.exercise} />}
+                    </Stack>
+
+                </Stack>
+
+
+
+
 
                 {/* {data && <ProgressChart data={data} exercise={values.exercise} />} */}
             </Container>

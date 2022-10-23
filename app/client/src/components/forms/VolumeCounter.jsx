@@ -47,14 +47,15 @@ function VolumeCounter(props) {
                 Training Volume Calculator
             </Typography>
 
-            <Box component="form" autoComplete="on">
 
-                <Stack
-                    spacing={2}
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                >
+
+            <Stack
+                spacing={2}
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Box component="form" autoComplete="off">
 
                     {/* Form inputs */}
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -107,6 +108,7 @@ function VolumeCounter(props) {
                                 />
                             </FormControl>
 
+                            {/* Muscle group input */}
                             <FormControl fullWidth>
                                 <Dropdown
                                     name="muscleGroup"
@@ -121,10 +123,6 @@ function VolumeCounter(props) {
                         </Stack>
                     </LocalizationProvider>
 
-                    {/* Muscle group input */}
-
-
-
                     {/* Submit button */}
                     <Button
                         type="submit"
@@ -138,18 +136,23 @@ function VolumeCounter(props) {
                         Count
                     </Button>
 
+                </Box>
+                <Stack >
+                    {data && (
+                        <VolumeTable
+                            data={data}
+                            className="mb-2"
+                        />
+                    )}
                 </Stack>
 
-                {/* {error && <Error error={error.messages} />} */}
+            </Stack>
 
-                {/* Show number of sets for selected muscle group; rows are collapsible and show exercise breakdowns */}
-                {data && (
-                    <VolumeTable
-                        data={data}
-                        className="mb-2"
-                    />
-                )}
-            </Box>
+            {/* {error && <Error error={error.messages} />} */}
+
+            {/* Show number of sets for selected muscle group; rows are collapsible and show exercise breakdowns */}
+
+
         </Container>
     );
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 
 // ------ This hook submits the forms in the ExerciseProgress component with a GET reqyest; its values are {fromDate, toDate, exercise} ------
 // form values are passed in the query string as they do not contain sensitive information, simply user selections of the filters
-export default function useForm({ initialValues, slug }) {
+export default function useForm({ initialValues }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
     const [response, setResponse] = useState(null);
@@ -30,8 +30,8 @@ export default function useForm({ initialValues, slug }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(values);
-        values.fromDate = values.fromDate || new Date();
-        values.toDate = values.toDate || new Date();
+        // values.fromDate = values.fromDate || new Date();
+        // values.toDate = values.toDate || new Date();
         console.log(values);
         submitData({ values });
     };

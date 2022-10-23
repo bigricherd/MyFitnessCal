@@ -32,7 +32,7 @@ function VolumeTable(props) {
     return (
         <TableContainer component={Paper} sx={{ mt: '1rem' }}>
             <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
-                # Sets Per Muscle Group
+                Results
             </Typography>
             <Table>
                 <TableHead>
