@@ -6,10 +6,13 @@ import {
     Box,
     Alert,
     Typography,
-    FormControl,
-    FormLabel,
-    TextField
+    TableContainer,
+    Table,
+    TableRow,
+    TableBody,
+    TableCell
 } from '@mui/material';
+import { DeleteOutline } from '@mui/icons-material/';
 import Dropdown from './Dropdown';
 import deleteExercise from '../hooks/deleteExercise';
 import DeleteExercisePopup from './popups/DeleteExercisePopup';
@@ -98,38 +101,68 @@ function MyExercises(props) {
 
     // ------ LIST OF EXERCISES ------
 
-    // State variable that represents the list of exercises created by the current user
-    const [list, setList] = useState(props.exercisesByUser.map((item, index) =>
-        <Grid container key={index} className="myExercisesItem">
-            <Box component={Grid} item xs={9} sm={10} bgcolor={'white'} color={'gray'}>
-                {(formatEnum([item.split(':')[0]]))}
-            </Box>
-
-            <Button fullWidth variant="contained" color='success' onClick={(e) => handleClickOpen(e, index)}>
-                <Grid item xs={3} sm={2}>X</Grid>
-            </Button>
-        </Grid >
-    ));
+    const [exercisesByUser, setExercisesByUser] = useState([]);
 
     useEffect(() => {
-        setList(props.exercisesByUser.map((item, index) =>
-            <Grid container key={index} className="myExercisesItem" >
+        setExercisesByUser(props.exercisesByUser)
+    }, [props]);
+
+    // State variable that represents the list of exercises created by the current user
+    // const [list, setList] = useState(props.exercisesByUser.map((item, index) =>
+    //     // <Grid container key={index} className="myExercisesItem">
+    //     //     <Box component={Grid} item xs={7} bgcolor={'white'} color={'gray'}>
+    //     //         {(formatEnum([item.split(':')[0]]))}
+    //     //     </Box>
+
+    //     //     <Button fullWidth variant="contained" color='success' onClick={(e) => handleClickOpen(e, index)}>
+    //     //         <Grid item xs={2}>X</Grid>
+    //     //     </Button>
+    //     // </Grid >
+    //     <TableRow container key={index} className="myExercisesItem" >
+
+    //         {/* Exercise name */}
+    //         <TableCell colSpan={12}>
+    //             {(formatEnum([item.split(':')[0]]))}
+    //         </TableCell>
+
+    //         {/* <Button component={Grid} item xs={3} sm={2} fullWidth variant="contained" color='info' onClick={(e) => handleClickEdit(e, index)}>Edit</Button> */}
+
+    //         {/* Delete button */}
+    //         <TableCell>
+    //             <Button variant="contained" onClick={(e) => handleClickOpen(e, index)}>
+    //                 X
+    //             </Button>
+    //         </TableCell>
+    //     </TableRow >
+    // ));
+
+    const [list, setList] = useState([]);
+
+    useEffect(() => {
+        setList(exercisesByUser.map((item, index) =>
+            // TODO style for desktop
+            <TableRow container key={index} className="myExercisesItem" >
 
                 {/* Exercise name */}
-                <Box component={Grid} item xs={10} bgcolor={'white'} color={'gray'}>
+                <TableCell colSpan={4} align="center">
                     {(formatEnum([item.split(':')[0]]))}
-                </Box>
+                </TableCell>
 
                 {/* <Button component={Grid} item xs={3} sm={2} fullWidth variant="contained" color='info' onClick={(e) => handleClickEdit(e, index)}>Edit</Button> */}
 
                 {/* Delete button */}
-                <Button component={Grid} item xs={2} variant="contained" onClick={(e) => handleClickOpen(e, index)}>
-                    X
-                </Button>
-            </Grid >
+                <TableCell colSpan={3} align="right">
+                    <Button
+                        size="small"
+                        onClick={(e) => handleClickOpen(e, index)}
+                    >
+                        <DeleteOutline />
+                    </Button>
+                </TableCell>
+            </TableRow >
         ));
         // setMuscleGroups(props.muscleGroups);
-    }, [props]); // React complains that onDeleteClick is a missing dependency, but adding it results in "maximum update depth exceeded"
+    }, [exercisesByUser]); // React complains that onDeleteClick is a missing dependency, but adding it results in "maximum update depth exceeded"
 
     useEffect(() => {
         props.liftState(exercisesPostDelete);
@@ -151,7 +184,10 @@ function MyExercises(props) {
     const handleCloseError = () => { setShowError(false); }
 
     useEffect(() => {
-        if (error) setShowError(true);
+        if (error) {
+            setShowError(true);
+            setShowSuccessMsg(false);
+        }
     }, [error, prevError]);
 
     return (
@@ -205,13 +241,31 @@ function MyExercises(props) {
             </Dialog> */}
 
             {/* List of exercises (main component content) */}
-            <Typography variant="h3" gutterBottom>
+            <Typography
+                variant="h5"
+                sx={{
+                    marginTop: '2%',
+                    marginBottom: '4%'
+                }}
+            >
                 My Exercises
             </Typography>
 
-            <div className="myExercises">
+            {/* <div className="myExercises">
                 {list}
-            </div>
+            </div> */}
+            <TableContainer
+                sx={{
+                    maxHeight: "40vh",
+                    maxWidth: "80%",
+                    margin: "auto"
+                }}>
+                <Table>
+                    <TableBody>
+                        {list}
+                    </TableBody>
+                </Table>
+            </TableContainer>
 
             {/* Feedback messages */}
             {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ mt: '1rem' }}>{successMsg}</Alert>}

@@ -44,17 +44,6 @@ nav.fixed-top {
     }
 }
 
-.myExercises {
-    max-height: 260px;
-    overflow-y: scroll;
-    margin: 0 auto;
-}
-
-div.row.myExercisesItem {
-    flex-wrap: nowrap;
-    --bs-gutter-x: 0;
-}
-
 .drawerLink {
     color: #515151;
 }
