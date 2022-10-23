@@ -112,16 +112,22 @@ function SessionsPage(props) {
             {user ? (
                 <>
                     <Button
-                        variant="contained"
+                        variant="outlined"
                         onClick={() => { setShowAddSession(true) }}
                         sx={{
-                            marginTop: "5rem",
+                            marginTop: "5.5rem",
                             marginBottom: "1rem"
                         }}
                     >
                         Create Session
                     </Button>
-                    <AddSession open={showAddSession} onClose={() => setShowAddSession(false)} exercises={exercises} liftState={setNumSessions} />
+                    <AddSession
+                        open={showAddSession}
+                        onClose={() => setShowAddSession(false)}
+                        exercises={exercises}
+                        exercisesByUser={exercisesByUser}
+                        liftState={setNumSessions}
+                    />
 
                     <Box>
                         <TabContext value={view} aria-label="tabs" centered>

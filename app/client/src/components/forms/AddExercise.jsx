@@ -9,7 +9,8 @@ import {
     Grid,
     TextField,
     Box,
-    Alert
+    Alert,
+    Stack
 } from "@mui/material";
 
 function AddExercise(props) {
@@ -80,50 +81,67 @@ function AddExercise(props) {
     }
 
     useEffect(() => {
-        if (error) setShowError(true);
+        if (error) {
+            setShowError(true);
+            setShowSuccessMsg(false);
+        }
     }, [error, prevError]);
 
     return (
         <Grid item xs={10} sm={8}>
             <Box onSubmit={customHandleSubmit} component="form" noValidate>
 
-                {/* Heading */}
-                <Typography variant="h3" gutterBottom>
-                    Add Exercise
-                </Typography>
+                <Stack
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
+                >
 
-                {/* Exercise name input */}
-                <FormControl required fullWidth>
-                    <FormLabel>Name</FormLabel>
-                    <TextField
-                        name="exercise"
-                        id="exercise"
-                        value={values.exercise}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                    ></TextField>
-                </FormControl>
+                    {/* Heading */}
+                    <Typography
+                        variant="h5"
+                        sx={{ marginTop: '8%' }}
+                    >
+                        Add Exercise
+                    </Typography>
 
-                {/* Muscle group dropdown */}
-                <FormControl required fullWidth>
-                    <Dropdown
-                        name="muscleGroup"
-                        id="muscleGroup"
-                        options={muscleGroups}
-                        value={values.muscleGroup}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                    />
-                </FormControl>
+                    <Stack spacing={2}>
+                        {/* Exercise name input */}
+                        <FormControl required fullWidth>
+                            <FormLabel>Name</FormLabel>
+                            <TextField
+                                name="exercise"
+                                id="exercise"
+                                value={values.exercise}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                            ></TextField>
+                        </FormControl>
 
-                {/* Submit button */}
-                <Button className="mb-3"
-                    onClick={customHandleSubmit}
-                    type="submit"
-                    color="primary"
-                    variant="contained"
-                > Add exercise
-                </Button>
+                        {/* Muscle group dropdown */}
+                        <FormControl required fullWidth>
+                            <Dropdown
+                                name="muscleGroup"
+                                id="muscleGroup"
+                                options={muscleGroups}
+                                value={values.muscleGroup}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                            />
+                        </FormControl>
+                    </Stack>
+
+                    {/* Submit button */}
+                    <Button className="mb-3"
+                        onClick={customHandleSubmit}
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                    > Add
+                    </Button>
+
+
+                </Stack>
             </Box>
 
             {/* Feedback messages */}

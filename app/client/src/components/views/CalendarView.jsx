@@ -59,7 +59,8 @@ function DefaultCalendarView(props) {
             style={{
                 backgroundColor: "white",
                 height: "75vh",
-                width: "80vw",
+                maxWidth: "1000px",
+                margin: "auto"
             }}
         >
             <SessionPopup
@@ -81,6 +82,7 @@ function DefaultCalendarView(props) {
                 onPageChange={onPageChange}
                 timeFormat={"24"}
                 weekDayStart={"Monday"}
+                timezone={"America/Vancouver"}
                 language={"en"}
                 showTimeLine={true}
                 autoScroll={true}
