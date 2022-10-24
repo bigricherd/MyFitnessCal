@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { isBefore, isEqual } from 'date-fns';
 import axios from 'axios';
 
 // ------ This hook is identical to useForm, except it submits the forms in Register and Login components so its values are {username, password} ------
@@ -41,13 +42,35 @@ export default function useForm({ initialValues }) {
         if (event.keyCode === enter) {
             handleSubmit(event);
         }
-    }
+    };
+
+    const validateInputs = (values) => {
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { title, date, startdatetime, enddatetime } = values;
+        if (title === "" || date === "" || startdatetime === "" || enddatetime === "") {
+            setError("Please fill out required fields.");
+            return false;
+        } else {
+            startdatetime.setDate(date.getDate());
+            enddatetime.setDate(date.getDate());
+            if (isBefore(enddatetime, startdatetime) || isEqual(enddatetime, startdatetime)) {
+                setError("End time must come after start time.");
+                return false;
+            }
+        }
+        return true;
+    };
 
     //submit form when submit button is clicked
     const handleSubmit = event => {
         event.preventDefault();
-        console.log(values);
-        submitData({ values });
+        if (validateInputs(values)) {
+            submitData({ values });
+        }
     };
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
@@ -60,44 +83,34 @@ export default function useForm({ initialValues }) {
         // Sets start and end times to be on the selected date; necessary because it defaults to today.
         startdatetime.setDate(date.getDate());
         enddatetime.setDate(date.getDate());
-        if (title === '') {
+        try {
+            await axios({
+                method: 'POST',
+                url: `${baseUrl}/api/sessions/add`,
+                data: {
+                    title,
+                    comments,
+                    date,
+                    startdatetime,
+                    enddatetime,
+                    sets
+                },
+                headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
+                withCredentials: true
+
+            }).then(res => {
+                setNumSessions(res.data.count);
+                setError(null);
+            })
+        } catch (err) {
+            console.log(err);
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {
                 setPrevError(null);
             }
-            setError('Title cannot be blank');
-        } else {
-            try {
-                await axios({
-                    method: 'POST',
-                    url: `${baseUrl}/api/sessions/add`,
-                    data: {
-                        title,
-                        comments,
-                        date,
-                        startdatetime,
-                        enddatetime,
-                        sets
-                    },
-                    headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
-                    withCredentials: true
-
-                }).then(res => {
-                    setNumSessions(res.data.count);
-                    setError(null);
-                })
-            } catch (err) {
-                console.log(err);
-                if (!prevError || (error !== prevError)) {
-                    setPrevError(error);
-                } else {
-                    setPrevError(null);
-                }
-                setError(err.response.data.message);
-            }
+            setError(err.response.data.message);
         }
-
     };
     return {
         handleChange,

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { isBefore, isEqual } from 'date-fns';
 
 // ------ This hook submits the forms in the ExerciseProgress component with a GET reqyest; its values are {fromDate, toDate, exercise} ------
 // form values are passed in the query string as they do not contain sensitive information, simply user selections of the filters
 export default function useForm({ initialValues }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
+    const [prevError, setPrevError] = useState(null);
     const [response, setResponse] = useState(null);
 
     //track form values
@@ -26,14 +28,45 @@ export default function useForm({ initialValues }) {
         }
     };
 
+    const validateInputs = (values) => {
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { exercise, fromDate, toDate, exerciseOptions } = values;
+
+        console.log(values);
+        console.log(error);
+        console.log(prevError);
+
+        // Empty fields
+        if (exercise === "" || !fromDate || fromDate === null || !toDate || toDate === null) {
+            setError("Please fill out empty fields.");
+            return false;
+        } else {
+            // End date is not after start date
+            if (isBefore(toDate, fromDate) || isEqual(toDate, fromDate)) {
+                setError("End date must come after start date.");
+                return false;
+            }
+            // Invalid muscle group
+            if (exerciseOptions.indexOf(exercise) === -1) {
+                setError("Invalid muscle group.");
+                return false;
+            }
+        }
+        return true;
+    };
+
+
+
     //submit form when submit button is clicked
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(values);
-        // values.fromDate = values.fromDate || new Date();
-        // values.toDate = values.toDate || new Date();
-        console.log(values);
-        submitData({ values });
+        if (validateInputs(values)) {
+            submitData({ values });
+        }
     };
 
     const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";

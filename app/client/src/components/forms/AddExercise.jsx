@@ -13,6 +13,8 @@ import {
     Stack
 } from "@mui/material";
 
+// TODO store muscle Groups array here
+
 function AddExercise(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
@@ -30,7 +32,8 @@ function AddExercise(props) {
         initialValues: {
             exercise: "",
             muscleGroup: "",
-        }
+        },
+        muscleGroups: props.muscleGroups
     });
 
     // Update state when props changes, i.e., when muscleGroups in Forms.jsx changes
@@ -38,29 +41,13 @@ function AddExercise(props) {
         setMuscleGroups(props.muscleGroups);
     }, [props]);
 
-    // Update state in parent (Forms.jsx) when an exercise is added, i.e. setExercisesByUser(exercisesPostAdd)
+    // Update state in parent (ExercisesPage.jsx) when an exercise is added, i.e. setExercisesByUser(exercisesPostAdd)
     useEffect(() => {
         if (exercisesPostAdd && exercisesPostAdd.length > 0) {
             console.log("going to lift state");
             props.liftState(exercisesPostAdd);
         }
     }, [exercisesPostAdd]);
-
-    // Add exercise handler
-    const customHandleSubmit = (e) => {
-        handleSubmit(e);
-
-        // This loop clears all input fields but skips the last element in the array because it is the submit button.
-        for (let i = 0; i < e.target.length - 1; i++) {
-            const inputField = e.target[i];
-            inputField.value = "";
-            console.log(inputField);
-        }
-
-        // Clear values fields. Without this, input fields will clear on submit but revert to previous contents on next change
-        values.muscleGroup = "";
-        values.exercise = "";
-    };
 
     // Setup to show feedback messages -- success
     const [showSuccessMsg, setShowSuccessMsg] = useState(false);
@@ -89,7 +76,7 @@ function AddExercise(props) {
 
     return (
         <Grid item xs={10} sm={8}>
-            <Box onSubmit={customHandleSubmit} component="form" noValidate>
+            <Box onSubmit={handleSubmit} component="form" noValidate>
 
                 <Stack
                     justifyContent="center"
@@ -133,14 +120,12 @@ function AddExercise(props) {
 
                     {/* Submit button */}
                     <Button className="mb-3"
-                        onClick={customHandleSubmit}
+                        onClick={handleSubmit}
                         type="submit"
                         color="primary"
                         variant="contained"
                     > Add
                     </Button>
-
-
                 </Stack>
             </Box>
 

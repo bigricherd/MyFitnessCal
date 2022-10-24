@@ -141,7 +141,7 @@ function MyExercises(props) {
     useEffect(() => {
         setList(exercisesByUser.map((item, index) =>
             // TODO style for desktop
-            <TableRow container key={index} className="myExercisesItem" >
+            <TableRow key={index} className="myExercisesItem" >
 
                 {/* Exercise name */}
                 <TableCell colSpan={4} align="center">
@@ -251,9 +251,6 @@ function MyExercises(props) {
                 My Exercises
             </Typography>
 
-            {/* <div className="myExercises">
-                {list}
-            </div> */}
             <TableContainer
                 sx={{
                     maxHeight: "40vh",

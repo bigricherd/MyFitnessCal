@@ -9,11 +9,14 @@ import {
     Stack,
     Button,
     Typography,
+    Alert
 } from "@mui/material";
 import Container from "@mui/material/Container";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
+// TODO store muscle Groups array here
 
 function VolumeCounter(props) {
     const [muscleGroups, setMuscleGroups] = useState([]);
@@ -23,14 +26,26 @@ function VolumeCounter(props) {
     }, [props]);
 
     // Filter hook
-    const { values, handleChange, handleKeyDown, handleSubmit, error, data } =
+    const { values, handleChange, handleKeyDown, handleSubmit, error, prevError, data } =
         volumeCounter({
             initialValues: {
                 fromDate: null,
                 toDate: null,
                 muscleGroup: "",
-            }
+            },
+            muscleGroups: props.muscleGroups
         });
+
+    // Setup to show feedback messages -- error
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) setShowError(true);
+    }, [error, prevError]);
 
     return (
         <Container fixed>
@@ -47,15 +62,13 @@ function VolumeCounter(props) {
                 Training Volume Calculator
             </Typography>
 
-
-
             <Stack
                 spacing={2}
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
             >
-                <Box component="form" autoComplete="off">
+                <Box onSubmit={handleSubmit} component="form" autoComplete="off">
 
                     {/* Form inputs */}
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -109,15 +122,14 @@ function VolumeCounter(props) {
                             </FormControl>
 
                             {/* Muscle group input */}
-                            <FormControl fullWidth>
+                            <FormControl rules={{ required: true }} fullWidth>
                                 <Dropdown
                                     name="muscleGroup"
                                     id="muscleGroup"
                                     options={muscleGroups}
-                                    value={values.muscleGroup}
+                                    value={values.muscleGroup || ''}
                                     onChange={handleChange}
                                     onKeyDown={handleKeyDown}
-                                    required
                                 />
                             </FormControl>
                         </Stack>
@@ -137,6 +149,8 @@ function VolumeCounter(props) {
                     </Button>
 
                 </Box>
+
+                {/* Show number of sets for selected muscle group; rows are collapsible and show exercise breakdowns */}
                 <Stack >
                     {data && (
                         <VolumeTable
@@ -148,10 +162,8 @@ function VolumeCounter(props) {
 
             </Stack>
 
-            {/* {error && <Error error={error.messages} />} */}
-
-            {/* Show number of sets for selected muscle group; rows are collapsible and show exercise breakdowns */}
-
+            {/* Feedback messages */}
+            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
 
         </Container>
     );

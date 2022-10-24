@@ -13,6 +13,7 @@ import {
     DialogActions,
     Table,
     TableBody,
+    Alert
 } from '@mui/material';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -76,7 +77,9 @@ function AddSession(props) {
         setExercises([]);
     }
 
+    // Assign state variable 'exercises' to values.sets array
     const customHandleSubmit = (event) => {
+        console.log(event.target.form);
         const allSets = [];
         for (let exercise of exercises) {
             allSets.push(...exercise.sets);
@@ -85,6 +88,7 @@ function AddSession(props) {
         handleSubmit(event);
     }
 
+    // Add Session hook
     const { handleChange, handleKeyDown, values, setValues, handleSubmit, error, prevError, numSessions } = addSession({
         initialValues: {
             title: '',
@@ -98,7 +102,18 @@ function AddSession(props) {
 
     useEffect(() => {
         props.liftState(numSessions);
-    }, [numSessions])
+    }, [numSessions]);
+
+    // Setup to show feedback messages -- error
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) setShowError(true);
+    }, [error, prevError]);
 
     return (
         <Dialog
@@ -111,7 +126,7 @@ function AddSession(props) {
             <DialogContent>
 
                 {/* Add session form; consider creating a separate component */}
-                <Grid container spacing={2} onSubmit={customHandleSubmit} component="form" noValidate sx={{
+                <Grid container spacing={2} onSubmit={customHandleSubmit} component="form" noValidate={true} sx={{
                     "marginBottom": "1.5rem"
                 }}>
 
@@ -125,6 +140,7 @@ function AddSession(props) {
                                 value={values.title}
                                 onChange={handleChange}
                                 onKeyDown={handleKeyDown}
+                                // error={values.title === ""}
                                 required
                             />
                         </FormControl>
@@ -138,7 +154,7 @@ function AddSession(props) {
                                     id="date"
                                     views={["day"]}
                                     label="Date"
-                                    value={values.date}
+                                    value={values.date || null}
                                     onChange={(newValue) => {
                                         let event = {
                                             target: {
@@ -149,10 +165,12 @@ function AddSession(props) {
                                         handleChange(event);
                                     }}
                                     renderInput={(params) => (
-                                        <TextField {...params} />
+                                        <TextField {...params}
+                                            required
+                                        />
                                     )}
                                     onKeyDown={handleKeyDown}
-                                    required
+
                                 />
                             </FormControl>
                         </Grid>
@@ -162,7 +180,7 @@ function AddSession(props) {
                             <FormControl fullWidth>
                                 <TimePicker
                                     label="Start time"
-                                    value={values.startdatetime}
+                                    value={values.startdatetime || null}
                                     onChange={(newValue) => {
                                         let event = {
                                             target: {
@@ -172,7 +190,10 @@ function AddSession(props) {
                                         };
                                         handleChange(event);
                                     }}
-                                    renderInput={(params) => <TextField {...params} />}
+                                    onKeyDown={handleKeyDown}
+                                    renderInput={(params) => <TextField {...params}
+                                        required
+                                    />}
                                 >
 
                                 </TimePicker>
@@ -184,7 +205,7 @@ function AddSession(props) {
                             <FormControl fullWidth>
                                 <TimePicker
                                     label="End time"
-                                    value={values.enddatetime}
+                                    value={values.enddatetime || null}
                                     onChange={(newValue) => {
                                         let event = {
                                             target: {
@@ -194,7 +215,10 @@ function AddSession(props) {
                                         };
                                         handleChange(event);
                                     }}
-                                    renderInput={(params) => <TextField {...params} />}
+                                    onKeyDown={handleKeyDown}
+                                    renderInput={(params) => <TextField {...params}
+                                        required
+                                    />}
                                 >
 
                                 </TimePicker>
@@ -257,6 +281,9 @@ function AddSession(props) {
                     </Grid>
 
                 </Grid>
+
+                {/* Feedback messages */}
+                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
             </DialogContent>
 
             <DialogActions>
@@ -267,8 +294,8 @@ function AddSession(props) {
                     type="submit"
                     onClick={(e) => {
                         customHandleSubmit(e);
-                        props.onClose();
-                        resetFormFields();
+                        //props.onClose();
+                        //resetFormFields();
                     }}
                     variant="contained"
                     color="success"

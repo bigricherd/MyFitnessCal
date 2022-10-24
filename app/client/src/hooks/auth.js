@@ -23,12 +23,31 @@ export default function useForm({ initialValues, slug }) {
         if (event.keyCode === enter) {
             handleSubmit(event);
         }
+    };
+
+    const validateInputs = (values) => {
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { username, password } = values;
+        if (username === "" || password === "") {
+            setError("Please fill out empty fields.");
+            return false;
+        } else if (username.length > 30) {
+            setError("Username is too long. Limit: 30 characters.");
+            return false;
+        }
+        return true;
     }
 
     //submit form when submit button is clicked
     const handleSubmit = event => {
         event.preventDefault();
-        submitData({ values });
+        if (validateInputs(values)) {
+            submitData({ values });
+        }
     };
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';

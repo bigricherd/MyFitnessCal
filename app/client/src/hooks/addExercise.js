@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 // ------ Custom form control: submits AddSet and AddExercise forms and redirects to home if successful or login if unsuccessful ------
-export default function useForm({ initialValues }) {
+export default function useForm({ initialValues, muscleGroups }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
     const [prevError, setPrevError] = useState(null);
@@ -28,10 +28,32 @@ export default function useForm({ initialValues }) {
         }
     };
 
+    const validateInputs = (values) => {
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { exercise, muscleGroup } = values;
+        if (exercise === "" || muscleGroup === "") {
+            setError("Please fill out empty fields.");
+            return false;
+        } else if (muscleGroups.indexOf(muscleGroup) === -1) {
+            setError("Invalid muscle group. Please try again.");
+            return false;
+        } else if (exercise.length > 25) {
+            setError("Exercise name is too long, limit: 30 characters. Consider using acronyms like 'BB' or 'OH.'");
+            return false;
+        }
+        return true;
+    };
+
     //submit form when submit button is clicked
     const handleSubmit = (event) => {
         event.preventDefault();
-        submitData({ values });
+        if (validateInputs(values)) {
+            submitData({ values });
+        }
     };
 
     const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
@@ -63,6 +85,10 @@ export default function useForm({ initialValues }) {
                 setSuccessMsg(res.data.message);
                 setExercisesPostAdd(res.data.exercises);
                 setError(null);
+
+                // CLear fields
+                values.muscleGroup = "";
+                values.exercise = "";
             });
         } catch (err) {
             console.log(err);

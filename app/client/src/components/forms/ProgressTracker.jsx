@@ -7,15 +7,18 @@ import {
     Button,
     TextField,
     Stack,
-    Container
+    Container,
+    Alert
 } from '@mui/material';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Dropdown from '../Dropdown';
-import exerciseProgress from '../../hooks/exerciseProgress';
+import progressTracker from '../../hooks/progressTracker';
 import ProgressTable from '../tables/ProgressTable';
 import ProgressChart from '../ProgressChart';
+
+// TODO store muscle Groups array here
 
 function ProgressTracker(props) {
     const [exercises, setExercises] = useState(null);
@@ -42,11 +45,12 @@ function ProgressTracker(props) {
         fetchExercises();
     }, []);
 
-    const { values, handleChange, handleKeyDown, handleSubmit, error, response } = exerciseProgress({
+    const { values, handleChange, handleKeyDown, handleSubmit, error, prevError, response } = progressTracker({
         muscleGroup: 'Select a muscle group',
         exercise: '',
         fromDate: null,
-        toDate: null
+        toDate: null,
+        exerciseOptions: []
     }
     );
 
@@ -59,8 +63,20 @@ function ProgressTracker(props) {
             let temp = values.muscleGroup.toLowerCase().split(" ").join("_");
             values.exercise = '';
             setExerciseOptions(exercises[temp]);
+            values.exerciseOptions = exercises[temp];
         }
     }, [values.muscleGroup]);
+
+    // Setup to show feedback messages -- error
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) setShowError(true);
+    }, [error, prevError]);
 
     return (
         <>
@@ -77,7 +93,7 @@ function ProgressTracker(props) {
                     <Box onSubmit={handleSubmit} component="form" autoComplete="off">
                         <Stack spacing={2}>
                             {/* Muscle group dropdown */}
-                            <FormControl required fullWidth>
+                            <FormControl fullWidth>
                                 <Dropdown
                                     name="muscleGroup"
                                     id="muscleGroup"
@@ -89,7 +105,7 @@ function ProgressTracker(props) {
                             </FormControl>
 
                             {/* Exercise dropdown */}
-                            <FormControl required fullWidth>
+                            <FormControl fullWidth>
                                 <Dropdown
                                     name="exercise"
                                     id="exercise"
@@ -171,9 +187,8 @@ function ProgressTracker(props) {
 
                 </Stack>
 
-
-
-
+                {/* Feedback messages */}
+                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
 
                 {/* {data && <ProgressChart data={data} exercise={values.exercise} />} */}
             </Container>
