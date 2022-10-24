@@ -10,16 +10,16 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ProgressCollapse from './ProgressCollapse';
-import formatEnum from '../../helpers/formatEnum';
+import formatExercise from '../../helpers/formatExercise';
 
 function ProgressTable(props) {
 
     const [data, setData] = useState(Object.entries(props.data));
-    const [exercise, setExercise] = useState(formatEnum([props.exercise.split(":")[0]]));
+    const [exercise, setExercise] = useState(formatExercise(props.exercise.split(":")[0]));
 
     useEffect(() => {
         setData(Object.entries(props.data));
-        setExercise(formatEnum([props.exercise.split(":")[0]]))
+        setExercise(formatExercise(props.exercise.split(":")[0]))
     }, [props.data]);
 
     return (

@@ -4,6 +4,7 @@ const { performQuery } = require('../utils/dbModule');
 const { v4: uuid } = require('uuid');
 const { getExercisesArray, getMuscleGroups } = require('../utils/fetchEnums');
 const { isLoggedIn } = require('../utils/middleware');
+const { formatExercise } = require('../utils/formatExercise');
 
 // ---------- SET LOCAL VARIABLES REPRESENTING ENUMS (exercise, muscleGroup) ----------
 let exercises, muscleGroups = [];
@@ -14,6 +15,28 @@ const getEnums = async () => {
 }
 
 getEnums();
+
+router.get("/all", (req, res) => {
+    getEnums();
+    res.send({ message: "Exercises requested", exercises });
+});
+
+// This route is hit when the Exercises or Sessions pages load
+// Returns the list of exercises added by the currently logged in user
+router.get("/byCurrentUser", isLoggedIn, async (req, res) => {
+    const { id } = req.query;
+    console.log(id);
+    const query = `SELECT nameandmusclegroup FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
+    const data = await performQuery(query);
+
+    const exercisesByUser = [];
+    for (let row of data.rows) {
+        exercisesByUser.push(row.nameandmusclegroup);
+    }
+    ///res.send({ message: 'enums requested', exercisesByUser });
+    console.log(exercisesByUser);
+    res.send({ exercisesByUser });
+});
 
 // Add an exercise to the Exercises table
 router.post("/add", isLoggedIn, async (req, res, next) => {
@@ -60,9 +83,9 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
 
         if (single.rows.length === 1) {
             console.log('exercises matched');
-            response.message = `Successfully added exercise ${req.body.exercise}`;
+            response.message = `Successfully added exercise ${formatExercise(req.body.exercise, " ")}`;
         } else {
-            response.message = `Exercise ${req.body.exercise} was not added.`;
+            response.message = `Exercise ${formatExercise(req.body.exercise, " ")} was not added.`;
         }
 
     } catch (err) {
@@ -70,7 +93,7 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
     }
 
     return res.send(response);
-})
+});
 
 router.delete('/', isLoggedIn, async (req, res) => {
     const { nameandmusclegroup } = req.query;
@@ -81,7 +104,7 @@ router.delete('/', isLoggedIn, async (req, res) => {
     try {
         const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${nameandmusclegroup}'`;
         await performQuery(query);
-        const msg = `Successfully deleted exercise ${name.toLowerCase().split('_').map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' ')}`;
+        const msg = `Successfully deleted exercise ${formatExercise(name)}`;
 
         response.message = msg;
         await getEnums();
@@ -101,6 +124,6 @@ router.delete('/', isLoggedIn, async (req, res) => {
     }
 
     return res.send(response);
-})
+});
 
 module.exports = router;

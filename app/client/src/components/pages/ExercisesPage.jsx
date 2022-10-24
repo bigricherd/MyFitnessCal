@@ -19,14 +19,12 @@ function ExercisesPage(props) {
 
     // Fetch exercises created by currently logged in user
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
-    const url = `${baseUrl}/api/enums/byCurrentUser`;
+
+    const url = `${baseUrl}/api/exercises/byCurrentUser?id=${userId}`;
     const fetchExercisesByUser = useCallback(async () => {
         const userExercises = await axios({
-            method: 'POST',
+            method: 'GET',
             url: url,
-            data: {
-                id: userId
-            },
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

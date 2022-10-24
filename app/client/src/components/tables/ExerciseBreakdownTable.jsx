@@ -7,7 +7,7 @@ import {
     TableCell,
     TableBody
 } from '@mui/material';
-import formatEnum from '../../helpers/formatEnum';
+import formatExercise from '../../helpers/formatExercise';
 
 function ExerciseBreakdownTable(props) {
 
@@ -30,7 +30,7 @@ function ExerciseBreakdownTable(props) {
                             <TableRow key={i}>
 
                                 {/* item[0] is the exercise name */}
-                                <TableCell>{formatEnum([item[0]], ' ')}</TableCell>
+                                <TableCell>{formatExercise(item[0], ' ')}</TableCell>
 
                                 {/* item[1] is an object that contains the statistics for that exercise */}
                                 <TableCell>{item[1].count}</TableCell>

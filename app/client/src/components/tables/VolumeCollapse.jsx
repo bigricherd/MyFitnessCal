@@ -15,7 +15,7 @@ import {
     Stack
 } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import formatEnum from '../../helpers/formatEnum';
+import formatExercise from '../../helpers/formatExercise';
 import ExerciseBreakdownTable from './ExerciseBreakdownTable';
 
 function VolumeCollapse(props) {
@@ -47,7 +47,7 @@ function VolumeCollapse(props) {
 
                 {/* Muscle group */}
                 <TableCell component="th" sx={{ fontSize: "1.1em" }}>
-                    {formatEnum([props.volume[0]])}
+                    {formatExercise(props.volume[0])}
                 </TableCell>
 
                 {/* Number of sets */}

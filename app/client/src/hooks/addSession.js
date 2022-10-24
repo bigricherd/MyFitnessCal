@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { isBefore, isEqual } from 'date-fns';
+import { isAfter, isBefore, isEqual } from 'date-fns';
 import axios from 'axios';
 
 // ------ This hook is identical to useForm, except it submits the forms in Register and Login components so its values are {username, password} ------
@@ -57,7 +57,7 @@ export default function useForm({ initialValues }) {
         } else {
             startdatetime.setDate(date.getDate());
             enddatetime.setDate(date.getDate());
-            if (isBefore(enddatetime, startdatetime) || isEqual(enddatetime, startdatetime)) {
+            if (!isAfter(startdatetime, enddatetime)) {
                 setError("End time must come after start time.");
                 return false;
             }
@@ -69,8 +69,9 @@ export default function useForm({ initialValues }) {
     const handleSubmit = event => {
         event.preventDefault();
         if (validateInputs(values)) {
-            submitData({ values });
+            return submitData({ values });
         }
+        return false;
     };
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
@@ -101,6 +102,7 @@ export default function useForm({ initialValues }) {
             }).then(res => {
                 setNumSessions(res.data.count);
                 setError(null);
+                return true;
             })
         } catch (err) {
             console.log(err);

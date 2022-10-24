@@ -8,7 +8,13 @@ import SessionsPage from "./components/pages/SessionsPage";
 import Nav from "./components/Nav";
 import AnalyticsPage from "./components/pages/AnalyticsPage";
 import ExercisesPage from "./components/pages/ExercisesPage";
-import formatEnum from "./helpers/formatEnum";
+
+const muscleGroups = ["Chest", "Shoulders", "Biceps", "Triceps",
+    "Forearms", "Traps", "Neck", "Lats", "Lower Back", "Abs",
+    "Hamstrings", "Quads", "Glutes", "Calves", "Tibialis", "Cardio"];
+
+const muscleGroupsForAnalytics = muscleGroups.slice();
+muscleGroupsForAnalytics.unshift("All");
 
 function App() {
     const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
@@ -36,28 +42,10 @@ function App() {
         }
     }, [fetchUserUrl]);
 
-    let muscleGroupsArr = [];
-    let muscleGroupsForAnalyticsArr = [];
-    const [muscleGroups, setMuscleGroups] = useState([]);
-    const [muscleGroupsForAnalytics, setMuscleGroupsForAnalytics] = useState([]);
-    const fetchMuscleGroupsUrl = `${baseUrl}/api/enums`;
-
-    const fetchMuscleGroups = useCallback(async () => {
-        const data = await fetch(fetchMuscleGroupsUrl);
-        const json = await data.json();
-        muscleGroupsArr = formatEnum(json.muscleGroups);
-        muscleGroupsForAnalyticsArr = formatEnum(json.muscleGroups);
-        muscleGroupsForAnalyticsArr.unshift("All");
-
-        setMuscleGroups(muscleGroupsArr);
-        setMuscleGroupsForAnalytics(muscleGroupsForAnalyticsArr);
-    }, [fetchMuscleGroupsUrl]);
-
     useEffect(() => {
         setIsFetching(true);
         fetchUser();
-        fetchMuscleGroups();
-    }, [fetchUser, fetchMuscleGroups]);
+    }, [fetchUser]);
 
     const debugText = (
         <div>

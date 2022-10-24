@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import formatEnum from '../helpers/formatEnum';
+import formatExercise from '../helpers/formatExercise';
 import {
     Grid,
     Button,
@@ -107,35 +107,6 @@ function MyExercises(props) {
         setExercisesByUser(props.exercisesByUser)
     }, [props]);
 
-    // State variable that represents the list of exercises created by the current user
-    // const [list, setList] = useState(props.exercisesByUser.map((item, index) =>
-    //     // <Grid container key={index} className="myExercisesItem">
-    //     //     <Box component={Grid} item xs={7} bgcolor={'white'} color={'gray'}>
-    //     //         {(formatEnum([item.split(':')[0]]))}
-    //     //     </Box>
-
-    //     //     <Button fullWidth variant="contained" color='success' onClick={(e) => handleClickOpen(e, index)}>
-    //     //         <Grid item xs={2}>X</Grid>
-    //     //     </Button>
-    //     // </Grid >
-    //     <TableRow container key={index} className="myExercisesItem" >
-
-    //         {/* Exercise name */}
-    //         <TableCell colSpan={12}>
-    //             {(formatEnum([item.split(':')[0]]))}
-    //         </TableCell>
-
-    //         {/* <Button component={Grid} item xs={3} sm={2} fullWidth variant="contained" color='info' onClick={(e) => handleClickEdit(e, index)}>Edit</Button> */}
-
-    //         {/* Delete button */}
-    //         <TableCell>
-    //             <Button variant="contained" onClick={(e) => handleClickOpen(e, index)}>
-    //                 X
-    //             </Button>
-    //         </TableCell>
-    //     </TableRow >
-    // ));
-
     const [list, setList] = useState([]);
 
     useEffect(() => {
@@ -145,7 +116,7 @@ function MyExercises(props) {
 
                 {/* Exercise name */}
                 <TableCell colSpan={4} align="center">
-                    {(formatEnum([item.split(':')[0]]))}
+                    {(formatExercise(item.split(':')[0]))}
                 </TableCell>
 
                 {/* <Button component={Grid} item xs={3} sm={2} fullWidth variant="contained" color='info' onClick={(e) => handleClickEdit(e, index)}>Edit</Button> */}

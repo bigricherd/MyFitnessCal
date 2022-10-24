@@ -33,26 +33,30 @@ function SessionsPage(props) {
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
 
+
+    // Fetch all exercises
     let exercisesArr = [];
     const [exercises, setExercises] = useState([]);
-    const fetchExercises = useCallback(async () => {
-        const data = await fetch(`${baseUrl}/api/enums`);
+    const fetchExercises = async () => {
+        const data = await fetch(`${baseUrl}/api/exercises/all`);
         const json = await data.json();
         exercisesArr = json.exercises;
         setExercises(exercisesArr);
-        console.log(exercisesArr);
+    };
+
+    useEffect(() => {
+        fetchExercises();
     }, []);
 
+    // Fetch exercises by current user
     let exercisesByUserArr = [];
     const [exercisesByUser, setExercisesByUser] = useState([]);
+
     const fetchExercisesByUser = useCallback(async (id) => {
         if (id) {
             const userExercises = await axios({
-                method: 'POST',
-                url: `${baseUrl}/api/enums/byCurrentUser`,
-                data: {
-                    id: id
-                },
+                method: 'GET',
+                url: `${baseUrl}/api/exercises/byCurrentUser?id=${id}`,
                 headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
                 withCredentials: true
 

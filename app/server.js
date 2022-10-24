@@ -3,9 +3,9 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const methodOverride = require('method-override');
-const { getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
-const { performQuery } = require('./utils/dbModule');
-const { isLoggedIn } = require('./utils/middleware');
+// const { getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
+// const { performQuery } = require('./utils/dbModule');
+// const { isLoggedIn } = require('./utils/middleware');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -40,13 +40,13 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 // ---------- SET LOCAL VARIABLES REPRESENTING ENUMS (exercise, muscleGroup) ----------
-let exercises, muscleGroups = [];
+// let exercises, muscleGroups = [];
 
-const getEnums = async () => {
-    exercises = await getExercisesArray();
-    muscleGroups = await getMuscleGroups();
-}
-getEnums();
+// const getEnums = async () => {
+//     exercises = await getExercisesArray();
+//     muscleGroups = await getMuscleGroups();
+// }
+// getEnums();
 
 // ---------- PASSPORT CONFIG ----------
 require("./utils/passportLocal");
@@ -85,27 +85,6 @@ app.use(errorController);
 //     res.send(req.user);
 // })
 
-app.get("/api/enums", (req, res) => {
-    getEnums();
-    res.send({ message: "enums requested", exercises, muscleGroups });
-});
-
-// This route is hit when the Forms page loads
-// Returns the list of exercises added by the currently logged in user
-app.post("/api/enums/byCurrentUser", isLoggedIn, async (req, res) => {
-    const { id } = req.body;
-    console.log(id);
-    const query = `SELECT nameandmusclegroup FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
-    const data = await performQuery(query);
-
-    const exercisesByUser = [];
-    for (let row of data.rows) {
-        exercisesByUser.push(row.nameandmusclegroup);
-    }
-    ///res.send({ message: 'enums requested', exercisesByUser });
-    res.send({ exercisesByUser });
-});
-
 // ---------- ERROR HANDLING ----------
 // catch-all error handler
 app.use((err, req, res, next) => {
@@ -117,7 +96,7 @@ app.use((err, req, res, next) => {
     return res.status(err.statusCode).send({ messages: err.message });
 });
 
-// ---------- LISTEN ----------
+// ---------- START SERVER ----------
 const port = process.env.PORT || 5000;
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port} `);

@@ -13,7 +13,6 @@ import {
     TableBody,
     Button
 } from "@mui/material";
-import formatEnum from '../helpers/formatEnum';
 import CollapsibleTable from "./tables/CollapsibleTable";
 import AddSetsToSessionPopup from './popups/AddSetsToSessionPopup';
 import EditSessionPopup from './popups/EditSessionPopup';

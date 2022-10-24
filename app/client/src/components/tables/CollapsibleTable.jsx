@@ -18,7 +18,7 @@ import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { DoDisturbOnOutlined } from '@mui/icons-material';
 import DeleteSetPopup from '../popups/DeleteSetPopup';
 import deleteSet from '../../hooks/deleteSet';
-import formatEnum from '../../helpers/formatEnum';
+import formatExercise from '../../helpers/formatExercise';
 
 function CollapsibleTable(props) {
     console.log('CollapsibleTable render for' + props.exercise);
@@ -90,7 +90,7 @@ function CollapsibleTable(props) {
 
                 {/* Exercise name */}
                 <TableCell component="th" scope="row" sx={{ fontSize: "1.1em" }}>
-                    {formatEnum([props.exercise.split(":")[0]])}
+                    {formatExercise(props.exercise.split(":")[0])}
                 </TableCell>
 
                 {/* Edit or Back button, depending on whether the user is editing*/}
@@ -174,7 +174,7 @@ function CollapsibleTable(props) {
                                         </TableRow>
                                     )}
 
-                                    {setToDelete && <DeleteSetPopup open={showDialog} onClose={handleCloseDialog} handleDelete={handleDelete} set={setToDelete} sessionTitle={props.session.title} exercise={formatEnum([props.exercise.split(":")[0]])} />}
+                                    {setToDelete && <DeleteSetPopup open={showDialog} onClose={handleCloseDialog} handleDelete={handleDelete} set={setToDelete} sessionTitle={props.session.title} exercise={formatExercise(props.exercise.split(":")[0])} />}
                                 </TableBody>
                             </Table>
                         </Box>

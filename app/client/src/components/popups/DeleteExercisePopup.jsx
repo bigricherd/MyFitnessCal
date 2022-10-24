@@ -6,7 +6,7 @@ import {
     DialogContentText,
     DialogActions,
 } from '@mui/material';
-import formatEnum from '../../helpers/formatEnum';
+import formatExercise from '../../helpers/formatExercise';
 
 function DeleteExercisePopup(props) {
     return (
@@ -14,7 +14,7 @@ function DeleteExercisePopup(props) {
             open={props.open}
             onClose={props.onClose}
         >
-            <DialogTitle>Delete exercise {props.name && formatEnum([props.name.split(':')[0]])}?</DialogTitle>
+            <DialogTitle>Delete exercise {props.name && formatExercise(props.name.split(':')[0])}?</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     This cannot be undone.
