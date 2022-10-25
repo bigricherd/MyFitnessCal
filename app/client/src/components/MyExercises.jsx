@@ -147,7 +147,13 @@ function MyExercises(props) {
     const handleCloseSuccessMsg = () => { setShowSuccessMsg(false); }
 
     useEffect(() => {
-        if (successMsg) setShowSuccessMsg(true);
+        if (successMsg) {
+            setShowSuccessMsg(true);
+            setShowError(false);
+            setTimeout(() => {
+                setShowSuccessMsg(false);
+            }, 4000)
+        }
     }, [successMsg, prevSuccessMsg])
 
     // Setup to show feedback message -- error
@@ -158,6 +164,9 @@ function MyExercises(props) {
         if (error) {
             setShowError(true);
             setShowSuccessMsg(false);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
         }
     }, [error, prevError]);
 

@@ -34,13 +34,20 @@ function LoginPage() {
 
     // Setup to display feedback message -- error
     const [showError, setShowError] = useState(false);
+    const [attempted, setAttempted] = useState(false);
 
     const handleCloseError = () => {
         setShowError(false);
     }
 
     useEffect(() => {
-        if (error) setShowError(true);
+        if (error) {
+            setShowError(true);
+            setAttempted(true);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
     }, [error, prevError]);
 
     return (
@@ -67,6 +74,7 @@ function LoginPage() {
                         value={values.username}
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
+                        error={attempted && (!values.username || values.username === "")}
                         required >
                     </TextField>
                 </FormControl>
@@ -80,6 +88,8 @@ function LoginPage() {
                         value={values.password}
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
+                        error={attempted && (!values.username || values.password === "")}
+
 
                         // endAdornment represents show / hide password button
                         InputProps={{
@@ -91,6 +101,7 @@ function LoginPage() {
                                 </IconButton>
                             </InputAdornment>
                         }}
+
                         required>
                     </TextField>
                 </FormControl>

@@ -46,13 +46,20 @@ function RegisterPage() {
 
     // Setup to display feedback message -- error
     const [showError, setShowError] = useState(false);
+    const [attempted, setAttempted] = useState(false);
 
     const handleCloseError = () => {
         setShowError(false);
     }
 
     useEffect(() => {
-        if (error) setShowError(true);
+        if (error) {
+            setAttempted(true);
+            setShowError(true);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
     }, [error, prevError]);
 
     return (
@@ -79,6 +86,7 @@ function RegisterPage() {
                         value={values.username}
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
+                        error={attempted && (!values.username || values.username === "" || values.username.length > 30)}
                         required >
                     </TextField>
                 </FormControl>
@@ -95,6 +103,8 @@ function RegisterPage() {
                             value={values.password}
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}
+                            error={attempted && (!values.password || values.password === "")}
+
 
                             // endAdornment represents show / hide password button
                             InputProps={{

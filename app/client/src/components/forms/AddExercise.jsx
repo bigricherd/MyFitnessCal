@@ -57,11 +57,18 @@ function AddExercise(props) {
     }
 
     useEffect(() => {
-        if (successMsg) setShowSuccessMsg(true);
+        if (successMsg) {
+            setShowSuccessMsg(true);
+            setAttempted(false);
+            setTimeout(() => {
+                setShowSuccessMsg(false);
+            }, 4000)
+        }
     }, [successMsg, prevSuccessMsg]);
 
     // Setup to show feedback messages -- error
     const [showError, setShowError] = useState(false);
+    const [attempted, setAttempted] = useState(false);
 
     const handleCloseError = () => {
         setShowError(false);
@@ -69,8 +76,12 @@ function AddExercise(props) {
 
     useEffect(() => {
         if (error) {
+            setAttempted(true);
             setShowError(true);
             setShowSuccessMsg(false);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
         }
     }, [error, prevError]);
 
@@ -102,6 +113,7 @@ function AddExercise(props) {
                                 value={values.exercise}
                                 onChange={handleChange}
                                 onKeyDown={handleKeyDown}
+                                error={attempted && (!values.exercise || values.exercise === "")}
                             ></TextField>
                         </FormControl>
 
@@ -114,6 +126,7 @@ function AddExercise(props) {
                                 value={values.muscleGroup}
                                 onChange={handleChange}
                                 onKeyDown={handleKeyDown}
+                                error={attempted && (!values.muscleGroup || values.muscleGroup === "")}
                             />
                         </FormControl>
                     </Stack>
