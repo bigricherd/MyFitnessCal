@@ -17,24 +17,42 @@ export default function useForm({ initialValues }) {
         });
     };
 
-    const handleSetChange = event => {
-        const value = event.target.value;
-        const name = event.target.name.split("_")[0];
-        const index = event.target.name.split("_")[1];
+    const validateInputs = (values) => {
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { sets } = values;
+        if (sets && sets.length > 0) {
+            return validateSets(sets);
+        } else if (sets.length === 0) {
+            setError("Please add at least one set.");
+            return false;
+        }
+        return true;
+    };
 
-        const setsTemp = values.sets;
-        setsTemp[index][name] = value;
-        setValues({
-            ...values,
-            sets: setsTemp
-        });
-    }
+    const validateSets = (sets) => {
+        for (let set of sets) {
+            if (parseInt(set.reps) <= 0 || set.reps === "") {
+                setError("Minimum reps for a set is 1.");
+                return false;
+            } else if (parseInt(set.weight) < 0 || set.weight === "") {
+                setError("Weight cannot be negative.");
+                return false;
+            }
+        };
+        return true;
+    };
 
     //submit form when submit button is clicked
     const handleSubmit = event => {
         event.preventDefault();
-        console.log(values);
-        submitData({ values });
+        if (validateInputs(values)) {
+            return submitData({ values });
+        }
+        return false;
     };
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
@@ -60,6 +78,7 @@ export default function useForm({ initialValues }) {
             }).then(res => {
                 setNumSets(res.data.numSets);
                 setError(null);
+                return true;
             })
         } catch (err) {
             console.log(err);
@@ -75,7 +94,6 @@ export default function useForm({ initialValues }) {
 
     return ({
         handleChange,
-        handleSetChange,
         handleSubmit,
         values,
         setValues,

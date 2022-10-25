@@ -10,20 +10,16 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    Alert
 } from '@mui/material';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import editSession from '../../hooks/editSession';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function EditSessionPopup(props) {
-
-    const handleEdit = (e) => {
-        console.log('will call handleSubmit from editSession hook here');
-        handleSubmit(e);
-    }
 
     const {
         handleChange,
@@ -45,6 +41,12 @@ function EditSessionPopup(props) {
         }
     });
 
+    const handleKeySubmit = (event) => {
+        if (handleKeyDown(event)) {
+            props.setOpen(false);
+        }
+    };
+
     // Without this, the comments field does not pre-fill. Still not sure why.
     useEffect(() => {
         setValues({
@@ -55,7 +57,25 @@ function EditSessionPopup(props) {
 
     useEffect(() => {
         props.liftState(edited);
-    }, [edited])
+    }, [edited]);
+
+    // Setup to show feedback messages -- error
+    const [showError, setShowError] = useState(false);
+    const [attempted, setAttempted] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) {
+            setAttempted(true);
+            setShowError(true);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
+    }, [error, prevError]);
 
     return (
         <>
@@ -77,8 +97,10 @@ function EditSessionPopup(props) {
                                     type="text"
                                     value={values.title}
                                     onChange={handleChange}
-                                    onKeyDown={handleKeyDown}
-                                    required
+                                    onKeyDown={(e) => {
+                                        handleKeySubmit(e);
+                                    }}
+                                    error={attempted && (!values.title || values.title === "")}
                                 />
                             </FormControl>
                         </Grid>
@@ -102,10 +124,14 @@ function EditSessionPopup(props) {
                                             handleChange(event);
                                         }}
                                         renderInput={(params) => (
-                                            <TextField {...params} />
+                                            <TextField {...params}
+                                                error={attempted && (!values.date || values.date === "")}
+                                                onKeyDown={(e) => {
+                                                    handleKeySubmit(e);
+                                                }}
+                                                required
+                                            />
                                         )}
-                                        onKeyDown={handleKeyDown}
-                                        required
                                     />
                                 </FormControl>
                             </Grid>
@@ -125,7 +151,13 @@ function EditSessionPopup(props) {
                                             };
                                             handleChange(event);
                                         }}
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(params) => <TextField {...params}
+                                            error={attempted && (!values.startdatetime || values.startdatetime === "")}
+                                            onKeyDown={(e) => {
+                                                handleKeySubmit(e);
+                                            }}
+                                            required
+                                        />}
                                     >
 
                                     </TimePicker>
@@ -147,7 +179,13 @@ function EditSessionPopup(props) {
                                             };
                                             handleChange(event);
                                         }}
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(params) => <TextField {...params}
+                                            error={attempted && (!values.enddatetime || values.enddatetime === "")}
+                                            onKeyDown={(e) => {
+                                                handleKeySubmit(e);
+                                            }}
+                                            required
+                                        />}
                                     >
 
                                     </TimePicker>
@@ -165,13 +203,17 @@ function EditSessionPopup(props) {
                                     type="text"
                                     value={values.comments}
                                     onChange={handleChange}
-                                    onKeyDown={handleKeyDown}
+                                    onKeyDown={(e) => {
+                                        handleKeySubmit(e);
+                                    }}
                                 >
                                 </TextField>
                             </FormControl>
                         </Grid>
 
                     </Grid>
+                    {/* Feedback messages */}
+                    {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
@@ -179,8 +221,9 @@ function EditSessionPopup(props) {
                     }}>Back</Button>
                     <Button
                         onClick={(e) => {
-                            handleEdit(e);
-                            props.setOpen(false);
+                            if (handleSubmit(e)) {
+                                props.setOpen(false);
+                            }
                         }}
                         variant="contained"
                         sx={{ backgroundColor: "green" }}

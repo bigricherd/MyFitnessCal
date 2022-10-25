@@ -8,7 +8,8 @@ import {
     TableBody,
     Collapse,
     Box,
-    IconButton
+    IconButton,
+    Stack
 } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { DoDisturbOnOutlined } from '@mui/icons-material';
@@ -46,11 +47,13 @@ function AddSetsCollapse(props) {
         const name = event.target.name.split("_")[0];
         const index = event.target.name.split("_")[1];
 
-        setsTemp[index][name] = event.target.value;
-        exercises[props.index]['sets'] = setsTemp;
+        if (event.target.value >= 0 && event.target.value !== "-0") {
+            setsTemp[index][name] = event.target.value;
+            exercises[props.index]['sets'] = setsTemp;
 
-        setSets(setsTemp);
-        props.setExercises(exercises);
+            setSets(setsTemp);
+            props.setExercises(exercises);
+        }
     }
 
     const removeSet = (i) => {
@@ -76,6 +79,7 @@ function AddSetsCollapse(props) {
                         onClick={() => {
                             setOpen(!open);
                         }}
+                        disabled={!props.exercise.name || props.exercise.name === ""}
                     >
                         {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                     </IconButton>
@@ -85,6 +89,7 @@ function AddSetsCollapse(props) {
                 <TableCell>
                     <FormControl fullWidth>
                         <Dropdown
+                            id="exercise"
                             options={props.exerciseOptions}
                             name={`exercise_${props.index}`}
                             value={props.exercise.name}
@@ -113,34 +118,46 @@ function AddSetsCollapse(props) {
                         <Box alignItems="center" justifyContent="center">
                             <Table>
                                 <TableBody>
-                                    <TableRow>
-                                        {
-                                            sets && sets.map((set, i) => (
-                                                <TableRow>
-                                                    <TableCell colSpan={6} align="right">
-                                                        < SetRow key={i} set={set} index={i} value={sets[i]} handleChange={handleSetChange} onDelete={removeSet} />
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))
-                                        }
-                                    </TableRow>
+                                    {
+                                        sets && sets.map((set, i) => (
+                                            <TableRow key={i}>
+                                                <TableCell colSpan={6} align="right">
+                                                    < SetRow
+                                                        set={set}
+                                                        index={i}
+                                                        value={sets[i]}
+                                                        handleChange={handleSetChange}
+                                                        onDelete={removeSet}
+                                                    />
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    }
                                 </TableBody>
                             </Table>
 
                         </Box>
-                        <Button
-                            onClick={() => {
-                                if (props.exercise.name.length > 0) {
-                                    addSet();
-                                } else {
-                                    console.log('Please select an exercise first');
-                                    // TODO message: select an exercise first
-                                }
-                            }}
-                            variant="contained"
+                        <Stack
+                            alignItems="center"
+                            justifyContent="center"
                         >
-                            Add set
-                        </Button>
+                            <Button
+                                onClick={() => {
+                                    if (props.exercise.name.length > 0) {
+                                        addSet();
+                                    } else {
+                                        console.log('Please select an exercise first');
+                                        // TODO message: select an exercise first
+                                    }
+                                }}
+                                variant="contained"
+                                sx={{
+                                    margin: "0.67rem"
+                                }}
+                            >
+                                Add set
+                            </Button>
+                        </Stack>
 
                     </Collapse>
                 </TableCell>

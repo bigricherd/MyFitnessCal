@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { isAfter, isEqual } from 'date-fns';
 
 // ------ This hook is identical to useForm, except it submits the forms in Register and Login components so its values are {username, password} ------
 export default function useForm({ initialValues }) {
@@ -16,22 +17,48 @@ export default function useForm({ initialValues }) {
             ...values,
             [name]: value
         });
-        console.log(values);
     };
 
     //submit form when enter key is pressed
     const handleKeyDown = event => {
         const enter = 13;
         if (event.keyCode === enter) {
-            handleSubmit(event);
+            return handleSubmit(event);
         }
     }
+
+    // Form validation
+    const validateInputs = (values) => {
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { title, date, startdatetime, enddatetime } = values;
+        if (title === "" || !date || !startdatetime || !enddatetime) {
+            setError("Please fill out required fields.");
+            return false;
+        } else if (title.length > 35) {
+            setError("Maximum title length is 35 characters.");
+            return false;
+        } else if (startdatetime && enddatetime) {
+            startdatetime.setDate(date.getDate());
+            enddatetime.setDate(date.getDate());
+            if (isAfter(startdatetime, enddatetime) || isEqual(startdatetime, enddatetime)) {
+                setError("End time must come after start time.");
+                return false;
+            }
+        }
+        return true;
+    };
 
     //submit form when submit button is clicked
     const handleSubmit = event => {
         event.preventDefault();
-        console.log(values);
-        submitData({ values });
+        if (validateInputs(values)) {
+            return submitData({ values });
+        }
+        return false;
     };
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
@@ -72,6 +99,7 @@ export default function useForm({ initialValues }) {
                     console.log(res.data);
                     setEdited(res.data.count);
                     setError(null);
+                    return true;
                 })
             } catch (err) {
                 console.log(err);

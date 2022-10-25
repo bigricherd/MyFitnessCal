@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     Button,
     Dialog,
@@ -7,11 +6,11 @@ import {
     DialogActions,
     Grid,
     Table,
-    TableBody
+    TableBody,
+    Alert
 } from '@mui/material';
 import addSetsToSession from '../../hooks/addSetsToSession';
-import { useEffect } from 'react';
-import SetRow from '../forms/SetRow';
+import { useEffect, useState } from 'react';
 import AddSetsCollapse from '../forms/AddSetsCollapse';
 import { formatDateHyphens } from '../../helpers/formatDate';
 
@@ -73,7 +72,7 @@ function AddSetsToSessionPopup(props) {
             allSets.push(...exercise.sets);
         }
         values.sets = allSets;
-        handleSubmit(event);
+        return handleSubmit(event);
     }
 
     // Hook
@@ -89,6 +88,22 @@ function AddSetsToSessionPopup(props) {
     useEffect(() => {
         props.liftState(numSets);
     }, [numSets]);
+
+    // Setup to show feedback messages -- error
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    }
+
+    useEffect(() => {
+        if (error) {
+            setShowError(true);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
+    }, [error, prevError]);
 
     return (
 
@@ -115,7 +130,7 @@ function AddSetsToSessionPopup(props) {
                             <TableBody>
                                 {exercises.map((exercise, index) => (
                                     <AddSetsCollapse
-                                        key={exercise.name}
+                                        key={index}
                                         exerciseOptions={props.exercises}
                                         index={index}
                                         exercise={exercise}
@@ -127,6 +142,9 @@ function AddSetsToSessionPopup(props) {
                             </TableBody>
                         </Table>
                     </Grid>
+
+                    {/* Feedback messages */}
+                    {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
                 </DialogContent>
 
                 <DialogActions>
@@ -140,9 +158,10 @@ function AddSetsToSessionPopup(props) {
                         color="success"
                         onClick={(e) => {
                             values.sessionId = props.session.id;
-                            customHandleSubmit(e);
-                            props.setOpen(false);
-                            resetFormFields();
+                            if (customHandleSubmit(e)) {
+                                props.setOpen(false);
+                                resetFormFields();
+                            }
                         }}
                     >
                         Add Sets

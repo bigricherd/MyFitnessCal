@@ -11,6 +11,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    TableContainer,
     Table,
     TableBody,
     Alert
@@ -20,7 +21,6 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import addSession from './../../hooks/addSession';
-//import SetRow from './SetRow';
 import AddSetsCollapse from './AddSetsCollapse';
 
 function AddSession(props) {
@@ -100,19 +100,33 @@ function AddSession(props) {
         }
     });
 
+    const handleKeySubmit = (event) => {
+        if (handleKeyDown(event)) {
+            props.onClose();
+        }
+    };
+
     useEffect(() => {
         props.liftState(numSessions);
+        setAttempted(false); // not necessary because popup closes on successful CREATE Session
     }, [numSessions]);
 
     // Setup to show feedback messages -- error
     const [showError, setShowError] = useState(false);
+    const [attempted, setAttempted] = useState(false);
 
     const handleCloseError = () => {
         setShowError(false);
     }
 
     useEffect(() => {
-        if (error) setShowError(true);
+        if (error) {
+            setAttempted(true);
+            setShowError(true);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
     }, [error, prevError]);
 
     return (
@@ -139,8 +153,10 @@ function AddSession(props) {
                                 type="text"
                                 value={values.title}
                                 onChange={handleChange}
-                                onKeyDown={handleKeyDown}
-                                // error={values.title === ""}
+                                onKeyDown={(e) => {
+                                    handleKeySubmit(e);
+                                }}
+                                error={attempted && (!values.title || values.title === "")}
                                 required
                             />
                         </FormControl>
@@ -166,10 +182,13 @@ function AddSession(props) {
                                     }}
                                     renderInput={(params) => (
                                         <TextField {...params}
+                                            error={attempted && (!values.date || values.date === "")}
+                                            onKeyDown={(e) => {
+                                                handleKeySubmit(e);
+                                            }}
                                             required
                                         />
                                     )}
-                                    onKeyDown={handleKeyDown}
 
                                 />
                             </FormControl>
@@ -190,8 +209,11 @@ function AddSession(props) {
                                         };
                                         handleChange(event);
                                     }}
-                                    onKeyDown={handleKeyDown}
                                     renderInput={(params) => <TextField {...params}
+                                        error={attempted && (!values.startdatetime || values.startdatetime === "")}
+                                        onKeyDown={(e) => {
+                                            handleKeySubmit(e);
+                                        }}
                                         required
                                     />}
                                 >
@@ -215,8 +237,11 @@ function AddSession(props) {
                                         };
                                         handleChange(event);
                                     }}
-                                    onKeyDown={handleKeyDown}
                                     renderInput={(params) => <TextField {...params}
+                                        error={attempted && (!values.enddatetime || values.enddatetime === "")}
+                                        onKeyDown={(e) => {
+                                            handleKeySubmit(e);
+                                        }}
                                         required
                                     />}
                                 >
@@ -236,7 +261,9 @@ function AddSession(props) {
                                 type="text"
                                 value={values.comments}
                                 onChange={handleChange}
-                                onKeyDown={handleKeyDown}
+                                onKeyDown={(e) => {
+                                    handleKeySubmit(e);
+                                }}
                             >
                             </TextField>
                         </FormControl>
@@ -263,21 +290,31 @@ function AddSession(props) {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <Table>
-                            <TableBody>
-                                {exercises.map((exercise, index) => (
-                                    <AddSetsCollapse
-                                        key={index}
-                                        exerciseOptions={props.exercises}
-                                        index={index}
-                                        exercise={exercise}
-                                        exercises={exercises}
-                                        setExercises={setExercises}
-                                        onChange={handleExerciseChange}
-                                        onDelete={removeExercise} />
-                                ))}
-                            </TableBody>
-                        </Table>
+                        <TableContainer
+                        // TODO this is a desktop style; needs to actually be limited on mobile
+                        // sx={{
+                        //     maxWidth: "80%",
+                        //     margin: "auto"
+                        // }}
+                        >
+                            <Table>
+                                <TableBody>
+                                    {exercises.map((exercise, index) => (
+                                        <AddSetsCollapse
+                                            key={index}
+                                            exerciseOptions={props.exercises}
+                                            index={index}
+                                            exercise={exercise}
+                                            exercises={exercises}
+                                            setExercises={setExercises}
+                                            onChange={handleExerciseChange}
+                                            onDelete={removeExercise}
+                                            attempted={attempted}
+                                        />
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Grid>
 
                 </Grid>

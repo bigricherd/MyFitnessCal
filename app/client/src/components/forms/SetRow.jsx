@@ -19,56 +19,36 @@ function SetRow(props) {
 
     return (
         <>
-
-            <Grid
-                container
-                spacing={0}
-                alignItems="center"
-                justifyContent="center"
-                columns={{ xs: 14 }}
-            >
-
-
-                <Stack direction="row" spacing={2}>
-                    <Grid item xs={3}>
-                        <FormControl>
-                            <TextField
-                                id="reps"
-                                name={`reps_${props.index}`}
-                                label="Reps"
-                                type="number"
-                                value={props.value.reps}
-                                onChange={props.handleChange}
-                                required
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <FormControl>
-                            <TextField
-                                id="weight"
-                                name={`weight_${props.index}`}
-                                label="Weight (lb)"
-                                type="number"
-                                value={props.value.weight}
-                                onChange={props.handleChange}
-                                required
-                            />
-                        </FormControl>
-                    </Grid>
-
-                </Stack>
-
-                <Grid item xs={1}>
-                    <Button
-                        onClick={(e) => { props.onDelete(props.index) }}
-                        sx={{ color: "red" }}
-                    >
-                        <DoDisturbOnOutlined />
-                    </Button>
-                </Grid>
-
-            </Grid>
+            <Stack direction="row" spacing={2}>
+                <FormControl>
+                    <TextField
+                        id="reps"
+                        name={`reps_${props.index}`}
+                        label="Reps"
+                        type="text"
+                        value={props.value.reps}
+                        onChange={props.handleChange}
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                    />
+                </FormControl>
+                <FormControl>
+                    <TextField
+                        id="weight"
+                        name={`weight_${props.index}`}
+                        label="Weight (lb)"
+                        type="text"
+                        value={props.value.weight}
+                        onChange={props.handleChange}
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                    />
+                </FormControl>
+                <Button
+                    onClick={(e) => { props.onDelete(props.index) }}
+                    sx={{ color: "red" }}
+                >
+                    <DoDisturbOnOutlined />
+                </Button>
+            </Stack>
         </>
     )
 }

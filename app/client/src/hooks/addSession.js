@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { isAfter, isBefore, isEqual } from 'date-fns';
+import { isAfter, isEqual } from 'date-fns';
 import axios from 'axios';
 
 // ------ This hook is identical to useForm, except it submits the forms in Register and Login components so its values are {username, password} ------
@@ -17,30 +17,13 @@ export default function useForm({ initialValues }) {
             ...values,
             [name]: value
         });
-        console.log(values);
     };
-
-    const handleSetChange = event => {
-        console.log('set value changed');
-        const value = event.target.value;
-        const name = event.target.name.split("_")[0];
-        const index = event.target.name.split("_")[1];
-
-        const setsTemp = values.sets;
-        setsTemp[index][name] = value;
-        setValues({
-            ...values,
-            sets: setsTemp
-        });
-        console.log(index);
-        console.log(values);
-    }
 
     //submit form when enter key is pressed
     const handleKeyDown = event => {
         const enter = 13;
         if (event.keyCode === enter) {
-            handleSubmit(event);
+            return handleSubmit(event);
         }
     };
 
@@ -50,18 +33,40 @@ export default function useForm({ initialValues }) {
         } else {
             setPrevError(null);
         }
-        const { title, date, startdatetime, enddatetime } = values;
-        if (title === "" || date === "" || startdatetime === "" || enddatetime === "") {
+        const { title, date, startdatetime, enddatetime, sets } = values;
+        if (title === "" || !date || !startdatetime || !enddatetime) {
             setError("Please fill out required fields.");
             return false;
-        } else {
+        } else if (title.length > 35) {
+            setError("Maximum title length is 35 characters.");
+            return false;
+        } else if (startdatetime && enddatetime) {
+
+            // End time <= start time
             startdatetime.setDate(date.getDate());
             enddatetime.setDate(date.getDate());
-            if (!isAfter(startdatetime, enddatetime)) {
+            if (isAfter(startdatetime, enddatetime) || isEqual(startdatetime, enddatetime)) {
                 setError("End time must come after start time.");
                 return false;
             }
+            // Sets validation
+            if (sets && sets.length > 0) {
+                return validateSets(sets);
+            }
         }
+        return true;
+    };
+
+    const validateSets = (sets) => {
+        for (let set of sets) {
+            if (parseInt(set.reps) <= 0 || set.reps === "") {
+                setError("Minimum reps for a set is 1.");
+                return false;
+            } else if (parseInt(set.weight) < 0 || set.weight === "") {
+                setError("Weight cannot be negative.");
+                return false;
+            }
+        };
         return true;
     };
 
@@ -116,7 +121,6 @@ export default function useForm({ initialValues }) {
     };
     return {
         handleChange,
-        handleSetChange,
         handleKeyDown,
         values,
         setValues,
