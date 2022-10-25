@@ -54,8 +54,10 @@ function Dropdown(props) {
                 label={dropdownLabel}
                 onChange={props.onChange}
                 onKeyDown={props.onKeyDown}
+                error={props.error}
                 // sx={{ display: "block" }}
                 required
+                fullWidth
             >
                 {optionsArr}
             </TextField>

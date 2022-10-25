@@ -16,17 +16,17 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-// TODO store muscle Groups array here
-
 function VolumeCounter(props) {
-    const [muscleGroups, setMuscleGroups] = useState([]);
+    const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
+    const [attempted, setAttempted] = useState(false);
+    const [data, setData] = useState(null);
 
     useEffect(() => {
         setMuscleGroups(props.muscleGroups);
     }, [props]);
 
     // Filter hook
-    const { values, handleChange, handleKeyDown, handleSubmit, error, prevError, data } =
+    const { values, handleChange, handleKeyDown, handleSubmit, error, prevError, response } =
         volumeCounter({
             initialValues: {
                 fromDate: null,
@@ -36,15 +36,27 @@ function VolumeCounter(props) {
             muscleGroups: props.muscleGroups
         });
 
+    useEffect(() => {
+        setData(response);
+        setAttempted(false);
+    }, [response]);
+
     // Setup to show feedback messages -- error
     const [showError, setShowError] = useState(false);
 
     const handleCloseError = () => {
         setShowError(false);
-    }
+    };
 
     useEffect(() => {
-        if (error) setShowError(true);
+        if (error) {
+            setAttempted(true);
+            setShowError(true);
+            setData(null);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
     }, [error, prevError]);
 
     return (
@@ -91,7 +103,9 @@ function VolumeCounter(props) {
                                         handleChange(event);
                                     }}
                                     renderInput={(params) => (
-                                        <TextField {...params} />
+                                        <TextField {...params}
+                                            error={attempted && (!values.fromDate || values.fromDate === "")}
+                                            required />
                                     )}
                                     onKeyDown={handleKeyDown}
                                     required
@@ -114,7 +128,9 @@ function VolumeCounter(props) {
                                         handleChange(event);
                                     }}
                                     renderInput={(params) => (
-                                        <TextField {...params} />
+                                        <TextField {...params}
+                                            error={attempted && (!values.toDate || values.toDate === "")}
+                                            required />
                                     )}
                                     onKeyDown={handleKeyDown}
                                     required
@@ -130,6 +146,7 @@ function VolumeCounter(props) {
                                     value={values.muscleGroup || ''}
                                     onChange={handleChange}
                                     onKeyDown={handleKeyDown}
+                                    error={attempted && (!values.muscleGroup || values.muscleGroup === "")}
                                 />
                             </FormControl>
                         </Stack>

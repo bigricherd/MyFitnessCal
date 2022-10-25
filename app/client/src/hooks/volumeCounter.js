@@ -8,7 +8,7 @@ export default function useForm({ initialValues, muscleGroups }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
     const [prevError, setPrevError] = useState(null);
-    const [data, setData] = useState(null);
+    const [response, setResponse] = useState(null);
 
     //track form values
     const handleChange = (event) => {
@@ -43,18 +43,18 @@ export default function useForm({ initialValues, muscleGroups }) {
         if (muscleGroup === "" || !fromDate || !toDate) {
             setError("Please fill out empty fields.");
             return false;
-        } else {
-            // End date is not after start date
-            if (isBefore(toDate, fromDate) || isEqual(toDate, fromDate)) {
-                setError("End date must come after start date.");
-                return false;
-            }
-            // Invalid muscle group
-            if (muscleGroups.indexOf(muscleGroup) === -1) {
-                setError("Invalid muscle group.");
-                return false;
-            }
         }
+        // End time <= start time
+        else if (isBefore(toDate, fromDate) || isEqual(toDate, fromDate)) {
+            setError("End date must come after start date.");
+            return false;
+        }
+        // Invalid muscle group
+        else if (muscleGroups.indexOf(muscleGroup) === -1) {
+            setError("Invalid muscle group.");
+            return false;
+        }
+
         return true;
     };
 
@@ -85,7 +85,7 @@ export default function useForm({ initialValues, muscleGroups }) {
                 }),
                 withCredentials: true,
             }).then((res) => {
-                setData(res.data);
+                setResponse(res.data);
                 if (res.data.redirect === "/") {
                     window.location = "/";
                 } else if (res.data.redirect === "/login") {
@@ -95,6 +95,11 @@ export default function useForm({ initialValues, muscleGroups }) {
             });
         } catch (err) {
             console.log(err);
+            if (!prevError || (error !== prevError)) {
+                setPrevError(error);
+            } else {
+                setPrevError(null);
+            }
             setError(err.response.data);
         }
     };
@@ -104,6 +109,7 @@ export default function useForm({ initialValues, muscleGroups }) {
         values,
         handleSubmit,
         error,
-        data,
+        prevError,
+        response
     };
 }

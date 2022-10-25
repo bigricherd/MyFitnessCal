@@ -25,6 +25,7 @@ function ProgressTracker(props) {
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups.slice(1));
     const [data, setData] = useState(null);
+    const [attempted, setAttempted] = useState(false);
 
     const fetchExercises = async () => {
         const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
@@ -56,6 +57,7 @@ function ProgressTracker(props) {
 
     useEffect(() => {
         setData(response);
+        setAttempted(false);
     }, [response]);
 
     useEffect(() => {
@@ -75,7 +77,14 @@ function ProgressTracker(props) {
     }
 
     useEffect(() => {
-        if (error) setShowError(true);
+        if (error) {
+            setAttempted(true);
+            setShowError(true);
+            setData(null);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
     }, [error, prevError]);
 
     return (
@@ -90,7 +99,11 @@ function ProgressTracker(props) {
                     <Typography variant="h5" gutterBottom> Progress Tracker for Lifts </Typography>
 
                     {/* Form */}
-                    <Box onSubmit={handleSubmit} component="form" autoComplete="off">
+                    <Box
+                        component="form"
+                        autoComplete="off"
+                        onSubmit={handleSubmit}
+                    >
                         <Stack spacing={2}>
                             {/* Muscle group dropdown */}
                             <FormControl fullWidth>
@@ -101,6 +114,7 @@ function ProgressTracker(props) {
                                     value={values.muscleGroup || ''}
                                     onChange={handleChange}
                                     onKeyDown={handleKeyDown}
+                                    error={attempted && (!values.muscleGroup || values.muscleGroup === "")}
                                 />
                             </FormControl>
 
@@ -113,6 +127,7 @@ function ProgressTracker(props) {
                                     value={values.exercise || ''}
                                     onChange={handleChange}
                                     onKeyDown={handleKeyDown}
+                                    error={attempted && (!values.exercise || values.exercise === "")}
                                 />
                             </FormControl>
 
@@ -135,10 +150,11 @@ function ProgressTracker(props) {
                                             handleChange(event);
                                         }}
                                         renderInput={(params) => (
-                                            <TextField {...params} />
+                                            <TextField {...params}
+                                                error={attempted && (!values.fromDate || values.fromDate === "")}
+                                                required />
                                         )}
                                         onKeyDown={handleKeyDown}
-                                        required="no"
                                     />
                                 </FormControl>
 
@@ -158,10 +174,11 @@ function ProgressTracker(props) {
                                             handleChange(event);
                                         }}
                                         renderInput={(params) => (
-                                            <TextField {...params} />
+                                            <TextField {...params}
+                                                error={attempted && (!values.toDate || values.toDate === "")}
+                                                required />
                                         )}
                                         onKeyDown={handleKeyDown}
-                                        required
                                     />
                                 </FormControl>
 
@@ -174,6 +191,7 @@ function ProgressTracker(props) {
                             sx={{
                                 marginTop: "1rem"
                             }}
+                            onClick={handleSubmit}
                         >
                             Apply
                         </Button>

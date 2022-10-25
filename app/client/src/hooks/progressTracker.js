@@ -36,30 +36,24 @@ export default function useForm({ initialValues }) {
         }
         const { exercise, fromDate, toDate, exerciseOptions } = values;
 
-        console.log(values);
-        console.log(error);
-        console.log(prevError);
-
         // Empty fields
-        if (exercise === "" || !fromDate || fromDate === null || !toDate || toDate === null) {
+        if (exercise === "" || !fromDate || !toDate) {
             setError("Please fill out empty fields.");
             return false;
-        } else {
-            // End date is not after start date
-            if (isBefore(toDate, fromDate) || isEqual(toDate, fromDate)) {
-                setError("End date must come after start date.");
-                return false;
-            }
-            // Invalid muscle group
-            if (exerciseOptions.indexOf(exercise) === -1) {
-                setError("Invalid muscle group.");
-                return false;
-            }
         }
+        // End date <= start date
+        else if (isBefore(toDate, fromDate)) {
+            setError("End date must come after start date.");
+            return false;
+        }
+        // Invalid muscle group
+        else if (exerciseOptions.indexOf(exercise) === -1) {
+            setError("Invalid muscle group.");
+            return false;
+        }
+
         return true;
     };
-
-
 
     //submit form when submit button is clicked
     const handleSubmit = (event) => {
@@ -107,6 +101,7 @@ export default function useForm({ initialValues }) {
         values,
         handleSubmit,
         error,
+        prevError,
         response,
     };
 }
