@@ -17,14 +17,16 @@ module.exports = (err, req, res, next) => {
         if (err.message === 'Invalid muscle group. Please try again.') return res.status(409).send({ message: err.message });
         if (err.message === "Exercise name is too long. Max length: 30 characters. Considering using acronyms like 'BB' or 'OH'.") return res.status(409).send({ message: err.message });
         if (err.message === "Exercise does not exist.") return res.status(409).send({ message: err.message });
-        if (err.message === "You do not have permission to do that.") return res.status(403).send({ message: err.message }); // Authorization error, hence 403.
+
+        // ---------- AUTHORIZATION ----------
+        if (err.message === "You do not have permission to do that.") return res.status(403).send({ message: err.message });
 
         // ---------- ANALYTICS ----------
         if (err.message === "Please fill out empty fields.") return res.status(409).send({ message: err.message });
         if (err.message === "Invalid exercise. Please try again.") return res.status(409).send({ message: err.message });
         if (err.message === "Please provide a valid date range.") return res.status(409).send({ message: err.message });
 
-        // ---------- SESSIONS ---------- TODO: test these errors
+        // ---------- SESSIONS ---------- 
         // ADD / EDIT
         if (err.message === "Please fill out required fields.") return res.status(409).send({ message: err.message });
         if (err.message === "Maximum title length is 35 characters.") return res.status(409).send({ message: err.message });
@@ -81,7 +83,3 @@ const handleExerciseExistsError = (err, res) => {
     const error = 'That exercise already exists, maybe it was added by another user.';
     return res.status(409).send({ message: error });
 }
-
-// ---------- ANALYTICS ----------
-
-// ---------- SESSIONS ----------

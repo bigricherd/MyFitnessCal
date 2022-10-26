@@ -29,28 +29,28 @@ export default function useForm({ initialValues }) {
 
     // Form validation
     const validateInputs = (values) => {
-        // if (!prevError || (error !== prevError)) {
-        //     setPrevError(error);
-        // } else {
-        //     setPrevError(null);
-        // }
-        // const { title, date, startdatetime, enddatetime, comments } = values;
-        // if (title === "" || !date || !startdatetime || !enddatetime) {
-        //     setError("Please fill out required fields.");
-        //     return false;
-        // } else if (title.length > 35) {
-        //     setError("Maximum title length is 35 characters.");
-        //     return false;
-        // } else if (comments.length > 40) {
-        //     setError("Maximum comments length is 40 characters.");
-        // } else if (startdatetime && enddatetime) {
-        //     startdatetime.setDate(date.getDate());
-        //     enddatetime.setDate(date.getDate());
-        //     if (isAfter(startdatetime, enddatetime) || isEqual(startdatetime, enddatetime)) {
-        //         setError("End time must come after start time.");
-        //         return false;
-        //     }
-        // }
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { title, date, startdatetime, enddatetime, comments } = values;
+        if (title === "" || !date || !startdatetime || !enddatetime) {
+            setError("Please fill out required fields.");
+            return false;
+        } else if (title.length > 35) {
+            setError("Maximum title length is 35 characters.");
+            return false;
+        } else if (comments.length > 40) {
+            setError("Maximum comments length is 40 characters.");
+        } else if (startdatetime && enddatetime) {
+            startdatetime.setDate(date.getDate());
+            enddatetime.setDate(date.getDate());
+            if (isAfter(startdatetime, enddatetime) || isEqual(startdatetime, enddatetime)) {
+                setError("End time must come after start time.");
+                return false;
+            }
+        }
         return true;
     };
 

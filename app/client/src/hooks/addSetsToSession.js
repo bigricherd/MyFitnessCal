@@ -18,18 +18,18 @@ export default function useForm({ initialValues }) {
     };
 
     const validateInputs = (values) => {
-        // if (!prevError || (error !== prevError)) {
-        //     setPrevError(error);
-        // } else {
-        //     setPrevError(null);
-        // }
-        // const { sets } = values;
-        // if (sets && sets.length > 0) {
-        //     return validateSets(sets);
-        // } else if (sets.length === 0) {
-        //     setError("Please add at least one set.");
-        //     return false;
-        // }
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { sets } = values;
+        if (sets && sets.length > 0) {
+            return validateSets(sets);
+        } else if (sets.length === 0) {
+            setError("Please add at least one set.");
+            return false;
+        }
         return true;
     };
 
