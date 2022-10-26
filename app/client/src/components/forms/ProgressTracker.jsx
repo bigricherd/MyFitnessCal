@@ -39,11 +39,22 @@ function ProgressTracker(props) {
             withCredentials: true
         });
         setExercises(res.data);
+        return res;
     }
 
     // Fetch exercises on initial render
     useEffect(() => {
-        fetchExercises();
+        fetchExercises()
+            .then((res) => {
+                console.log(res);
+                let groupsTmp = muscleGroups.slice();
+                let filtered = groupsTmp.filter((group) => {
+                    console.log(group);
+                    let g = group.toLowerCase().split(" ").join("_");
+                    return res.data[g] && res.data[g].length > 0;
+                });
+                setMuscleGroups(filtered);
+            });
     }, []);
 
     const { values, handleChange, handleKeyDown, handleSubmit, error, prevError, response } = progressTracker({
