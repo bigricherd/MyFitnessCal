@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import DefaultCalendarView from "../views/CalendarView";
+import DefaultCalendarView from "./CalendarView";
 import axios from 'axios';
 import {
     Button,
@@ -7,8 +7,8 @@ import {
     Box
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import AddSession from "../forms/AddSession";
-import LoginPage from "./LoginPage";
+import AddSession from "./AddSession";
+import LoginPage from "../auth/LoginPage";
 
 function SessionsPage(props) {
     console.log('Sessions page render');

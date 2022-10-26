@@ -1,7 +1,7 @@
 import React from "react";
 import Kalend, { CalendarView } from "kalend";
 import "kalend/dist/styles/index.css";
-import SessionPopup from "../popups/SessionPopup";
+import ShowSession from "./show-edit-delete/ShowSession";
 
 function DefaultCalendarView(props) {
     console.log('calendar render');
@@ -63,7 +63,7 @@ function DefaultCalendarView(props) {
                 margin: "auto"
             }}
         >
-            <SessionPopup
+            <ShowSession
                 id={sessionId}
                 idSetter={setSessionId}
                 open={popupOpen}

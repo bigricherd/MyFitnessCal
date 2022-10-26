@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ProgressCollapse from './ProgressCollapse';
-import formatExercise from '../../helpers/formatExercise';
+import formatExercise from '../../../helpers/formatExercise';
 
 function ProgressTable(props) {
 

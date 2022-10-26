@@ -29,28 +29,28 @@ export default function useForm({ initialValues }) {
     };
 
     const validateInputs = (values) => {
-        // if (!prevError || (error !== prevError)) {
-        //     setPrevError(error);
-        // } else {
-        //     setPrevError(null);
-        // }
-        // const { exercise, fromDate, toDate, exerciseOptions } = values;
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { exercise, fromDate, toDate, exerciseOptions } = values;
 
-        // // Empty fields
-        // if (exercise === "" || !fromDate || !toDate) {
-        //     setError("Please fill out empty fields.");
-        //     return false;
-        // }
-        // // End date <= start date
-        // else if (isBefore(toDate, fromDate)) {
-        //     setError("End date must come after start date.");
-        //     return false;
-        // }
-        // // Invalid muscle group
-        // else if (exerciseOptions.indexOf(exercise) === -1) {
-        //     setError("Invalid muscle group.");
-        //     return false;
-        // }
+        // Empty fields
+        if (exercise === "" || !fromDate || !toDate) {
+            setError("Please fill out empty fields.");
+            return false;
+        }
+        // End date <= start date
+        else if (isBefore(toDate, fromDate)) {
+            setError("End date must come after start date.");
+            return false;
+        }
+        // Invalid muscle group
+        else if (exerciseOptions.indexOf(exercise) === -1) {
+            setError("Invalid muscle group.");
+            return false;
+        }
 
         return true;
     };

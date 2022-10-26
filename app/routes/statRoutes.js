@@ -24,7 +24,7 @@ const validateVolumeCounter = (values, next) => {
 
     if (!muscleGroup || !fromDate || !toDate) {
         return next(new Error("Please fill out empty fields."));
-    } else if (muscleGroups.indexOf(muscleGroup) === -1) {
+    } else if (['all', ...muscleGroups].indexOf(muscleGroup) === -1) {
         return next(new Error("Invalid muscle group. Please try again."));
     } else if (isAfter(newFromDate, newToDate)) {
         return next(new Error("Please provide a valid date range."))

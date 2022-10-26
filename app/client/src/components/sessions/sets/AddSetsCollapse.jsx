@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { DoDisturbOnOutlined } from '@mui/icons-material';
-import Dropdown from "../Dropdown";
-import SetRow from './SetRow';
+import Dropdown from "../../Dropdown";
+import AddSetRow from './AddSetRow';
 
 function AddSetsCollapse(props) {
 
@@ -132,7 +132,7 @@ function AddSetsCollapse(props) {
                                         sets && sets.map((set, i) => (
                                             <TableRow key={i}>
                                                 <TableCell colSpan={6} align="right">
-                                                    < SetRow
+                                                    < AddSetRow
                                                         set={set}
                                                         index={i}
                                                         value={sets[i]}

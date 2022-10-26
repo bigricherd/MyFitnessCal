@@ -20,8 +20,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import addSession from './../../hooks/addSession';
-import AddSetsCollapse from './AddSetsCollapse';
+import addSession from '../../hooks/sessions/addSession';
+import AddSetsCollapse from './sets/AddSetsCollapse';
 
 function AddSession(props) {
     const [exercises, setExercises] = useState([]);

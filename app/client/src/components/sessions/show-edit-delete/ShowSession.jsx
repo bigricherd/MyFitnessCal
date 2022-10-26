@@ -8,11 +8,11 @@ import {
     Alert
 } from '@mui/material';
 import { useEffect } from 'react';
-import SessionData from '../SessionData';
-import deleteSession from '../../hooks/deleteSession';
+import SessionData from './SessionData';
+import deleteSession from '../../../hooks/sessions/deleteSession';
 import DeleteSessionPopup from './DeleteSessionPopup';
 
-function SessionPopup(props) {
+function ShowSession(props) {
     // Session data
     const [data, setData] = useState(null);
 
@@ -178,4 +178,4 @@ function SessionPopup(props) {
 
 }
 
-export default SessionPopup;
+export default ShowSession;

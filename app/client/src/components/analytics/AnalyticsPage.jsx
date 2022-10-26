@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import VolumeCounter from '../forms/VolumeCounter';
-import ProgressTracker from '../forms/ProgressTracker';
+import VolumeCounter from './volume/VolumeCounter';
+import ProgressTracker from './progress/ProgressTracker';
 import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 

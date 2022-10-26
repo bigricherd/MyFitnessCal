@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import addExercise from "../../hooks/addExercise";
+import addExercise from "../../hooks/exercises/addExercise";
 import Dropdown from "../Dropdown";
 import {
     Typography,

@@ -10,7 +10,7 @@ import {
     TableBody
 } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import { formatDateSlashes } from "../../helpers/formatDate";
+import { formatDateSlashes } from "../../../helpers/formatDate";
 
 function ProgressCollapse(props) {
     const [sets, setSets] = useState(props.data.sets);

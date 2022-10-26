@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 import { DoDisturbOnOutlined } from '@mui/icons-material';
 
-function SetRow(props) {
+function AddSetRow(props) {
 
     const [set, setSet] = useState(props.set);
     useEffect(() => {
@@ -53,4 +53,4 @@ function SetRow(props) {
     )
 }
 
-export default SetRow;
+export default AddSetRow;

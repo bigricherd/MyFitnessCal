@@ -13,11 +13,11 @@ import {
     TableBody,
     Button
 } from "@mui/material";
-import CollapsibleTable from "./tables/CollapsibleTable";
-import AddSetsToSessionPopup from './popups/AddSetsToSessionPopup';
-import EditSessionPopup from './popups/EditSessionPopup';
-import { formatDateSlashes } from "../helpers/formatDate";
-import formatTime from '../helpers/formatTime';
+import ShowSetsCollapse from "../sets/ShowSetsCollapse";
+import AddSetsToSessionPopup from '../sets/AddSetsToSessionPopup';
+import EditSessionPopup from './EditSessionPopup';
+import { formatDateSlashes } from "../../../helpers/formatDate";
+import formatTime from '../../../helpers/formatTime';
 
 function SessionData(props) {
     // Add sets popup
@@ -131,10 +131,10 @@ function SessionData(props) {
                             </TableRow>
                         </TableHead>
 
-                        {/* Array of collapsible tables, one per exercise, each showing the sets of that exercise */}
+                        {/* Array of collapsibles, one per exercise, each showing the sets of that exercise */}
                         <TableBody>
                             {session && exercises.map((exercise, index) =>
-                                <CollapsibleTable key={index} exercise={exercise} sets={session.sets[exercise]} session={session} liftState={props.liftNumSets} />
+                                <ShowSetsCollapse key={index} exercise={exercise} sets={session.sets[exercise]} session={session} liftState={props.liftNumSets} />
                             )
                             }
                         </TableBody>

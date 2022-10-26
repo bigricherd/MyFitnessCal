@@ -7,7 +7,7 @@ import {
     TableCell,
     TableBody
 } from '@mui/material';
-import formatExercise from '../../helpers/formatExercise';
+import formatExercise from '../../../helpers/formatExercise';
 
 function ExerciseBreakdownTable(props) {
 

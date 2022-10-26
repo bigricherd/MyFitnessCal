@@ -9,10 +9,10 @@ import {
     TableBody,
     Alert
 } from '@mui/material';
-import addSetsToSession from '../../hooks/addSetsToSession';
+import addSetsToSession from '../../../hooks/sessions/sets/addSetsToSession';
 import { useEffect, useState } from 'react';
-import AddSetsCollapse from '../forms/AddSetsCollapse';
-import { formatDateHyphens } from '../../helpers/formatDate';
+import AddSetsCollapse from './AddSetsCollapse';
+import { formatDateHyphens } from '../../../helpers/formatDate';
 
 
 function AddSetsToSessionPopup(props) {

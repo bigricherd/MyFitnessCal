@@ -13,10 +13,10 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import Dropdown from '../Dropdown';
-import progressTracker from '../../hooks/progressTracker';
-import ProgressTable from '../tables/ProgressTable';
-import ProgressChart from '../ProgressChart';
+import Dropdown from '../../Dropdown';
+import progressTracker from '../../../hooks/analytics/progressTracker';
+import ProgressTable from './ProgressTable';
+import ProgressChart from './ProgressChart';
 
 // TODO store muscle Groups array here
 

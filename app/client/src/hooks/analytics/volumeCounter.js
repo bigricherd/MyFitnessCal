@@ -30,30 +30,30 @@ export default function useForm({ initialValues, muscleGroups }) {
     };
 
     const validateInputs = (values) => {
-        // if (!prevError || (error !== prevError)) {
-        //     setPrevError(error);
-        // } else {
-        //     setPrevError(null);
-        // }
-        // const { muscleGroup, fromDate, toDate } = values;
+        if (!prevError || (error !== prevError)) {
+            setPrevError(error);
+        } else {
+            setPrevError(null);
+        }
+        const { muscleGroup, fromDate, toDate } = values;
 
-        // console.log(values);
+        console.log(values);
 
-        // // Empty fields
-        // if (muscleGroup === "" || !fromDate || !toDate) {
-        //     setError("Please fill out empty fields.");
-        //     return false;
-        // }
-        // // End time <= start time
-        // else if (isBefore(toDate, fromDate)) {
-        //     setError("Please provide a valid date range.");
-        //     return false;
-        // }
-        // // Invalid muscle group
-        // else if (muscleGroups.indexOf(muscleGroup) === -1) {
-        //     setError("Invalid muscle group.");
-        //     return false;
-        // }
+        // Empty fields
+        if (muscleGroup === "" || !fromDate || !toDate) {
+            setError("Please fill out empty fields.");
+            return false;
+        }
+        // End time <= start time
+        else if (isBefore(toDate, fromDate)) {
+            setError("Please provide a valid date range.");
+            return false;
+        }
+        // Invalid muscle group
+        else if (muscleGroups.indexOf(muscleGroup) === -1) {
+            setError("Invalid muscle group.");
+            return false;
+        }
 
         return true;
     };

@@ -16,7 +16,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import editSession from '../../hooks/editSession';
+import editSession from '../../../hooks/sessions/editSession';
 import { useEffect, useState } from 'react';
 
 function EditSessionPopup(props) {

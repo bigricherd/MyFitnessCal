@@ -15,7 +15,7 @@ import {
     Stack
 } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import formatExercise from '../../helpers/formatExercise';
+import formatExercise from '../../../helpers/formatExercise';
 import ExerciseBreakdownTable from './ExerciseBreakdownTable';
 
 function VolumeCollapse(props) {

@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import RegisterPage from "./components/pages/RegisterPage";
-import LoginPage from "./components/pages/LoginPage";
-import SessionsPage from "./components/pages/SessionsPage";
+import RegisterPage from "./components/auth/RegisterPage";
+import LoginPage from "./components/auth/LoginPage";
+import SessionsPage from "./components/sessions/SessionsPage";
 import Nav from "./components/Nav";
-import AnalyticsPage from "./components/pages/AnalyticsPage";
-import ExercisesPage from "./components/pages/ExercisesPage";
+import AnalyticsPage from "./components/analytics/AnalyticsPage";
+import ExercisesPage from "./components/exercises/ExercisesPage";
 
 const muscleGroups = ["Chest", "Shoulders", "Biceps", "Triceps",
     "Forearms", "Traps", "Neck", "Lats", "Lower Back", "Abs",

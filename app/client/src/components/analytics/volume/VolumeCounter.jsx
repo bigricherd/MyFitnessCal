@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import volumeCounter from "../../hooks/volumeCounter";
-import VolumeTable from "../tables/VolumeTable";
-import Dropdown from "../Dropdown";
 import {
     FormControl,
     TextField,
@@ -9,12 +6,15 @@ import {
     Stack,
     Button,
     Typography,
-    Alert
+    Alert,
+    Container
 } from "@mui/material";
-import Container from "@mui/material/Container";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import VolumeTable from "./VolumeTable";
+import Dropdown from "../../Dropdown";
+import volumeCounter from "../../../hooks/analytics/volumeCounter";
 
 function VolumeCounter(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);

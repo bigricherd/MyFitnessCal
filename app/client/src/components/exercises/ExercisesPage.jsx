@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import AddExercise from '../forms/AddExercise';
-import MyExercises from '../MyExercises';
+import AddExercise from './AddExercise';
+import MyExercises from './MyExercises';
 import { Box, Grid } from '@mui/material';
 
 

@@ -13,11 +13,11 @@ import {
 } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { DoDisturbOnOutlined } from '@mui/icons-material';
-import DeleteSetPopup from '../popups/DeleteSetPopup';
-import deleteSet from '../../hooks/deleteSet';
-import formatExercise from '../../helpers/formatExercise';
+import DeleteSetPopup from './DeleteSetPopup';
+import deleteSet from '../../../hooks/sessions/sets/deleteSet';
+import formatExercise from '../../../helpers/formatExercise';
 
-function CollapsibleTable(props) {
+function ShowSetsCollapse(props) {
     const [sets, setSets] = useState(props.sets);
     const [open, setOpen] = useState(false);
     const [prevOpen, setPrevOpen] = useState(false);
@@ -209,4 +209,4 @@ function CollapsibleTable(props) {
     );
 }
 
-export default CollapsibleTable
+export default ShowSetsCollapse;
