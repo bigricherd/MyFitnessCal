@@ -3,9 +3,6 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const methodOverride = require('method-override');
-// const { getExercisesArray, getMuscleGroups } = require('./utils/fetchEnums');
-// const { performQuery } = require('./utils/dbModule');
-// const { isLoggedIn } = require('./utils/middleware');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -39,51 +36,23 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 
-// ---------- SET LOCAL VARIABLES REPRESENTING ENUMS (exercise, muscleGroup) ----------
-// let exercises, muscleGroups = [];
-
-// const getEnums = async () => {
-//     exercises = await getExercisesArray();
-//     muscleGroups = await getMuscleGroups();
-// }
-// getEnums();
-
-// ---------- PASSPORT CONFIG ----------
+// ---------- PASSPORT SETUP ----------
 require("./utils/passportLocal");
 app.use(passport.initialize());
 app.use(passport.session());
 
 // ---------- ROUTES ----------
-const setRoutes = require("./routes/setRoutes");
-const statRoutes = require("./routes/statRoutes");
-const sessionRoutes = require("./routes/sessionRoutes");
 const authRoutes = require("./routes/authRoutes");
 const exerciseRoutes = require("./routes/exerciseRoutes");
-const errorController = require("./utils/errorController");
-app.use("/api/sets", setRoutes);
-app.use("/api/stats", statRoutes);
+const sessionRoutes = require("./routes/sessionRoutes");
+const statRoutes = require("./routes/statRoutes");
 app.use("/api/auth", authRoutes);
-app.use("/api/sessions", sessionRoutes);
 app.use("/api/exercises", exerciseRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/stats", statRoutes);
+
+const errorController = require("./utils/errorController");
 app.use(errorController);
-
-// --- DEBUGGING AUTH ---
-// app.use((req, res, next) => {
-//     console.log('req.session is currently:');
-//     console.log(req.session);
-
-//     console.log('req.user is currently:');
-//     console.log(req.user);
-
-//     if (req.session.passport) {
-//         console.log(req.session.passport.user);
-//     }
-//     next();
-// })
-
-// app.get('/', (req, res) => {
-//     res.send(req.user);
-// })
 
 // ---------- ERROR HANDLING ----------
 // catch-all error handler
@@ -101,3 +70,17 @@ const port = process.env.PORT || 5000;
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port} `);
 });
+
+// --- DEBUGGING AUTH ---
+// app.use((req, res, next) => {
+//     console.log('req.session is currently:');
+//     console.log(req.session);
+
+//     console.log('req.user is currently:');
+//     console.log(req.user);
+
+//     if (req.session.passport) {
+//         console.log(req.session.passport.user);
+//     }
+//     next();
+// })

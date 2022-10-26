@@ -128,6 +128,7 @@ function SessionsPage(props) {
                     <AddSession
                         open={showAddSession}
                         onClose={() => setShowAddSession(false)}
+                        setShow={setShowAddSession}
                         exercises={exercises}
                         exercisesByUser={exercisesByUser}
                         liftState={setNumSessions}

@@ -54,6 +54,8 @@ export default function useForm({ initialValues }) {
         handleChange,
         values,
         numSets,
-        handleSubmit
+        handleSubmit,
+        error,
+        prevError
     })
 }

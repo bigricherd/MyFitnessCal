@@ -85,7 +85,10 @@ function AddSession(props) {
             allSets.push(...exercise.sets);
         }
         values.sets = allSets;
-        return handleSubmit(event);
+        if (handleSubmit(event)) {
+            props.onClose();
+            resetFormFields();
+        }
     }
 
     // Add Session hook
@@ -123,6 +126,7 @@ function AddSession(props) {
         if (error) {
             setAttempted(true);
             setShowError(true);
+            props.setShow(true);
             setTimeout(() => {
                 setShowError(false);
             }, 4000)
@@ -329,12 +333,7 @@ function AddSession(props) {
                 {/* handle submit add session on click */}
                 <Button
                     type="submit"
-                    onClick={(e) => {
-                        if (customHandleSubmit(e)) {
-                            props.onClose();
-                            resetFormFields();
-                        }
-                    }}
+                    onClick={customHandleSubmit}
                     variant="contained"
                     color="success"
                     sx={{ color: 'white' }}

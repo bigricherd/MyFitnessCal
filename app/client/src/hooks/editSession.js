@@ -29,26 +29,28 @@ export default function useForm({ initialValues }) {
 
     // Form validation
     const validateInputs = (values) => {
-        if (!prevError || (error !== prevError)) {
-            setPrevError(error);
-        } else {
-            setPrevError(null);
-        }
-        const { title, date, startdatetime, enddatetime } = values;
-        if (title === "" || !date || !startdatetime || !enddatetime) {
-            setError("Please fill out required fields.");
-            return false;
-        } else if (title.length > 35) {
-            setError("Maximum title length is 35 characters.");
-            return false;
-        } else if (startdatetime && enddatetime) {
-            startdatetime.setDate(date.getDate());
-            enddatetime.setDate(date.getDate());
-            if (isAfter(startdatetime, enddatetime) || isEqual(startdatetime, enddatetime)) {
-                setError("End time must come after start time.");
-                return false;
-            }
-        }
+        // if (!prevError || (error !== prevError)) {
+        //     setPrevError(error);
+        // } else {
+        //     setPrevError(null);
+        // }
+        // const { title, date, startdatetime, enddatetime, comments } = values;
+        // if (title === "" || !date || !startdatetime || !enddatetime) {
+        //     setError("Please fill out required fields.");
+        //     return false;
+        // } else if (title.length > 35) {
+        //     setError("Maximum title length is 35 characters.");
+        //     return false;
+        // } else if (comments.length > 40) {
+        //     setError("Maximum comments length is 40 characters.");
+        // } else if (startdatetime && enddatetime) {
+        //     startdatetime.setDate(date.getDate());
+        //     enddatetime.setDate(date.getDate());
+        //     if (isAfter(startdatetime, enddatetime) || isEqual(startdatetime, enddatetime)) {
+        //         setError("End time must come after start time.");
+        //         return false;
+        //     }
+        // }
         return true;
     };
 
@@ -68,46 +70,41 @@ export default function useForm({ initialValues }) {
         const dataObject = formValues.values;
         let { sessionId, title, comments, date, startdatetime, enddatetime } = dataObject;
 
-        // Sets start and end times to be on the selected date; necessary because it defaults to today.
-        startdatetime.setDate(date.getDate());
-        enddatetime.setDate(date.getDate());
+        try {
+            // Sets start and end times to be on the selected date; necessary because it defaults to today.
+            startdatetime.setDate(date.getDate());
+            enddatetime.setDate(date.getDate());
 
-        if (title === '') {
+            await axios({
+                method: 'PATCH',
+                url: `${baseUrl}/api/sessions/?id=${sessionId}`,
+                data: {
+                    title,
+                    comments,
+                    date,
+                    startdatetime,
+                    enddatetime,
+                    edited
+                },
+                headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
+                withCredentials: true
+            }).then(res => {
+                console.log(res.data);
+                setEdited(res.data.count);
+                setError(null);
+                return true;
+            })
+        } catch (err) {
+            console.log(err);
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {
                 setPrevError(null);
             }
-            setError('Title cannot be blank');
-        } else {
-            try {
-                await axios({
-                    method: 'PATCH',
-                    url: `${baseUrl}/api/sessions/?id=${sessionId}`,
-                    data: {
-                        title,
-                        comments,
-                        date,
-                        startdatetime,
-                        enddatetime,
-                        edited
-                    },
-                    headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
-                    withCredentials: true
-
-                }).then(res => {
-                    console.log(res.data);
-                    setEdited(res.data.count);
-                    setError(null);
-                    return true;
-                })
-            } catch (err) {
-                console.log(err);
-                if (!prevError || (error !== prevError)) {
-                    setPrevError(error);
-                } else {
-                    setPrevError(null);
-                }
+            // Extra line of defense in case empty date / times somehow get past validateInputs() above
+            if (err.message && err.message === "date.getDate is not a function") {
+                setError("Please enter a date, start time, and end time.");
+            } else {
                 setError(err.response.data.message);
             }
         }

@@ -54,6 +54,11 @@ function AddSetsCollapse(props) {
             setSets(setsTemp);
             props.setExercises(exercises);
         }
+        setsTemp[index][name] = event.target.value;
+        exercises[props.index]['sets'] = setsTemp;
+
+        setSets(setsTemp);
+        props.setExercises(exercises);
     }
 
     const removeSet = (i) => {

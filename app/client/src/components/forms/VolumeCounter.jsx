@@ -92,7 +92,7 @@ function VolumeCounter(props) {
                                 <DatePicker
                                     views={["day"]}
                                     label="From Date"
-                                    value={values.fromDate}
+                                    value={values.fromDate || null}
                                     onChange={(newValue) => {
                                         let event = {
                                             target: {
@@ -117,7 +117,7 @@ function VolumeCounter(props) {
                                 <DatePicker
                                     views={["day"]}
                                     label="To Date"
-                                    value={values.toDate}
+                                    value={values.toDate || null}
                                     onChange={(newValue) => {
                                         let event = {
                                             target: {

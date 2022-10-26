@@ -63,7 +63,7 @@ export default function useForm({ initialValues }) {
             } else {
                 setPrevError(null);
             }
-            setError(err.response.data);
+            setError(err.response.data.message);
         }
     };
     return {

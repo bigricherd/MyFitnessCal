@@ -2,15 +2,43 @@ module.exports = (err, req, res, next) => {
     try {
         console.log('HIT ERROR MIDDLEWARE');
         console.log(err.name, err.message);
+
+        // ---------- AUTH ----------
         if (err.code === '23505' && err.constraint === 'appuser_username_key') return err = handleUserExistsError(err, res);
         if (err.message === 'Username cannot be empty') return err = handleMissingUsernameError(err, res);
         if (err.message === 'Password cannot be empty') return err = handleMissingPasswordError(err, res);
+        if (err.message === 'Username is too long') return err = handleLongUsernameError(err, res);
         if (err.message === 'Password is not strong enough') return err = handleWeakPasswordError(err, res);
 
+        // ---------- EXERCISES ----------
         if (err.code === '23505' && err.constraint === 'exercises_pkey') return err = handleExerciseExistsError(err, res);
-        if (err.message === 'Name cannot be blank') return res.status(409).send({ message: err.message });
-        if (err.message === 'Muscle group cannot be blank') return res.status(409).send({ message: err.message });
-        if (err.message === 'Invalid muscle group') return res.status(409).send({ message: err.message });
+        if (err.message === 'Exercise name cannot be empty.') return res.status(409).send({ message: err.message });
+        if (err.message === 'Muscle group cannot be empty.') return res.status(409).send({ message: err.message });
+        if (err.message === 'Invalid muscle group. Please try again.') return res.status(409).send({ message: err.message });
+        if (err.message === "Exercise name is too long. Max length: 30 characters. Considering using acronyms like 'BB' or 'OH'.") return res.status(409).send({ message: err.message });
+        if (err.message === "Exercise does not exist.") return res.status(409).send({ message: err.message });
+        if (err.message === "You do not have permission to do that.") return res.status(403).send({ message: err.message }); // Authorization error, hence 403.
+
+        // ---------- ANALYTICS ----------
+        if (err.message === "Please fill out empty fields.") return res.status(409).send({ message: err.message });
+        if (err.message === "Invalid exercise. Please try again.") return res.status(409).send({ message: err.message });
+        if (err.message === "Please provide a valid date range.") return res.status(409).send({ message: err.message });
+
+        // ---------- SESSIONS ---------- TODO: test these errors
+        // ADD / EDIT
+        if (err.message === "Please fill out required fields.") return res.status(409).send({ message: err.message });
+        if (err.message === "Maximum title length is 35 characters.") return res.status(409).send({ message: err.message });
+        if (err.message === "Maximum comments length is 40 characters.") return res.status(409).send({ message: err.message });
+        if (err.message === "End time must come after start time.") return res.status(409).send({ message: err.message });
+
+        // SETS
+        if (err.message === "Weight cannot be negative. BE") return res.status(409).send({ message: err.message });
+        if (err.message === "Minimum reps for a set is 1. BE") return res.status(409).send({ message: err.message });
+        if (err.message === "Please add at least one set. BE") return res.status(409).send({ message: err.message });
+
+        // DELETE / EDIT
+        if (err.message === "Session does not exist.") return res.status(409).send({ message: err.message });
+        if (err.message === "Set does not exist.") return res.status(409).send({ message: err.message });
 
         return next(err);
     }
@@ -22,6 +50,7 @@ module.exports = (err, req, res, next) => {
 
 }
 
+// ---------- AUTH ----------
 const handleUserExistsError = (err, res) => {
     const error = 'Sorry, that username is taken.';
     return res.status(409).send({ message: error });
@@ -29,6 +58,11 @@ const handleUserExistsError = (err, res) => {
 
 const handleMissingUsernameError = (err, res) => {
     const error = 'Username cannot be empty.';
+    return res.status(409).send({ message: error });
+}
+
+const handleLongUsernameError = (err, res) => {
+    const error = 'Username is too long. Max length: 30 characters';
     return res.status(409).send({ message: error });
 }
 
@@ -42,7 +76,12 @@ const handleWeakPasswordError = (err, res) => {
     return res.status(409).send({ message: error });
 }
 
+// ---------- EXERCISES ----------
 const handleExerciseExistsError = (err, res) => {
     const error = 'That exercise already exists, maybe it was added by another user.';
     return res.status(409).send({ message: error });
 }
+
+// ---------- ANALYTICS ----------
+
+// ---------- SESSIONS ----------

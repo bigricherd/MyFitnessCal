@@ -6,7 +6,7 @@ const { getExercisesArray, getMuscleGroups } = require('../utils/fetchEnums');
 const { isLoggedIn } = require('../utils/middleware');
 const { formatExercise } = require('../utils/formatExercise');
 
-// ---------- SET LOCAL VARIABLES REPRESENTING ENUMS (exercise, muscleGroup) ----------
+// ---------- SET LOCAL VARIABLES ----------
 let exercises, muscleGroups = [];
 
 const getEnums = async () => {
@@ -16,13 +16,53 @@ const getEnums = async () => {
 
 getEnums();
 
+// ---------- VALIDATION ----------
+const validateAdd = (values, next) => {
+    const { exercise, muscleGroup } = values;
+
+    // Empty fields
+    if (exercise === "") {
+        return next(new Error('Exercise name cannot be empty.'));
+    } else if (muscleGroup === "") {
+        return next(new Error('Muscle group cannot be empty.'));
+    }
+    // Invalid muscle group
+    else if (muscleGroups.indexOf(muscleGroup) === -1) {
+        return next(new Error('Invalid muscle group. Please try again.'));
+    }
+    // Exercise name too long
+    else if (exercise && exercise.length > 25) {
+        return next(new Error("Exercise name is too long. Max length: 25 characters. Considering using acronyms like 'BB' or 'OH'."));
+    }
+
+    return true;
+}
+
+const validateDelete = async (key, user, next) => {
+    const exercise = await performQuery(`SELECT * FROM Exercises WHERE nameandmusclegroup = '${key}'`);
+
+    // Nonexistent Exercise
+    if (exercise.rows.length < 1) {
+        return next(new Error("Exercise does not exist."));
+    }
+    // AUTHORIZATION -- User is not the owner of Exercise to be deleted
+    else if (exercise.rows[0].owner !== user) {
+        return next(new Error("You do not have permission to do that."));
+    }
+
+    return true;
+}
+
+// ---------- ROUTES ----------
+
+// Get all Exercises 
 router.get("/all", (req, res) => {
     getEnums();
     res.send({ message: "Exercises requested", exercises });
 });
 
 // This route is hit when the Exercises or Sessions pages load
-// Returns the list of exercises added by the currently logged in user
+// Returns the list of Exercises added by the currently logged in user
 router.get("/byCurrentUser", isLoggedIn, async (req, res) => {
     const { id } = req.query;
     console.log(id);
@@ -38,92 +78,91 @@ router.get("/byCurrentUser", isLoggedIn, async (req, res) => {
     res.send({ exercisesByUser });
 });
 
-// Add an exercise to the Exercises table
+// Add an Exercise
 router.post("/add", isLoggedIn, async (req, res, next) => {
     let { exercise, muscleGroup } = req.body;
 
-    const response = { message: '' };
-
-    if (exercise === '') return next(new Error('Name cannot be blank'));
-    if (muscleGroup === '') return next(new Error('Muscle group cannot be blank'));
-
-    // Format exercise and muscle group to store in database
-    exercise = exercise.toLowerCase();
-    exercise = exercise.split(' ').join('_');
-    muscleGroup = muscleGroup.toLowerCase();
-    muscleGroup = muscleGroup.split(' ').join('_');
-
-    const id = uuid();
-
-    // Ensure muscle group is valid
-    // TODO: make this a boolean-returning function. Throw an error if it returns false
-    // also to be used in statRoutes.get('/setsPerMuscle')
-    if (muscleGroups.indexOf(muscleGroup) === -1) return next(new Error('Invalid muscle group'));
-
-    try {
-        // Using a varchar(45) field to store "exercise:muscleGroup" as Primary Key, manually populated with the string in the next line.
-        const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
-        const insertQuery = `INSERT INTO exercises(id, name, musclegroup, nameandmusclegroup, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${req.user.id}')`;
-        await performQuery(insertQuery);
-
-        const postAdd = await performQuery(`SELECT nameandmusclegroup FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
-        const exercisesPostAdd = [];
-        console.log(postAdd.rows);
-        for (let row of postAdd.rows) {
-            exercisesPostAdd.push(row.nameandmusclegroup);
-        }
-        response.exercises = exercisesPostAdd;
-
-        // update local 'Exercises' array
-        await getEnums();
-
-        // Verify that the database contains the exercise that was just added above
-        const verifyQuery = `SELECT * FROM Exercises WHERE nameandmusclegroup = '${exercise}:${muscleGroup}'`;
-        const single = await performQuery(verifyQuery);
-
-        if (single.rows.length === 1) {
-            console.log('exercises matched');
-            response.message = `Successfully added exercise ${formatExercise(req.body.exercise, " ")}`;
-        } else {
-            response.message = `Exercise ${formatExercise(req.body.exercise, " ")} was not added.`;
-        }
-
-    } catch (err) {
-        return next(err);
+    // String formatting to work with database
+    if (exercise) {
+        exercise = exercise.toLowerCase();
+        exercise = exercise.split(' ').join('_');
+    }
+    if (muscleGroup) {
+        muscleGroup = muscleGroup.toLowerCase();
+        muscleGroup = muscleGroup.split(' ').join('_');
     }
 
-    return res.send(response);
+    if (validateAdd({ exercise, muscleGroup }, next)) {
+
+        const response = { message: '' };
+        const id = uuid();
+
+        try {
+            // Using a varchar(45) field to store "exercise:muscleGroup" as Primary Key, manually populated with the string in the next line.
+            const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
+            const insertQuery = `INSERT INTO exercises(id, name, musclegroup, nameandmusclegroup, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${req.user.id}')`;
+            await performQuery(insertQuery);
+
+            const postAdd = await performQuery(`SELECT nameandmusclegroup FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
+            const exercisesPostAdd = [];
+            for (let row of postAdd.rows) {
+                exercisesPostAdd.push(row.nameandmusclegroup);
+            }
+            response.exercises = exercisesPostAdd;
+
+            // update local 'Exercises' array
+            await getEnums();
+
+            // Verify that the database contains the exercise that was just added above
+            const verifyQuery = `SELECT * FROM Exercises WHERE nameandmusclegroup = '${exercise}:${muscleGroup}'`;
+            const single = await performQuery(verifyQuery);
+
+            if (single.rows.length === 1) {
+                console.log('exercises matched');
+                response.message = `Successfully added exercise ${formatExercise(req.body.exercise, " ")}`;
+            } else {
+                response.message = `Exercise ${formatExercise(req.body.exercise, " ")} was not added.`;
+            }
+
+        } catch (err) {
+            return next(err);
+        }
+
+        return res.send(response);
+    }
 });
 
-router.delete('/', isLoggedIn, async (req, res) => {
+// Delete an Exercise
+router.delete('/', isLoggedIn, async (req, res, next) => {
     const { nameandmusclegroup } = req.query;
-    const name = nameandmusclegroup.split(':')[0];
+    if (await validateDelete(nameandmusclegroup, req.user.id, next)) {
+        const name = nameandmusclegroup.split(':')[0];
+        const response = { message: '' };
 
-    const response = { message: '' };
+        try {
+            const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${nameandmusclegroup}'`;
+            await performQuery(query);
+            const msg = `Successfully deleted exercise ${formatExercise(name)}`;
 
-    try {
-        const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${nameandmusclegroup}'`;
-        await performQuery(query);
-        const msg = `Successfully deleted exercise ${formatExercise(name)}`;
+            response.message = msg;
+            await getEnums();
 
-        response.message = msg;
-        await getEnums();
+            const postDelete = await performQuery(`SELECT nameandmusclegroup FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
 
-        const postDelete = await performQuery(`SELECT nameandmusclegroup FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
+            await getEnums();
 
-        await getEnums();
+            let exercisesPostDelete = [];
+            for (let row of postDelete.rows) {
+                exercisesPostDelete.push(row.nameandmusclegroup);
+            }
 
-        let exercisesPostDelete = [];
-        for (let row of postDelete.rows) {
-            exercisesPostDelete.push(row.nameandmusclegroup);
+            response.exercises = exercisesPostDelete;
+        } catch (err) {
+            return next(err);
         }
 
-        response.exercises = exercisesPostDelete;
-    } catch (err) {
-        return next(err);
+        return res.send(response);
     }
-
-    return res.send(response);
 });
 
 module.exports = router;

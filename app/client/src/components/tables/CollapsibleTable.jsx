@@ -3,16 +3,13 @@ import {
     Button,
     Box,
     Collapse,
-    Grid,
     IconButton,
-    Typography,
-    TableContainer,
     Table,
     TableHead,
     TableRow,
     TableCell,
     TableBody,
-    Stack
+    Alert
 } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { DoDisturbOnOutlined } from '@mui/icons-material';
@@ -21,13 +18,10 @@ import deleteSet from '../../hooks/deleteSet';
 import formatExercise from '../../helpers/formatExercise';
 
 function CollapsibleTable(props) {
-    console.log('CollapsibleTable render for' + props.exercise);
     const [sets, setSets] = useState(props.sets);
-    //const [session, setSession] = useState(props.session);
     const [open, setOpen] = useState(false);
     const [prevOpen, setPrevOpen] = useState(false);
     const [editing, setEditing] = useState(false);
-
     const [setToDelete, setSetToDelete] = useState(null);
     const [showDialog, setShowDialog] = useState(false);
 
@@ -37,7 +31,7 @@ function CollapsibleTable(props) {
         }
     }, [props]);
 
-    const { values, numSets, handleSubmit } = deleteSet({
+    const { values, numSets, handleSubmit, error, prevError } = deleteSet({
         setId: '',
         sessionId: props.session ? props.session.id : ''
     })
@@ -47,23 +41,40 @@ function CollapsibleTable(props) {
         setShowDialog(false);
     }
 
+    // Popup controls
     const handleOpenDialog = (set) => {
         setSetToDelete(set);
         values.setId = set.id;
         values.sessionId = props.session.id;
         setShowDialog(true);
-    }
+    };
 
     const handleCloseDialog = () => {
         setSetToDelete(null);
         values.setId = '';
         values.sessionId = '';
         setShowDialog(false);
-    }
+    };
 
     useEffect(() => {
         props.liftState(numSets);
     }, [numSets]);
+
+    // Setup to display feedback message -- error
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    };
+
+    useEffect(() => {
+        if (error) {
+            setShowError(true);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
+    }, [error, prevError]);
 
 
     return (
@@ -173,8 +184,21 @@ function CollapsibleTable(props) {
 
                                         </TableRow>
                                     )}
+                                    <TableRow>
+                                        {/* Feedback message -- error */}
+                                        <TableCell colSpan={6}>
+                                            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+                                        </TableCell>
+                                    </TableRow>
 
-                                    {setToDelete && <DeleteSetPopup open={showDialog} onClose={handleCloseDialog} handleDelete={handleDelete} set={setToDelete} sessionTitle={props.session.title} exercise={formatExercise(props.exercise.split(":")[0])} />}
+                                    {setToDelete
+                                        && <DeleteSetPopup
+                                            open={showDialog}
+                                            onClose={handleCloseDialog}
+                                            handleDelete={handleDelete}
+                                            set={setToDelete}
+                                            sessionTitle={props.session.title}
+                                            exercise={formatExercise(props.exercise.split(":")[0])} />}
                                 </TableBody>
                             </Table>
                         </Box>

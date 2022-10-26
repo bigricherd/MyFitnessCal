@@ -30,30 +30,30 @@ export default function useForm({ initialValues, muscleGroups }) {
     };
 
     const validateInputs = (values) => {
-        if (!prevError || (error !== prevError)) {
-            setPrevError(error);
-        } else {
-            setPrevError(null);
-        }
-        const { muscleGroup, fromDate, toDate } = values;
+        // if (!prevError || (error !== prevError)) {
+        //     setPrevError(error);
+        // } else {
+        //     setPrevError(null);
+        // }
+        // const { muscleGroup, fromDate, toDate } = values;
 
-        console.log(values);
+        // console.log(values);
 
-        // Empty fields
-        if (muscleGroup === "" || !fromDate || !toDate) {
-            setError("Please fill out empty fields.");
-            return false;
-        }
-        // End time <= start time
-        else if (isBefore(toDate, fromDate) || isEqual(toDate, fromDate)) {
-            setError("End date must come after start date.");
-            return false;
-        }
-        // Invalid muscle group
-        else if (muscleGroups.indexOf(muscleGroup) === -1) {
-            setError("Invalid muscle group.");
-            return false;
-        }
+        // // Empty fields
+        // if (muscleGroup === "" || !fromDate || !toDate) {
+        //     setError("Please fill out empty fields.");
+        //     return false;
+        // }
+        // // End time <= start time
+        // else if (isBefore(toDate, fromDate)) {
+        //     setError("Please provide a valid date range.");
+        //     return false;
+        // }
+        // // Invalid muscle group
+        // else if (muscleGroups.indexOf(muscleGroup) === -1) {
+        //     setError("Invalid muscle group.");
+        //     return false;
+        // }
 
         return true;
     };
@@ -94,13 +94,22 @@ export default function useForm({ initialValues, muscleGroups }) {
                 setError(null);
             });
         } catch (err) {
-            console.log(err);
+            // Handles identical, consecutive errors (else block)
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {
                 setPrevError(null);
             }
-            setError(err.response.data);
+
+            // Extra line of defense in case empty dates somehow get past validateInputs() above
+            if (err.message &&
+                (err.message === "Cannot read properties of undefined (reading 'toISOString')"
+                    || err.message === "Cannot read properties of null (reading 'toISOString')")
+            ) {
+                setError("Please select dates.");
+            } else {
+                setError(err.response.data.message);
+            }
         }
     };
     return {

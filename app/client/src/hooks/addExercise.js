@@ -42,7 +42,7 @@ export default function useForm({ initialValues, muscleGroups }) {
             setError("Invalid muscle group. Please try again.");
             return false;
         } else if (exercise.length > 25) {
-            setError("Exercise name is too long, limit: 30 characters. Consider using acronyms like 'BB' or 'OH.'");
+            setError("Exercise name is too long, limit: 25 characters. Consider using acronyms like 'BB' or 'OH.'");
             return false;
         }
         return true;

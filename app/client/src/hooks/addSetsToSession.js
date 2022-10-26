@@ -18,18 +18,18 @@ export default function useForm({ initialValues }) {
     };
 
     const validateInputs = (values) => {
-        if (!prevError || (error !== prevError)) {
-            setPrevError(error);
-        } else {
-            setPrevError(null);
-        }
-        const { sets } = values;
-        if (sets && sets.length > 0) {
-            return validateSets(sets);
-        } else if (sets.length === 0) {
-            setError("Please add at least one set.");
-            return false;
-        }
+        // if (!prevError || (error !== prevError)) {
+        //     setPrevError(error);
+        // } else {
+        //     setPrevError(null);
+        // }
+        // const { sets } = values;
+        // if (sets && sets.length > 0) {
+        //     return validateSets(sets);
+        // } else if (sets.length === 0) {
+        //     setError("Please add at least one set.");
+        //     return false;
+        // }
         return true;
     };
 
@@ -62,7 +62,6 @@ export default function useForm({ initialValues }) {
         const dataObject = formValues.values;
         let { sets, sessionId, date } = dataObject;
 
-        // Sets start and end times to be on the selected date; necessary because it defaults to today.
         try {
             await axios({
                 method: 'POST',

@@ -70,6 +70,7 @@ function EditSessionPopup(props) {
     useEffect(() => {
         if (error) {
             setAttempted(true);
+            props.setOpen(true); //FIX temporary for backend validation testing.
             setShowError(true);
             setTimeout(() => {
                 setShowError(false);

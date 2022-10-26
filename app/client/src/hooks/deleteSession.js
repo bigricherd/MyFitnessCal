@@ -54,6 +54,8 @@ export default function useForm({ initialValues }) {
         handleChange,
         deleteValues,
         numSessions,
-        handleSubmitDelete
+        handleSubmitDelete,
+        error,
+        prevError
     })
 }

@@ -29,28 +29,28 @@ export default function useForm({ initialValues }) {
     };
 
     const validateInputs = (values) => {
-        if (!prevError || (error !== prevError)) {
-            setPrevError(error);
-        } else {
-            setPrevError(null);
-        }
-        const { exercise, fromDate, toDate, exerciseOptions } = values;
+        // if (!prevError || (error !== prevError)) {
+        //     setPrevError(error);
+        // } else {
+        //     setPrevError(null);
+        // }
+        // const { exercise, fromDate, toDate, exerciseOptions } = values;
 
-        // Empty fields
-        if (exercise === "" || !fromDate || !toDate) {
-            setError("Please fill out empty fields.");
-            return false;
-        }
-        // End date <= start date
-        else if (isBefore(toDate, fromDate)) {
-            setError("End date must come after start date.");
-            return false;
-        }
-        // Invalid muscle group
-        else if (exerciseOptions.indexOf(exercise) === -1) {
-            setError("Invalid muscle group.");
-            return false;
-        }
+        // // Empty fields
+        // if (exercise === "" || !fromDate || !toDate) {
+        //     setError("Please fill out empty fields.");
+        //     return false;
+        // }
+        // // End date <= start date
+        // else if (isBefore(toDate, fromDate)) {
+        //     setError("End date must come after start date.");
+        //     return false;
+        // }
+        // // Invalid muscle group
+        // else if (exerciseOptions.indexOf(exercise) === -1) {
+        //     setError("Invalid muscle group.");
+        //     return false;
+        // }
 
         return true;
     };
@@ -81,18 +81,30 @@ export default function useForm({ initialValues }) {
                 withCredentials: true,
             }).then((res) => {
                 setResponse(res.data);
-
                 if (res.data.redirect === "/") {
                     window.location = "/";
                 } else if (res.data.redirect === "/login") {
                     window.location = "/login";
                 }
-
                 setError(null);
             });
         } catch (err) {
-            console.log(err);
-            setError(err.response.data);
+            // Handles identical, consecutive errors (else block)
+            if (!prevError || (error !== prevError)) {
+                setPrevError(error);
+            } else {
+                setPrevError(null);
+            }
+
+            // Extra line of defense in case empty dates somehow get past validateInputs(values) above
+            if (err.message &&
+                (err.message === "Cannot read properties of undefined (reading 'toISOString')"
+                    || err.message === "Cannot read properties of null (reading 'toISOString')")
+            ) {
+                setError("Please select dates.");
+            } else {
+                setError(err.response.data.message);
+            }
         }
     };
     return {

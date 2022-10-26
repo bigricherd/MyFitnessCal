@@ -4,7 +4,8 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Button
+    Button,
+    Alert
 } from '@mui/material';
 import { useEffect } from 'react';
 import SessionData from '../SessionData';
@@ -51,7 +52,7 @@ function SessionPopup(props) {
         props.openSetter(false);
     }
 
-    const { deleteValues, numSessions, handleSubmitDelete } = deleteSession({
+    const { deleteValues, numSessions, handleSubmitDelete, error, prevError } = deleteSession({
         id: ''
     });
 
@@ -66,9 +67,7 @@ function SessionPopup(props) {
             console.log(json);
             setData(json);
         } else setData(null);
-    }
-
-
+    };
 
     useEffect(() => {
         getSessionInfo();
@@ -90,7 +89,23 @@ function SessionPopup(props) {
             return;
         }
         props.onClose();
-    }
+    };
+
+    // Setup to display feedback message -- error
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseError = () => {
+        setShowError(false);
+    };
+
+    useEffect(() => {
+        if (error) {
+            setShowError(true);
+            setTimeout(() => {
+                setShowError(false);
+            }, 4000)
+        }
+    }, [error, prevError]);
 
     return (
         <>
@@ -103,6 +118,9 @@ function SessionPopup(props) {
                 <DialogContent>
                     {/* Populate the dialog with session data */}
                     {data && <SessionData session={data.session} sets={data.sets} liftNumSets={setNumSets} liftEdited={setEdited} exercises={props.exercises} />}
+
+                    {/* Feedback message -- error */}
+                    {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
                 </DialogContent>
 
                 <DialogActions>
