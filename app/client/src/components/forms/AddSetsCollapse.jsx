@@ -99,6 +99,9 @@ function AddSetsCollapse(props) {
                             name={`exercise_${props.index}`}
                             value={props.exercise.name}
                             onChange={(e) => {
+                                if (e.target.value === "") {
+                                    setOpen(false);
+                                } else setOpen(true);
                                 props.onChange(e);
                             }}
                         ></Dropdown>
@@ -108,7 +111,9 @@ function AddSetsCollapse(props) {
                 {/* Remove group button */}
                 <TableCell>
                     <Button
-                        onClick={(e) => { props.onDelete(props.index) }}
+                        onClick={(e) => {
+                            props.onDelete(props.index);
+                        }}
                         sx={{ color: "red" }}
                     >
                         <DoDisturbOnOutlined />

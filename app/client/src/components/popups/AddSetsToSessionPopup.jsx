@@ -25,6 +25,11 @@ function AddSetsToSessionPopup(props) {
             name: '',
             sets: []
         };
+        // Make sure there are no empty exercises before adding a new one
+        for (let exercise of exercises) {
+            if (exercise.name === "") return;
+        }
+        // Add exercise
         if (exercises.length === 0) {
             setExercises([emptyExercise]);
         } else {
