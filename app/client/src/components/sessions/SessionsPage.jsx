@@ -152,6 +152,7 @@ function SessionsPage(props) {
                                     liftNumEdits={setNumEdits}
                                     getSessions={getAllSessions}
                                     exercises={exercises}
+                                    timezone={props.timezone}
                                 />
                             </TabPanel>
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 // ------ This hook is identical to useForm, except it submits the forms in Register and Login components so its values are {username, password} ------
-export default function useForm({ initialValues, slug }) {
+export default function useForm({ initialValues, slug, timezones }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
     const [prevError, setPrevError] = useState(null);
@@ -31,11 +31,24 @@ export default function useForm({ initialValues, slug }) {
         } else {
             setPrevError(null);
         }
-        const { username, password } = values;
+        const { username, password, timezone } = values;
+
+        console.log(slug);
+        console.log(values);
+
         if (username === "" || password === "") {
             setError("Please fill out empty fields.");
             return false;
-        } else if (username.length > 30) {
+        }
+        else if (slug === "api/auth/register" && timezone === "") {
+            setError("Please fill out empty fields.");
+            return false;
+        }
+        else if (slug === "api/auth/register" && timezones.indexOf(timezone) === -1) {
+            setError("Invalid time zone.");
+            return false;
+        }
+        else if (username.length > 30) {
             setError("Username is too long. Limit: 30 characters.");
             return false;
         }
@@ -55,14 +68,15 @@ export default function useForm({ initialValues, slug }) {
     //send data to database
     const submitData = async (formValues) => {
         const dataObject = formValues.values;
-        const { username, password } = dataObject;
+        const { username, password, timezone } = dataObject;
         try {
             await axios({
                 method: 'POST',
                 url: `${baseUrl}/${slug}`,
                 data: {
                     username,
-                    password
+                    password,
+                    timezone
                 },
                 headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
                 withCredentials: true

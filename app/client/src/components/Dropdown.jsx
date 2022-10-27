@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select, MenuItem, InputLabel, Box, Container, TextField } from "@mui/material";
+import { MenuItem, Tooltip, TextField, Typography } from "@mui/material";
 import formatExercise from '../helpers/formatExercise';
 
 // Returns a <select> element to be used in a form as a dropdown
@@ -28,6 +28,13 @@ function Dropdown(props) {
             </MenuItem>
         );
         dropdownLabel = "Exercise";
+    } else if (props.id === "timezone") {
+        optionsArr.push(
+            <MenuItem value="" key="0" selected>
+                Select a time zone
+            </MenuItem>
+        );
+        //dropdownLabel = "Timezone";
     }
 
     // Add options from props to array
@@ -43,7 +50,30 @@ function Dropdown(props) {
         setOptions(props.options);
     }, [props]);
 
-    return (
+    if (props.tooltip) {
+        return (
+            <Tooltip
+                title={<Typography>{props.tooltip}</Typography>}
+            >
+                <TextField select
+                    rules={{ required: true }}
+                    name={props.name}
+                    id={props.id}
+                    value={props.value}
+                    label={dropdownLabel}
+                    onChange={props.onChange}
+                    onKeyDown={props.onKeyDown}
+                    error={props.error}
+                    // sx={{ display: "block" }}
+                    required
+                    fullWidth
+                >
+                    {optionsArr}
+                </TextField>
+            </Tooltip>
+        )
+
+    } else return (
         <>
             {/* <InputLabel id="dropdown-label">{dropdownLabel}</InputLabel> */}
             <TextField select
@@ -55,7 +85,6 @@ function Dropdown(props) {
                 onChange={props.onChange}
                 onKeyDown={props.onKeyDown}
                 error={props.error}
-                // sx={{ display: "block" }}
                 required
                 fullWidth
             >

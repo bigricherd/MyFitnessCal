@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import authHook from '../../hooks/auth';
 import {
     Typography,
     Stack,
@@ -14,7 +13,14 @@ import {
     Alert
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import Dropdown from '../Dropdown';
+import authHook from '../../hooks/auth';
 
+const timezones = ["US/Samoa", "US/Hawaii", "US/Alaska", "US/Pacific", "US/Arizona", "US/Mountain",
+    "US/Central", "US/Eastern", "Canada/Atlantic", "Canada/Newfoundland", "America/Buenos_Aires",
+    "America/Noronha", "Atlantic/Cape_Verde", "Atlantic/Reykjavik", "Europe/London", "Europe/Amsterdam",
+    "Africa/Cairo", "Europe/Istanbul", "Asia/Dubai", "Asia/Karachi", "Asia/Omsk", "Asia/Jakarta", "Asia/Hong_Kong",
+    "Asia/Tokyo", "Australia/Brisbane", "Australia/Melbourne", "Pacific/Fiji"];
 
 function RegisterPage() {
 
@@ -30,8 +36,10 @@ function RegisterPage() {
         initialValues: {
             username: '',
             password: '',
+            timezone: ''
         },
-        slug: 'api/auth/register'
+        slug: 'api/auth/register',
+        timezones
     });
 
     // Password requirements that appear when the user hovers over the password input
@@ -105,7 +113,6 @@ function RegisterPage() {
                             onKeyDown={handleKeyDown}
                             error={attempted && (!values.password || values.password === "")}
 
-
                             // endAdornment represents show / hide password button
                             InputProps={{
                                 endAdornment:
@@ -118,6 +125,25 @@ function RegisterPage() {
                             }}
                             required>
                         </TextField>
+                    </Tooltip>
+                </FormControl>
+
+                <FormControl>
+                    <FormLabel>Time Zone</FormLabel>
+                    <Tooltip
+                        title={passwordFieldHover
+                        }
+                        arrow>
+                        <Dropdown
+                            id="timezone"
+                            name="timezone"
+                            value={values.timezone || ""}
+                            options={timezones}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
+                            error={attempted && (!values.timezone || values.timezone === "")}
+                            tooltip={"This will ensure that your sessions display on the calendar correctly."}
+                        />
                     </Tooltip>
                 </FormControl>
             </Stack>

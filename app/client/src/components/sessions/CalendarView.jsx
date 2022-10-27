@@ -4,7 +4,6 @@ import "kalend/dist/styles/index.css";
 import ShowSession from "./show-edit-delete/ShowSession";
 
 function DefaultCalendarView(props) {
-    console.log('calendar render');
     const [calEvents, setCalEvents] = React.useState([]);
     const [dbEvents, setDbEvents] = React.useState([]);
     const [popupOpen, setPopupOpen] = React.useState(false);
@@ -23,6 +22,7 @@ function DefaultCalendarView(props) {
         });
         console.log(currentDbEvent); // coming out undefined
 
+        // Show popup containing corresponding Session data
         setSessionId(data.id);
         setPopupOpen(true);
     };
@@ -53,6 +53,13 @@ function DefaultCalendarView(props) {
         console.log("page change");
     };
 
+    // TODO: Edit Session start and end times on event drag
+    const onEventDragFinish = (prevEvent, updatedEvent) => {
+        console.log('an event was dragged');
+        console.log(prevEvent);
+        console.log(updatedEvent);
+    }
+
     return (
         // temporary styles, will fix later
         <div
@@ -75,14 +82,16 @@ function DefaultCalendarView(props) {
             <Kalend
                 onEventClick={onEventClick}
                 onNewEventClick={onNewEventClick}
+                onEventDragFinish={onEventDragFinish}
                 events={calEvents}
                 initialDate={new Date().toISOString()}
                 hourHeight={60}
-                initialView={CalendarView.MONTH}
+                initialView={CalendarView.WEEK}
                 onPageChange={onPageChange}
                 timeFormat={"24"}
                 weekDayStart={"Monday"}
-                timezone={"America/Vancouver"}
+                //timezone={"America/Los_Angeles"}
+                timezone={props.timezone}
                 language={"en"}
                 showTimeLine={true}
                 autoScroll={true}

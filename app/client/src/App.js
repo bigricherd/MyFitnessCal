@@ -23,6 +23,7 @@ function App() {
     const [isFetching, setIsFetching] = useState(false);
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [timezone, setTimezone] = useState(null);
     const fetchUserUrl = `${baseUrl}/api/auth/getUser`;
 
     const fetchUser = useCallback(async () => {
@@ -35,6 +36,7 @@ function App() {
             setMessage(json.message);
             setUser(json.user);
             setUserId(json.id);
+            setTimezone(json.timezone);
             setIsFetching(false);
         } catch (e) {
             setMessage(`API call failed: ${e}`);
@@ -74,6 +76,7 @@ function App() {
                             element={<SessionsPage
                                 user={user}
                                 userId={userId}
+                                timezone={timezone}
                             />}
                         />
                         <Route
@@ -83,6 +86,7 @@ function App() {
                                 <SessionsPage
                                     user={user}
                                     userId={userId}
+                                    timezone={timezone}
                                 />
                             }
                         />
