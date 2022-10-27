@@ -311,7 +311,7 @@ function AddSession(props) {
                                     {exercises.map((exercise, index) => (
                                         <AddSetsCollapse
                                             key={index}
-                                            exerciseOptions={props.exercises}
+                                            exerciseOptions={props.exercisesByUser}
                                             index={index}
                                             exercise={exercise}
                                             exercises={exercises}

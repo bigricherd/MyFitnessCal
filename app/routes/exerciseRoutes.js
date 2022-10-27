@@ -17,8 +17,9 @@ const getEnums = async () => {
 getEnums();
 
 // ---------- VALIDATION ----------
-const validateAdd = (values, next) => {
-    const { exercise, muscleGroup } = values;
+const validateAdd = async (values, next) => {
+    const { exercise, muscleGroup, userId } = values;
+    const e = await performQuery(`SELECT * FROM Exercise WHERE key = '${exercise}:${muscleGroup}:${userId}'`);
 
     // Empty fields
     if (exercise === "") {
@@ -34,12 +35,15 @@ const validateAdd = (values, next) => {
     else if (exercise && exercise.length > 25) {
         return next(new Error("Exercise name is too long. Max length: 25 characters. Considering using acronyms like 'BB' or 'OH'."));
     }
-
+    // Exercise already exists
+    else if (e.rows.length > 0) {
+        return next(new Error("That exercise already exists."));
+    }
     return true;
 }
 
 const validateDelete = async (key, user, next) => {
-    const exercise = await performQuery(`SELECT * FROM Exercises WHERE nameandmusclegroup = '${key}'`);
+    const exercise = await performQuery(`SELECT * FROM Exercise WHERE key = '${key}'`);
 
     // Nonexistent Exercise
     if (exercise.rows.length < 1) {
@@ -66,7 +70,7 @@ router.get("/all", (req, res) => {
 router.get("/byCurrentUser", isLoggedIn, async (req, res) => {
     const { id } = req.query;
     console.log(id);
-    const query = `SELECT nameandmusclegroup FROM exercises WHERE owner = '${id}' ORDER BY muscleGroup, name`;
+    const query = `SELECT nameandmusclegroup FROM Exercise WHERE owner = '${id}' ORDER BY muscleGroup, name`;
     const data = await performQuery(query);
 
     const exercisesByUser = [];
@@ -81,6 +85,7 @@ router.get("/byCurrentUser", isLoggedIn, async (req, res) => {
 // Add an Exercise
 router.post("/add", isLoggedIn, async (req, res, next) => {
     let { exercise, muscleGroup } = req.body;
+    const userId = req.user.id;
 
     // String formatting to work with database
     if (exercise) {
@@ -92,7 +97,7 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
         muscleGroup = muscleGroup.split(' ').join('_');
     }
 
-    if (validateAdd({ exercise, muscleGroup }, next)) {
+    if (await validateAdd({ exercise, muscleGroup, userId }, next)) {
 
         const response = { message: '' };
         const id = uuid();
@@ -100,10 +105,11 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
         try {
             // Using a varchar(45) field to store "exercise:muscleGroup" as Primary Key, manually populated with the string in the next line.
             const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
-            const insertQuery = `INSERT INTO exercises(id, name, musclegroup, nameandmusclegroup, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${req.user.id}')`;
+            const key = `${exerciseAndMuscleGroup}:${userId}`
+            const insertQuery = `INSERT INTO Exercise (id, name, musclegroup, nameandmusclegroup, key, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${key}', '${req.user.id}')`;
             await performQuery(insertQuery);
 
-            const postAdd = await performQuery(`SELECT nameandmusclegroup FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
+            const postAdd = await performQuery(`SELECT nameandmusclegroup FROM Exercise WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
             const exercisesPostAdd = [];
             for (let row of postAdd.rows) {
                 exercisesPostAdd.push(row.nameandmusclegroup);
@@ -114,7 +120,7 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
             await getEnums();
 
             // Verify that the database contains the exercise that was just added above
-            const verifyQuery = `SELECT * FROM Exercises WHERE nameandmusclegroup = '${exercise}:${muscleGroup}'`;
+            const verifyQuery = `SELECT * FROM Exercise WHERE key = '${key}'`;
             const single = await performQuery(verifyQuery);
 
             if (single.rows.length === 1) {
@@ -135,19 +141,20 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
 // Delete an Exercise
 router.delete('/', isLoggedIn, async (req, res, next) => {
     const { nameandmusclegroup } = req.query;
-    if (await validateDelete(nameandmusclegroup, req.user.id, next)) {
+    const key = `${nameandmusclegroup}:${req.user.id}`
+    if (await validateDelete(key, req.user.id, next)) {
         const name = nameandmusclegroup.split(':')[0];
         const response = { message: '' };
 
         try {
-            const query = `DELETE FROM Exercises WHERE nameandmusclegroup = '${nameandmusclegroup}'`;
+            const query = `DELETE FROM Exercise WHERE key = '${key}'`;
             await performQuery(query);
             const msg = `Successfully deleted exercise ${formatExercise(name)}`;
 
             response.message = msg;
             await getEnums();
 
-            const postDelete = await performQuery(`SELECT nameandmusclegroup FROM Exercises WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
+            const postDelete = await performQuery(`SELECT nameandmusclegroup FROM Exercise WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
 
             await getEnums();
 

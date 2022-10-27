@@ -24,11 +24,13 @@
 -- SELECT * FROM appUser;
 
 -- -- DROP TABLE exercises CASCADE;
---   CREATE TABLE exercises(
+-- -- DROP TABLE exercise CASCADE;
+--   CREATE TABLE EXERCISE(
 --       id UUID,
 --       name varchar(25),
 --       musclegroup MUSCLEGROUP NOT NULL,
---       nameandmusclegroup varchar(45) PRIMARY KEY NOT NULL,
+--       nameandmusclegroup varchar(45) NOT NULL,
+--       key varchar(85) PRIMARY KEY NOT NULL,
 --       owner UUID NOT NULL,
 --                    CONSTRAINT fk_owner
 --                    FOREIGN KEY(owner)
@@ -36,9 +38,9 @@
 --                    ON DELETE CASCADE
 --   );
 
---  --select * from exercises;
+-- select * from exercise;
 
--- -- DROP TABLE SESSION CASCADE;
+--DROP TABLE SESSION CASCADE;
 -- CREATE TABLE SESSION (
 --    id UUID PRIMARY KEY NOT NULL,
 --    title varchar(35) NOT NULL,
@@ -54,16 +56,16 @@
 
 -- -- select * from session
 
--- -- DROP TABLE set CASCADE;
+-- DROP TABLE set CASCADE;
 --  CREATE TABLE IF NOT EXISTS SET (
 --                    id UUID NOT NULL,
 --                    reps INT NOT NULL,
 --                    weight INT NOT NULL,
 --                    date DATE NOT NULL,
---                    exercise varchar(45) NOT NULL,
+--                    exercise varchar(85) NOT NULL,
 --                                   CONSTRAINT fk_exercise
 --                                      FOREIGN KEY(exercise)
---                                      REFERENCES exercises(nameandmusclegroup)
+--                                      REFERENCES exercise(key)
 --                                      ON DELETE CASCADE,
 --                    musclegroup MUSCLEGROUP NOT NULL,
 --                    owner UUID NOT NULL,
@@ -78,28 +80,4 @@
 --                                      ON DELETE CASCADE
 -- );
 
--- -- For testing sets alone, while Sets + Sessions integration is pending
--- --  CREATE TABLE IF NOT EXISTS SET (
--- --                    id UUID NOT NULL,
--- --                    reps INT NOT NULL,
--- --                    weight INT NOT NULL,
--- --                    date DATE NOT NULL,
--- --                    exercise varchar(45) NOT NULL,
--- --                                   CONSTRAINT fk_exercise
--- --                                      FOREIGN KEY(exercise)
--- --                                      REFERENCES exercises(nameandmusclegroup)
--- --                                      ON DELETE CASCADE,
--- --                    musclegroup MUSCLEGROUP NOT NULL,
--- --                    owner UUID NOT NULL,
--- --                                  CONSTRAINT fk_owner
--- --                                      FOREIGN KEY(owner)
--- --                                      REFERENCES appUser(id)
--- --                                      ON DELETE CASCADE,
--- --                    session UUID NOT NULL,
--- --                                  CONSTRAINT fk_session
--- --                                      FOREIGN KEY(session)
--- --                                      REFERENCES session(id)
--- --                                      ON DELETE CASCADE
--- -- );
-
--- -- SELECT * FROM set
+--SELECT * FROM set

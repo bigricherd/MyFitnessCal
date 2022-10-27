@@ -12,11 +12,14 @@ module.exports = (err, req, res, next) => {
         if (err.message === 'Invalid time zone.') return res.status(409).send({ message: err.message });
 
         // ---------- EXERCISES ----------
-        if (err.code === '23505' && err.constraint === 'exercises_pkey') return err = handleExerciseExistsError(err, res);
+        if (err.code === '23505' && err.constraint === 'exercise_pkey') return err = handleExerciseExistsError(err, res); // FIX based on new DB setup
         if (err.message === 'Exercise name cannot be empty.') return res.status(409).send({ message: err.message });
         if (err.message === 'Muscle group cannot be empty.') return res.status(409).send({ message: err.message });
         if (err.message === 'Invalid muscle group. Please try again.') return res.status(409).send({ message: err.message });
         if (err.message === "Exercise name is too long. Max length: 30 characters. Considering using acronyms like 'BB' or 'OH'.") return res.status(409).send({ message: err.message });
+        if (err.message === "That exercise already exists.") return res.status(409).send({ message: err.message });
+
+        // DELETE
         if (err.message === "Exercise does not exist.") return res.status(409).send({ message: err.message });
 
         // ---------- AUTHORIZATION ----------
@@ -81,6 +84,6 @@ const handleWeakPasswordError = (err, res) => {
 
 // ---------- EXERCISES ----------
 const handleExerciseExistsError = (err, res) => {
-    const error = 'That exercise already exists, maybe it was added by another user.';
+    const error = 'That exercise already exists, check your list below.';
     return res.status(409).send({ message: error });
 }

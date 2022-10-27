@@ -12,7 +12,7 @@ const getMuscleGroups = async () => {
 // Returns a map {exercise : muscleGroup} that represents the Exercise enum.
 // Exercises are stored in the string format "exercise:muscleGroup" in the Exercise enum, hence the reformatting into a map.
 const getExerciseMap = async () => {
-    const res = await performQuery(`SELECT name, musclegroup FROM exercises ORDER BY musclegroup, name`);
+    const res = await performQuery(`SELECT name, musclegroup FROM Exercise ORDER BY musclegroup, name`);
     const map = new Map();
     for (let pair of res.rows) {
         map.set(pair.name, pair.musclegroup);
@@ -22,7 +22,7 @@ const getExerciseMap = async () => {
 
 // Returns the Exercise enum as an array and without their corresponding muscleGroups.
 const getExercisesArray = async () => {
-    const res = await performQuery('SELECT nameandmusclegroup FROM exercises ORDER BY musclegroup, name');
+    const res = await performQuery('SELECT nameandmusclegroup FROM Exercise ORDER BY musclegroup, name');
 
     const arr = [];
     for (let item of res.rows) {
