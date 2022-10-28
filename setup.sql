@@ -2,6 +2,7 @@
 -- --CREATE TYPE muscleGroup AS ENUM ('chest', 'shoulders', 'biceps', 'triceps', 'forearms', 'traps', 'neck', 'lats', 'lower_back', 'abs', 'hamstrings', 'quads', 'glutes', 'calves', 'tibialis', 'cardio');
 -- --SELECT enum_range(NULL::muscleGroup); -- view muscleGroup enum
 
+-- SELECT * FROM pg_timezone_names
 -- -- DROP TYPE timezone CASCADE;
 -- -- CREATE TYPE timezone as ENUM (
 -- --      'US/Samoa', 'US/Hawaii', 'US/Alaska',

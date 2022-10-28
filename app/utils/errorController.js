@@ -18,6 +18,7 @@ module.exports = (err, req, res, next) => {
         if (err.message === 'Invalid muscle group. Please try again.') return res.status(409).send({ message: err.message });
         if (err.message === "Exercise name is too long. Max length: 30 characters. Considering using acronyms like 'BB' or 'OH'.") return res.status(409).send({ message: err.message });
         if (err.message === "That exercise already exists.") return res.status(409).send({ message: err.message });
+        if (exerciseNotAddedMessage(err.message)) return res.status(409).send({ message: err.message });
 
         // DELETE
         if (err.message === "Exercise does not exist.") return res.status(409).send({ message: err.message });
@@ -84,6 +85,16 @@ const handleWeakPasswordError = (err, res) => {
 
 // ---------- EXERCISES ----------
 const handleExerciseExistsError = (err, res) => {
-    const error = 'That exercise already exists, check your list below.';
+    const error = 'That exercise already exists, check your list.';
     return res.status(409).send({ message: error });
+};
+
+const exerciseNotAddedMessage = (message) => {
+    let words = message.split(" ");
+    return (
+        words[0] === "Exercise"
+        && words[-3] === "was"
+        && words[-2] === "not"
+        && words[-1] === "added."
+    );
 }

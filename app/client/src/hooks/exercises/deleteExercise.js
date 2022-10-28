@@ -20,14 +20,6 @@ export default function useForm({ initialValues }) {
         });
     };
 
-    // //submit form when enter key is pressed
-    // const handleKeyDown = event => {
-    //     const enter = 13;
-    //     if (event.keyCode === enter) {
-    //         handleSubmit(event);
-    //     }
-    // }
-
     //submit form when submit button is clicked
     const handleSubmit = event => {
         event.preventDefault();

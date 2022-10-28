@@ -154,7 +154,7 @@ function MyExercises(props) {
                 setShowSuccessMsg(false);
             }, 4000)
         }
-    }, [successMsg, prevSuccessMsg])
+    }, [successMsg, prevSuccessMsg]);
 
     // Setup to show feedback message -- error
     const [showError, setShowError] = useState(false);

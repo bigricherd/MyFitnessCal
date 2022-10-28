@@ -4,7 +4,7 @@ const { performQuery } = require('../utils/dbModule');
 const { v4: uuid } = require('uuid');
 const { getExercisesArray, getMuscleGroups } = require('../utils/fetchEnums');
 const { isLoggedIn } = require('../utils/middleware');
-const { formatExercise } = require('../utils/formatExercise');
+const { formatExercise, reverseFormatExercise } = require('../utils/formatExercise');
 
 // ---------- SET LOCAL VARIABLES ----------
 let exercises, muscleGroups = [];
@@ -88,10 +88,6 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
     const userId = req.user.id;
 
     // String formatting to work with database
-    if (exercise) {
-        exercise = exercise.toLowerCase();
-        exercise = exercise.split(' ').join('_');
-    }
     if (muscleGroup) {
         muscleGroup = muscleGroup.toLowerCase();
         muscleGroup = muscleGroup.split(' ').join('_');
@@ -104,9 +100,9 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
 
         try {
             // Using a varchar(45) field to store "exercise:muscleGroup" as Primary Key, manually populated with the string in the next line.
-            const exerciseAndMuscleGroup = `${exercise}:${muscleGroup}`;
+            const exerciseAndMuscleGroup = `${reverseFormatExercise(exercise)}:${muscleGroup}`;
             const key = `${exerciseAndMuscleGroup}:${userId}`
-            const insertQuery = `INSERT INTO Exercise (id, name, musclegroup, nameandmusclegroup, key, owner) VALUES('${id}', '${exercise}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${key}', '${req.user.id}')`;
+            const insertQuery = `INSERT INTO Exercise (id, name, musclegroup, nameandmusclegroup, key, owner) VALUES('${id}', '${reverseFormatExercise(exercise)}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${key}', '${req.user.id}')`;
             await performQuery(insertQuery);
 
             const postAdd = await performQuery(`SELECT nameandmusclegroup FROM Exercise WHERE owner = '${req.user.id}' ORDER BY musclegroup, name`);
@@ -171,5 +167,55 @@ router.delete('/', isLoggedIn, async (req, res, next) => {
         return res.send(response);
     }
 });
+
+// Add many Exercises (through Welcome UX)
+router.post("/addMany", isLoggedIn, async (req, res, next) => {
+    const { exercises } = req.body;
+    const userId = req.user.id;
+    const response = { message: "No exercises added." };
+
+    // Loop through exercises array
+    for (let exercise of exercises) {
+        let name = exercise.split(":")[0];
+        let muscleGroup = exercise.split(":")[1];
+
+        if (muscleGroup) {
+            muscleGroup = muscleGroup.toLowerCase();
+            muscleGroup = muscleGroup.split(' ').join('_');
+        }
+
+        // Add exercise
+        if (validateAdd({ name, muscleGroup, userId }, next)) {
+            try {
+                const exerciseAndMuscleGroup = `${reverseFormatExercise(name)}:${muscleGroup}`;
+                const key = `${exerciseAndMuscleGroup}:${userId}`;
+                const id = uuid();
+                const insertQuery = `INSERT INTO Exercise (id, name, musclegroup, nameandmusclegroup, key, owner) VALUES('${id}', '${reverseFormatExercise(name)}', '${muscleGroup}', '${exerciseAndMuscleGroup}', '${key}', '${req.user.id}')`;
+                await performQuery(insertQuery);
+
+                // Verify that the database contains the exercise that was just added above
+                const verifyQuery = `SELECT * FROM Exercise WHERE key = '${key}'`;
+                const single = await performQuery(verifyQuery);
+
+                if (single.rows.length !== 1) {
+                    return next(new Error(`Exercise ${formatExercise(name, " ")} was not added.`));
+                }
+
+            } catch (err) {
+                return next(err);
+            }
+        }
+    }
+
+    // Set current user's firstVisit to false
+    await performQuery(`UPDATE appUser SET firstvisit = 'false' WHERE id = '${req.user.id}'`);
+    response.firstVisit = false;
+    response.message = "Successfully added exercises.";
+
+    const c = await performQuery(`SELECT count(id) FROM Exercise WHERE owner = '${req.user.id}'`);
+    response.count = c.rows[0].count;
+
+    return res.send(response);
+})
 
 module.exports = router;

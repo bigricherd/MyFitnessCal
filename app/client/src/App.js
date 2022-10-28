@@ -9,12 +9,12 @@ import Nav from "./components/Nav";
 import AnalyticsPage from "./components/analytics/AnalyticsPage";
 import ExercisesPage from "./components/exercises/ExercisesPage";
 
-const muscleGroups = ["Chest", "Shoulders", "Biceps", "Triceps",
-    "Forearms", "Traps", "Neck", "Lats", "Lower Back", "Abs",
-    "Hamstrings", "Quads", "Glutes", "Calves", "Tibialis", "Cardio"];
+const muscleGroups = ["chest", "shoulders", "biceps", "triceps",
+    "forearms", "traps", "neck", "lats", "lower_back", "abs",
+    "hamstrings", "quads", "glutes", "calves", "tibialis", "cardio"];
 
 const muscleGroupsForAnalytics = muscleGroups.slice();
-muscleGroupsForAnalytics.unshift("All");
+muscleGroupsForAnalytics.unshift("all");
 
 function App() {
     const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
@@ -23,6 +23,7 @@ function App() {
     const [isFetching, setIsFetching] = useState(false);
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [firstVisit, setFirstVisit] = useState(false);
     const [timezone, setTimezone] = useState(null);
     const fetchUserUrl = `${baseUrl}/api/auth/getUser`;
 
@@ -36,6 +37,7 @@ function App() {
             setMessage(json.message);
             setUser(json.user);
             setUserId(json.id);
+            setFirstVisit(json.firstVisit);
             setTimezone(json.timezone);
             setIsFetching(false);
         } catch (e) {
@@ -47,7 +49,7 @@ function App() {
     useEffect(() => {
         setIsFetching(true);
         fetchUser();
-    }, [fetchUser]);
+    }, [fetchUser, firstVisit]);
 
     const debugText = (
         <div>
@@ -77,6 +79,9 @@ function App() {
                                 user={user}
                                 userId={userId}
                                 timezone={timezone}
+                                firstVisit={firstVisit}
+                                setFirstVisit={setFirstVisit}
+                                muscleGroups={muscleGroups}
                             />}
                         />
                         <Route
@@ -87,6 +92,9 @@ function App() {
                                     user={user}
                                     userId={userId}
                                     timezone={timezone}
+                                    firstVisit={firstVisit}
+                                    setFirstVisit={setFirstVisit}
+                                    muscleGroups={muscleGroups}
                                 />
                             }
                         />
@@ -98,6 +106,7 @@ function App() {
                                     user={user}
                                     userId={userId}
                                     muscleGroups={muscleGroups}
+                                    setFirstVisit={setFirstVisit}
                                 />
                             }
                         />

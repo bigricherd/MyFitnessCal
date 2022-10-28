@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AddExercise from './AddExercise';
 import MyExercises from './MyExercises';
-import { Box, Grid } from '@mui/material';
+import SuggestedExercises from './SuggestedExercises';
+import { Stack, Button, Alert } from '@mui/material';
 
 
 function ExercisesPage(props) {
@@ -11,6 +12,8 @@ function ExercisesPage(props) {
     const [user, setUser] = useState(props.user);
     const [userId, setUserId] = useState(props.userId);
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
+    const [showSuggestedExercises, setShowSuggestedExercises] = useState(false);
+    const [count, setCount] = useState(0);
 
     // Fetching exercises by logged in user could not be done in App.js because user begins as undefined
     // Instead, we do it here where user can be passed in as props
@@ -22,6 +25,7 @@ function ExercisesPage(props) {
 
     const url = `${baseUrl}/api/exercises/byCurrentUser?id=${userId}`;
     const fetchExercisesByUser = useCallback(async () => {
+        console.log('fetching exercises');
         const userExercises = await axios({
             method: 'GET',
             url: url,
@@ -34,6 +38,7 @@ function ExercisesPage(props) {
         });
         exercisesByUserArr = userExercises.data.exercisesByUser;
         setExercisesByUser(exercisesByUserArr);
+        setCount(exercisesByUserArr.length);
     }, [url]);
 
     // Update user information, muscle groups list, and exercisesByUser when props changes
@@ -42,7 +47,22 @@ function ExercisesPage(props) {
         setUserId(props.userId);
         setMuscleGroups(props.muscleGroups);
         fetchExercisesByUser();
-    }, [props, fetchExercisesByUser]);
+    }, [props, fetchExercisesByUser, count]);
+
+    // Setup to show feedback message -- success
+    const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+    const handleCloseSuccessMsg = () => { setShowSuccessMsg(false); }
+    const [successMsg, setSuccessMsg] = useState(null);
+    const [prevSuccessMsg, setPrevSuccessMsg] = useState(null);
+
+    useEffect(() => {
+        if (successMsg) {
+            setShowSuccessMsg(true);
+            setTimeout(() => {
+                setShowSuccessMsg(false);
+            }, 4000)
+        }
+    }, [successMsg, prevSuccessMsg]);
 
 
     // If there is no logged in user, show the prompt with links to Login and Register pages
@@ -55,21 +75,35 @@ function ExercisesPage(props) {
     }
 
     else return (
-        <Grid container columns={{ xs: 12, sm: 14, md: 20, lg: 24 }} sx={{ mt: '4rem' }}>
-
-            {/* Notice the liftState prop being passed to the two children below. This allows us to induce a re-render of this page when the list of
-            exercises added by the current user (exercisesByUser) is changed by either of the two children, i.e., add or delete. */}
-
-            {/* Add exercise form; offset columns on both sides */}
-            <Grid item xs={1} sm={3} md={6} lg={8}></Grid>
+        <Stack direction="column" spacing={2} sx={{ marginTop: "7%" }}>
             <AddExercise muscleGroups={muscleGroups} liftState={setExercisesByUser} />
-            <Grid item xs={1} sm={3} md={6} lg={8}></Grid>
-
-            {/* Manage exercises list where a user can delete exercises; offset columns on both sides */}
-            <Grid item xs={1} sm={3} md={6} lg={8}></Grid>
             <MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />
-            <Grid item xs={1} sm={3} md={6} lg={8}></Grid>
-        </Grid >
+            <Stack justifyContent="center" alignItems="center">
+                <Button
+                    variant="outlined"
+                    onClick={() => { setShowSuggestedExercises(!showSuggestedExercises) }}
+                >
+                    Suggested Exercises
+                </Button>
+            </Stack>
+            <SuggestedExercises
+                open={showSuggestedExercises}
+                onClose={() => setShowSuggestedExercises(false)}
+                setShow={setShowSuggestedExercises}
+                user={props.user}
+                exercisesByUser={exercisesByUser}
+                muscleGroups={props.muscleGroups}
+                setFirstVisit={props.setFirstVisit}
+                setSuccessMsg={setSuccessMsg}
+                setPrevSuccessMsg={setPrevSuccessMsg}
+                setCount={setCount}
+                parent="exercises"
+            />
+
+            {/* Feedback messages */}
+            {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ marginTop: '5.5rem' }}>{successMsg}</Alert>}
+        </Stack>
+
     )
 }
 

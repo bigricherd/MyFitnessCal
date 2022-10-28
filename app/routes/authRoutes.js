@@ -61,7 +61,7 @@ router.post('/register', async (req, res, next) => {
             const hash = await bcrypt.hash(password, salt);
             //console.log(hash.length);
 
-            const query = `INSERT INTO appUser (id, username, password, timezone) VALUES('${newId}', '${username}', '${hash}', '${timezone}')`;
+            const query = `INSERT INTO appUser (id, username, password, timezone, firstvisit) VALUES('${newId}', '${username}', '${hash}', '${timezone}', 'true')`;
             //console.log(query);
             await performQuery(query);
 
@@ -121,6 +121,7 @@ router.get('/getUser', (req, res) => {
         data.user = req.user.username;
         data.id = req.user.id;
         data.timezone = req.user.timezone;
+        data.firstVisit = req.user.firstvisit;
     }
     return res.json(data);
 })

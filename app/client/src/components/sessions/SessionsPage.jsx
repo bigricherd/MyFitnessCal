@@ -4,15 +4,15 @@ import axios from 'axios';
 import {
     Button,
     Tab,
-    Box
+    Box,
+    Alert
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import AddSession from "./AddSession";
 import LoginPage from "../auth/LoginPage";
+import SuggestedExercises from "../exercises/SuggestedExercises";
 
 function SessionsPage(props) {
-    console.log('Sessions page render');
-
     // Views
     const [view, setView] = useState("0");
     const handleChange = (event, newValue) => {
@@ -30,9 +30,9 @@ function SessionsPage(props) {
     // To detect changes in child components
     const [numSessions, setNumSessions] = useState(null);
     const [numEdits, setNumEdits] = useState(0);
+    const [count, setCount] = useState(0); // exercisesByUser.length
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
-
 
     // Fetch all exercises
     let exercisesArr = [];
@@ -64,8 +64,9 @@ function SessionsPage(props) {
             exercisesByUserArr = userExercises.data.exercisesByUser;
             setExercisesByUser(exercisesByUserArr);
             console.log(exercisesByUserArr);
+            setCount(exercisesByUserArr.length);
         }
-    }, [userId])
+    }, [userId]);
 
 
     const getAllSessions = async () => {
@@ -110,21 +111,49 @@ function SessionsPage(props) {
     }, [numSessions, numEdits]);
 
     const [showAddSession, setShowAddSession] = useState(false);
+    const [showSuggestedExercises, setShowSuggestedExercises] = useState(false);
+
+    // Show suggested exercises popup if props.firstVisit is true
+    useEffect(() => {
+        setTimeout(() => {
+            setShowSuggestedExercises(props.firstVisit);
+        }, 2000);
+    }, [props.firstVisit]);
+
+    // Setup to show feedback message -- success
+    const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+    const handleCloseSuccessMsg = () => { setShowSuccessMsg(false); }
+    const [successMsg, setSuccessMsg] = useState(null);
+    const [prevSuccessMsg, setPrevSuccessMsg] = useState(null);
+
+    useEffect(() => {
+        if (successMsg) {
+            setShowSuccessMsg(true);
+            setTimeout(() => {
+                setShowSuccessMsg(false);
+            }, 4000)
+        }
+    }, [successMsg, prevSuccessMsg]);
 
     return (
         <>
             {user ? (
                 <>
+                    {/* Feedback messages TODO: fix styles*/}
+                    {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ marginTop: '5.5rem' }}>{successMsg}</Alert>}
+
                     <Button
                         variant="outlined"
                         onClick={() => { setShowAddSession(true) }}
-                        sx={{
+                        sx={!showSuccessMsg && {
                             marginTop: "5.5rem",
                             marginBottom: "1rem"
                         }}
                     >
                         Create Session
                     </Button>
+
+                    {/* Add Session (dialog) */}
                     <AddSession
                         open={showAddSession}
                         onClose={() => setShowAddSession(false)}
@@ -133,6 +162,22 @@ function SessionsPage(props) {
                         exercisesByUser={exercisesByUser}
                         liftState={setNumSessions}
                     />
+
+                    {/* Suggested Exercises (dialog) */}
+                    <SuggestedExercises
+                        open={showSuggestedExercises}
+                        onClose={() => setShowSuggestedExercises(false)}
+                        setShow={setShowSuggestedExercises}
+                        user={props.user}
+                        exercisesByUser={exercisesByUser}
+                        muscleGroups={props.muscleGroups}
+                        setFirstVisit={props.setFirstVisit}
+                        setSuccessMsg={setSuccessMsg}
+                        setPrevSuccessMsg={setPrevSuccessMsg}
+                        setCount={setCount}
+                        parent="sessions"
+                    />
+
 
                     <Box>
                         <TabContext value={view} aria-label="tabs" centered>
