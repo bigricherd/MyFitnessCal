@@ -1,4 +1,4 @@
-const { performQuery } = require('../utils/dbModule');
+const { performQuery } = require('./dbModule');
 
 // Returns an array that represents the muscleGroup enum. Not in use as we store muscleGroups array on the Client side as well, since it is static.
 const getMuscleGroups = async () => {

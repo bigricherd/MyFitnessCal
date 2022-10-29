@@ -162,7 +162,7 @@ router.get("/", async (req, res) => {
     res.send({ session: s, sets: setsData });
 });
 
-// Add a new session TODO: clean up verification at the end of the route
+// Add a new session
 router.post("/add", isLoggedIn, async (req, res, next) => {
     await getEnums(); // we need these for creating sets
     const { title, date, startdatetime, enddatetime, comments = "", sets = [] } = req.body;
@@ -179,7 +179,7 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
 
         // no need to format timestamps since postgres will do it for you
         const id = uuid();
-        const query = `INSERT INTO session(id, title, startdatetime, enddatetime, comments, owner) VALUES ('${id}', '${title}', '${startdatetime}', '${enddatetime}', '${comments}', '${userId}')`;
+        const query = `INSERT INTO sessions(id, title, startdatetime, enddatetime, comments, owner) VALUES ('${id}', '${title}', '${startdatetime}', '${enddatetime}', '${comments}', '${userId}')`;
         await performQuery(query);
 
         // call addManySets
@@ -193,13 +193,19 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
 
         // VALIDATION
         const sessionFromDb = await performQuery(`select * from sessions WHERE id = '${id}'`);
+        const sessionSets = await performQuery(`SELECT count(id) FROM set WHERE session = '${id}'`);
+        console.log(sets.length);
+        console.log(sessionSets.rows[0].count);
+        console.log(parseInt(sessionSets.rows[0].count) === sets.length);
 
         // TODO test this validation
-        if (sessionFromDb.rows.length === 1 && sessionFromDb.rows[0].sets.length === sets.length) {
+        if (sessionFromDb.rows.length === 1
+            && (parseInt(sessionSets.rows[0].count) === sets.length)) {
             response.message = `Successfully added session from ${req.body.startdatetime} to ${req.body.enddatetime}`;
         } else {
             response.message = "Session was not added";
         }
+        console.log(response.message);
 
         return res.send(response);
     }
@@ -258,7 +264,7 @@ router.patch("/", isLoggedIn, async (req, res, next) => {
         comments
     }, req.user.id, next)) {
 
-        const query = `UPDATE session SET
+        const query = `UPDATE sessions SET
                     title = '${title}',
                     startdatetime = '${startdatetime}',
                     enddatetime = '${enddatetime}',

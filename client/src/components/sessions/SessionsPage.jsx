@@ -104,6 +104,7 @@ function SessionsPage(props) {
     }, [props, view]);
 
     useEffect(() => {
+        console.log(numSessions);
         getAllSessions();
     }, [numSessions, numEdits]);
 

@@ -108,6 +108,7 @@ export default function useForm({ initialValues }) {
 
             }).then(res => {
                 setError(null);
+                setNumSessions(res.data.count);
                 return true;
             })
         } catch (err) {

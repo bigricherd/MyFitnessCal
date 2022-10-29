@@ -12,12 +12,13 @@
 -- -- ); 
 
 -- --DROP TABLE appUser CASCADE;
-CREATE TABLE IF NOT EXISTS appUser(
+CREATE TABLE IF NOT EXISTS APPUSER(
     id UUID PRIMARY KEY,
     username varchar(30) NOT NULL UNIQUE,
-    password varchar(60),
-    timezone varchar(30)
-);
+    password varchar(60) NOT NULL,
+    timezone varchar(30) NOT NULL,
+    firstvisit boolean NOT NULL
+); 
 
 
 -- Testing time zones
