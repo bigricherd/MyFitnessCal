@@ -11,24 +11,6 @@ export default function useForm({ initialValues, muscleGroups = [], setExercises
     const [firstVisit, setFirstVisit] = useState(true);
     //const [count, setCount] = useState(0);
 
-    //track form values
-    const handleChange = (event) => {
-        const value = event.target.value;
-        const name = event.target.name;
-        setValues({
-            ...values,
-            [name]: value,
-        });
-    };
-
-    //submit form when enter key is pressed
-    const handleKeyDown = (event) => {
-        const enter = 13;
-        if (event.keyCode === enter) {
-            handleSubmit(event);
-        }
-    };
-
     const validateExercises = (exercises) => {
         if (exercises.length === 0) {
             setError("Please add at least one exercise.");

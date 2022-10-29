@@ -141,6 +141,7 @@ function AddSession(props) {
         < Dialog
             open={props.open}
             onClose={props.onClose}
+            fullScreen
         >
             <DialogTitle>
                 Add a new session

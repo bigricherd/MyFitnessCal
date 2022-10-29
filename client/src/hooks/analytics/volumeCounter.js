@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { isBefore, isEqual } from 'date-fns';
+import { isBefore } from 'date-fns';
 
 // ------ This hook submits the forms in the MuscleGroupFilter component with a GET reqyest; its values are {fromDate, toDate} ------
 // form values are passed in the query string as they do not contain sensitive information, simply user selections of the filters
