@@ -107,13 +107,10 @@ export default function useForm({ initialValues }) {
                 withCredentials: true
 
             }).then(res => {
-                console.log('then block');
-                setNumSessions(res.data.count);
                 setError(null);
                 return true;
             })
         } catch (err) {
-            console.log(err.message);
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {

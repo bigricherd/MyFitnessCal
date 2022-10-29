@@ -21,7 +21,6 @@ import ProgressChart from './ProgressChart';
 // TODO store muscle Groups array here
 
 function ProgressTracker(props) {
-    console.log(props.muscleGroups);
     const [exercises, setExercises] = useState(null);
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups.slice(1));
@@ -47,11 +46,8 @@ function ProgressTracker(props) {
     useEffect(() => {
         fetchExercises()
             .then((res) => {
-                console.log(res.data);
                 let groupsTmp = muscleGroups.slice();
                 let filtered = groupsTmp.filter((group) => {
-                    console.log(group);
-                    //let g = group.toLowerCase().split(" ").join("_");
                     return res.data[group] && res.data[group].length > 0;
                 });
                 setMuscleGroups(filtered);

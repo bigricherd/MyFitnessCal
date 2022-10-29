@@ -49,7 +49,6 @@ export default function useForm({ initialValues }) {
                 setSuccessMsg(res.data.message);
             })
         } catch (err) {
-            console.log(err);
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {

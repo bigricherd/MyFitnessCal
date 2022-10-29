@@ -91,7 +91,6 @@ export default function useForm({ initialValues, muscleGroups }) {
                 values.exercise = "";
             });
         } catch (err) {
-            console.log(err);
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {

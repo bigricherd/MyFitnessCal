@@ -59,12 +59,9 @@ function ShowSession(props) {
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
 
     const getSessionInfo = async () => {
-        console.log('getting session info');
-        console.log(props.id);
         if (props.id) {
             const data = await fetch(`${baseUrl}/api/sessions/?id=${props.id}`);
             const json = await data.json();
-            console.log(json);
             setData(json);
         } else setData(null);
     };

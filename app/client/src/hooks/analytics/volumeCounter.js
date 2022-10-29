@@ -18,7 +18,6 @@ export default function useForm({ initialValues, muscleGroups }) {
             ...values,
             [name]: value,
         });
-        console.log(values);
     };
 
     //submit form when enter key is pressed
@@ -36,8 +35,6 @@ export default function useForm({ initialValues, muscleGroups }) {
             setPrevError(null);
         }
         const { muscleGroup, fromDate, toDate } = values;
-
-        console.log(values);
 
         // Empty fields
         if (muscleGroup === "" || !fromDate || !toDate) {

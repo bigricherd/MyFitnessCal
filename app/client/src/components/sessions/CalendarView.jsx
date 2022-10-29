@@ -15,12 +15,9 @@ function DefaultCalendarView(props) {
     }, [props]);
 
     const onEventClick = (data) => {
-        console.log("event click");
-        console.log(data);
         let currentDbEvent = dbEvents.find((dbEvent) => {
             return dbEvent.id === data.id;
         });
-        console.log(currentDbEvent); // coming out undefined
 
         // Show popup containing corresponding Session data
         setSessionId(data.id);
@@ -33,7 +30,6 @@ function DefaultCalendarView(props) {
     }
 
     const onNewEventClick = (data) => {
-        // console.log(data.event);
 
         const msg = `New event click action\n\n Callback data:\n\n${JSON.stringify(
             {
@@ -45,12 +41,10 @@ function DefaultCalendarView(props) {
                 view: data.view,
             }
         )}`;
-        console.log(msg);
-        console.log(data);
     };
 
     const onPageChange = () => {
-        console.log("page change");
+        //("page change");
     };
 
     // Nice to have: Edit Session start and end times on event drag

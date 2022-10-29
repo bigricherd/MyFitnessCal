@@ -4,13 +4,19 @@ const { Pool } = require("pg");
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config({ path: '.env.dev' }); // .env.dev in top-level directory "app"
 }
-const dbConfig = {
+const devConfig = {
     host: "localhost",
     port: process.env.DBPORT,
     user: process.env.DBUSER,
     database: process.env.DBNAME,
-}
-const pool = new Pool(dbConfig);
+};
+
+const prodConfig = {
+    connectionString: process.env.DATABASE_URL
+};
+
+
+const pool = new Pool(process.env.NODE_ENV === "production" ? prodConfig : devConfig);
 //console.log(dbConfig);
 
 pool.on('error', (e) => {

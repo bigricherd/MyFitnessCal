@@ -162,7 +162,6 @@ router.get('/setsOfExercise', isLoggedIn, async (req, res, next) => {
 router.get('/exercisesGrouped', isLoggedIn, async (req, res) => {
     const query = `SELECT nameandmusclegroup, musclegroup FROM exercise WHERE owner = '${req.user.id}' ORDER BY musclegroup`;
     const data = await performQuery(query);
-    console.log(data.rows);
 
     const exercises = {};
 

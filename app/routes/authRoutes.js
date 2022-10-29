@@ -59,10 +59,8 @@ router.post('/register', async (req, res, next) => {
         try {
             const salt = await bcrypt.genSalt(9);
             const hash = await bcrypt.hash(password, salt);
-            //console.log(hash.length);
 
             const query = `INSERT INTO appUser (id, username, password, timezone, firstvisit) VALUES('${newId}', '${username}', '${hash}', '${timezone}', 'true')`;
-            //console.log(query);
             await performQuery(query);
 
             const newUser = await performQuery(`SELECT * FROM appUser WHERE id = '${newId}'`);
@@ -74,8 +72,6 @@ router.post('/register', async (req, res, next) => {
             })
 
         } catch (err) {
-            console.log('Error while hashing password; error follows');
-            console.log(err)
             return next(err);
         }
     }
@@ -99,7 +95,6 @@ router.get('/logout', (req, res) => {
         req.logout((err, next) => {
             if (err) return next(err);
         });
-        console.log(`Logged out user ${username}`);
         return res.send({ message: `Logged out user ${username}` });
     }
     return res.redirect('/');

@@ -14,7 +14,6 @@ export default function useForm({ initialValues }) {
             ...deleteValues,
             [name]: value
         })
-        console.log(deleteValues);
     }
 
     //submit form when delete button is clicked
@@ -36,12 +35,11 @@ export default function useForm({ initialValues }) {
                 withCredentials: true
 
             }).then(res => {
-                console.log(res.data.count);
                 setNumSessions(res.data.count);
                 setError(null);
             })
         } catch (err) {
-            console.log(err);
+
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {

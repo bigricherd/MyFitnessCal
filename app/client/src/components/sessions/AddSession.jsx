@@ -84,7 +84,6 @@ function AddSession(props) {
 
     // Assign state variable 'exercises' to values.sets array
     const customHandleSubmit = (event) => {
-        console.log(event.target.form); // TODO to trigger HTML form validation
         const allSets = [];
         for (let exercise of exercises) {
             allSets.push(...exercise.sets);

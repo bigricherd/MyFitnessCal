@@ -13,8 +13,6 @@ import ProgressCollapse from './ProgressCollapse';
 import formatExercise from '../../../helpers/formatExercise';
 
 function ProgressTable(props) {
-    console.log(props.data);
-
     const [data, setData] = useState(Object.entries(props.data));
     const [exercise, setExercise] = useState(formatExercise(props.exercise.split(":")[0]));
 

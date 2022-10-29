@@ -58,7 +58,6 @@ export default function useForm({ initialValues, muscleGroups = [], setExercises
             setPrevError(null);
         }
         const { exercises } = values;
-        console.log(exercises);
 
         return validateExercises(exercises);
     };
@@ -102,7 +101,6 @@ export default function useForm({ initialValues, muscleGroups = [], setExercises
                 setError(null);
             });
         } catch (err) {
-            console.log(err);
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {

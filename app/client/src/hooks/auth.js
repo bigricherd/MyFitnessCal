@@ -33,9 +33,6 @@ export default function useForm({ initialValues, slug, timezones }) {
         }
         const { username, password, timezone } = values;
 
-        console.log(slug);
-        console.log(values);
-
         if (username === "" || password === "") {
             setError("Please fill out empty fields.");
             return false;
@@ -88,7 +85,6 @@ export default function useForm({ initialValues, slug, timezones }) {
                 setError(null);
             })
         } catch (err) {
-            console.log(err);
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {

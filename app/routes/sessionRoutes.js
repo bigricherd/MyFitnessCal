@@ -40,9 +40,6 @@ const validateFields = (values, next) => {
     const { title, date, startdatetime, enddatetime, comments = "", sets = [] } = values;
     let startTime = new Date(startdatetime);
     let endTime = new Date(enddatetime);
-    console.log(startTime);
-    console.log(endTime);
-    console.log(values);
 
     if (!title || !date || !startdatetime || !enddatetime) {
         return next(new Error("Please fill out required fields."));
@@ -178,7 +175,6 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
         comments,
         sets
     }, next)) {
-        console.log(title, date, startdatetime, enddatetime, comments);
         const userId = req.user.id;
 
         // no need to format timestamps since postgres will do it for you
@@ -196,19 +192,10 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
         response.count = numSessions.rows[0].count;
 
         // VALIDATION
-        const all = await performQuery("select * from session");
-        const newestSession = all.rows[all.rows.length - 1];
+        const sessionFromDb = await performQuery(`select * from session WHERE id = '${id}'`);
 
-        // TODO: figure out how to format start & end timestampts to compare without format error
-        const sessionsMatch =
-            newestSession.title == title &&
-            newestSession.startdatetime == startdatetime &&
-            newestSession.enddatetime === enddatetime &&
-            newestSession.comments === comments &&
-            newestSession.owner === req.user.id;
-
-        // Set response message
-        if (sessionsMatch) {
+        // TODO test this validation
+        if (sessionFromDb.rows.length === 1 && sessionFromDb.rows[0].sets.length === sets.length) {
             response.message = `Successfully added session from ${req.body.startdatetime} to ${req.body.enddatetime}`;
         } else {
             response.message = "Session was not added";
@@ -290,7 +277,6 @@ router.patch("/", isLoggedIn, async (req, res, next) => {
         await performQuery(query);
 
         const row = await performQuery(`SELECT * FROM session WHERE id = '${id}'`);
-        console.log(row.rows[0]);
 
         res.send({ count: edited + 1 });
     }

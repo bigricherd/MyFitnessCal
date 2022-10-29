@@ -47,7 +47,6 @@ function AddSetsToSessionPopup(props) {
     const handleExerciseChange = (event) => {
         let exists = false;
         for (let exercise of exercises) {
-            console.log(exercise);
             if (exercise.name === event.target.value) {
                 exists = true;
                 break;

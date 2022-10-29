@@ -44,7 +44,6 @@ function AddExercise(props) {
     // Update state in parent (ExercisesPage.jsx) when an exercise is added, i.e. setExercisesByUser(exercisesPostAdd)
     useEffect(() => {
         if (exercisesPostAdd && exercisesPostAdd.length > 0) {
-            console.log("going to lift state");
             props.liftState(exercisesPostAdd);
         }
     }, [exercisesPostAdd]);

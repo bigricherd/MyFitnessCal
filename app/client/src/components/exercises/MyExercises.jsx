@@ -40,7 +40,6 @@ function MyExercises(props) {
 
     // Close Confirm Delete dialog handler
     const handleClose = () => {
-        console.log(`Selected exercises was at index ${indexToDelete}, now setting to null`);
         setIndexToDelete(null);
         setDeleteEvent(null);
         setOpen(false);
@@ -52,7 +51,6 @@ function MyExercises(props) {
     )
 
     const handleConfirmDelete = () => {
-        // console.log(`I am supposed to delete exercise at index ${indexToDelete}. Corresponding event below`);
         values.exercise = props.exercisesByUser[indexToDelete];
         handleSubmit(deleteEvent);
         values.exercise = '';

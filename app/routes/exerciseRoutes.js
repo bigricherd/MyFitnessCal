@@ -69,7 +69,6 @@ router.get("/all", (req, res) => {
 // Returns the list of Exercises added by the currently logged in user
 router.get("/byCurrentUser", isLoggedIn, async (req, res) => {
     const { id } = req.query;
-    console.log(id);
     const query = `SELECT nameandmusclegroup FROM Exercise WHERE owner = '${id}' ORDER BY muscleGroup, name`;
     const data = await performQuery(query);
 
@@ -77,8 +76,6 @@ router.get("/byCurrentUser", isLoggedIn, async (req, res) => {
     for (let row of data.rows) {
         exercisesByUser.push(row.nameandmusclegroup);
     }
-    ///res.send({ message: 'enums requested', exercisesByUser });
-    console.log(exercisesByUser);
     res.send({ exercisesByUser });
 });
 
@@ -120,7 +117,6 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
             const single = await performQuery(verifyQuery);
 
             if (single.rows.length === 1) {
-                console.log('exercises matched');
                 response.message = `Successfully added exercise ${formatExercise(req.body.exercise, " ")}`;
             } else {
                 response.message = `Exercise ${formatExercise(req.body.exercise, " ")} was not added.`;

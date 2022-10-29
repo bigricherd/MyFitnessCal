@@ -157,9 +157,6 @@ function AddSetsCollapse(props) {
                                 onClick={() => {
                                     if (props.exercise.name.length > 0) {
                                         addSet();
-                                    } else {
-                                        console.log('Please select an exercise first');
-                                        // TODO message: select an exercise first
                                     }
                                 }}
                                 variant="contained"

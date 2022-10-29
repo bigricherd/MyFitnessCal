@@ -1,8 +1,5 @@
 module.exports = (err, req, res, next) => {
     try {
-        console.log('HIT ERROR MIDDLEWARE');
-        console.log(err.name, err.message);
-
         // ---------- AUTH ----------
         if (err.code === '23505' && err.constraint === 'appuser_username_key') return err = handleUserExistsError(err, res);
         if (err.message === 'Username cannot be empty') return err = handleMissingUsernameError(err, res);

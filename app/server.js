@@ -1,13 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const passport = require('passport');
-const methodOverride = require('method-override');
+//const methodOverride = require('method-override');
+const path = require('path');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(methodOverride("_method"));
+//app.use(methodOverride("_method"));
 
 // ---------- CORS SETUP ----------
 const homeUrl = process.env.HOMEPAGE_URL || "http://localhost:3000";
@@ -34,6 +36,18 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
 };
+
+if (process.env.NODE_ENV === "production") {
+    const { pool } = require('./dbModule')
+    const store = new pgSession({
+        pool,
+        createTableIfMissing: true,
+        pruneSessionInterval: false
+    });
+    app.set('trust proxy', 1); // trust first proxy
+    sessionConfig.cookie.secure = true; // serve secure cookies
+    sessionConfig.store = store; // use Postgres for Session storage
+}
 app.use(session(sessionConfig));
 
 // ---------- PASSPORT SETUP ----------
@@ -63,6 +77,16 @@ app.use((err, req, res, next) => {
     console.log(err.statusCode, err.message);
     console.log(err.name);
     return res.status(err.statusCode).send({ messages: err.message });
+});
+
+// ---------- SERVE BUILD FOLDER TO DISPLAY UI ON PROD  ----------
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "/client/build")));
+}
+
+// ---------- CATCH-ALL ROUTE TO ALWAYS DISPLAY index.html  ----------
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/client/build/index.html"));
 });
 
 // ---------- START SERVER ----------

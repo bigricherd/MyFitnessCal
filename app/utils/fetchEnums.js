@@ -28,7 +28,6 @@ const getExercisesArray = async () => {
     for (let item of res.rows) {
         arr.push(item.nameandmusclegroup);
     }
-    //console.log(arr);
 
     return arr;
 }
@@ -37,9 +36,6 @@ const test = async () => {
     const muscleGroups = await getMuscleGroups();
     const exerciseMap = await getExerciseMap();
     const getExercisesArray = await getExercisesArray();
-    console.log(muscleGroups);
-    console.log(exerciseMap);
-    console.log(getExercisesArray);
 }
 
 //test();

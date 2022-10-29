@@ -24,7 +24,6 @@ function ExercisesPage(props) {
 
     const url = `${baseUrl}/api/exercises/byCurrentUser?id=${userId}`;
     const fetchExercisesByUser = useCallback(async () => {
-        console.log('fetching exercises');
         const userExercises = await axios({
             method: 'GET',
             url: url,
