@@ -1,4 +1,4 @@
-import { AppBar, Drawer, Box, Toolbar, Button, IconButton, List, ListItem, Container, Typography, Divider } from '@mui/material';
+import { AppBar, Drawer, Box, Toolbar, Button, IconButton, List, ListItem, Container, Typography, Divider, Stack } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // This is what we are using right now, as MUILink refreshes the page and logs the user out. Seems like a session problem.
@@ -27,7 +27,6 @@ const Nav = (props) => {
     // Set the list of pages depending on whether a user is logged in
     useEffect(() => {
         setPages(props.user ? navItems : authPages);
-        console.log(props.user);
     }, [props])
 
 
@@ -75,7 +74,7 @@ const Nav = (props) => {
                     <Toolbar>
 
                         {/* Hamburger icon shown when collapsed + options shown on click */}
-                        <IconButton color='inherit' onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: 'none' } }}>
+                        <IconButton color='inherit' onClick={handleDrawerToggle} sx={{ mr: 2, display: { xs: 'block', md: 'none' } }}>
                             <Menu />
                         </IconButton>
 
@@ -84,12 +83,11 @@ const Nav = (props) => {
                             MyFitnessCal
                         </Typography>
 
-                        {/* Row of pages shown when expanded */}
-                        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+                        {/* Row of pages shown when expanded. */}
+                        <Stack direction="row" justifyContent="center" alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
                             {
-                                pages.map((page) => (
+                                props.user && pages.map((page) => (
                                     <Button key={page} sx={{ my: 2, display: 'block' }}>
-                                        {/* <MUILink sx={{ color: 'white' }} href={`/${page.toLowerCase()}`}>{page}</MUILink> */}
                                         <Link
                                             to={`/${page.toLowerCase()}`}
                                             className='text-white text-decoration-none'>
@@ -103,7 +101,7 @@ const Nav = (props) => {
                                     Logout |<span className='ms-1 text-info'>{props.user}</span>
                                 </Button>
                                 : null}
-                        </Box>
+                        </Stack>
 
                     </Toolbar>
                 </Container>
@@ -116,7 +114,7 @@ const Nav = (props) => {
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
                     ModalProps={{ keepMounted: true }}
-                    sx={{ display: { xs: 'block', sm: 'none' }, boxSizing: 'border-box' }}>
+                    sx={{ display: { xs: 'block' }, boxSizing: 'border-box' }}>
                     {drawer}
                 </Drawer>
             </Box>

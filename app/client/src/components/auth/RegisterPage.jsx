@@ -73,21 +73,37 @@ function RegisterPage() {
     return (
         <Stack
             direction="column"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
             minHeight="100vh"
+            sx={{
+                marginTop: {
+                    xs: "30%",
+                    sm: "25%",
+                    md: "17%",
+                    ml: "12%",
+                    lg: "10%",
+                    xl: "8%",
+                    xxl: "6%"
+                }
+            }}
         >
 
             {/* Heading */}
-            <Typography variant="h4" gutterBottom>
+            < Typography gutterBottom sx={{
+                fontSize: {
+                    xs: "1.65rem",
+                    ml: "1.8rem"
+                }
+            }}>
                 Register
-            </Typography>
+            </Typography >
 
             {/* Form fields */}
-            <Stack spacing={2} sx={{ mb: '1rem' }}>
+            < Stack spacing={2} sx={{ mb: '1rem' }}>
 
                 {/* Username input */}
-                <FormControl>
+                < FormControl >
                     <FormLabel>Username</FormLabel>
                     <TextField
                         name="username"
@@ -97,10 +113,10 @@ function RegisterPage() {
                         error={attempted && (!values.username || values.username === "" || values.username.length > 30)}
                         required >
                     </TextField>
-                </FormControl>
+                </FormControl >
 
                 {/* Password input */}
-                <FormControl>
+                < FormControl >
                     <FormLabel>Password</FormLabel>
                     <Tooltip
                         title={passwordFieldHover}
@@ -126,7 +142,7 @@ function RegisterPage() {
                             required>
                         </TextField>
                     </Tooltip>
-                </FormControl>
+                </FormControl >
 
                 <FormControl>
                     <FormLabel>Time Zone</FormLabel>
@@ -146,24 +162,24 @@ function RegisterPage() {
                         />
                     </Tooltip>
                 </FormControl>
-            </Stack>
+            </Stack >
 
             {/* Submit button */}
-            <Button
+            < Button
                 onClick={handleSubmit}
                 type="submit"
                 color="primary"
                 variant="contained"
                 sx={{ mb: '1rem' }}
             > Register
-            </Button>
+            </Button >
 
             {/* Feedback message -- error */}
             {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ mb: '1rem' }}>{error}</Alert>}
 
             {/* Link to Login page */}
             <Typography>Already have an account? <Link to="/login">Login</Link></Typography>
-        </Stack>
+        </Stack >
     )
 }
 

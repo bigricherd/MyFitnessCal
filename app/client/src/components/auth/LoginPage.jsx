@@ -53,13 +53,29 @@ function LoginPage() {
     return (
         <Stack
             direction="column"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
             minHeight="100vh"
+            sx={{
+                marginTop: {
+                    xs: "30%",
+                    sm: "23%",
+                    md: "17%",
+                    lg: "10%",
+                    ml: "10%",
+                    xl: "7%",
+                    xxl: "5%"
+                }
+            }}
         >
 
             {/* Heading */}
-            <Typography variant="h4" gutterBottom>
+            <Typography gutterBottom sx={{
+                fontSize: {
+                    xs: "1.65rem",
+                    ml: "1.8rem"
+                }
+            }}>
                 Login
             </Typography>
 
