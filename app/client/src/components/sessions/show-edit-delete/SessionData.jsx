@@ -74,6 +74,7 @@ function SessionData(props) {
                     {formatTime(session.start)}
                 </Grid>
 
+                {/* "Edit Session" button */}
                 <Grid item xs={6} align="right">
                     <Button
                         onClick={() => { setShowEditSessionPopup(true) }}
@@ -89,6 +90,7 @@ function SessionData(props) {
                     <strong>End:</strong> {formatTime(session.end)}
                 </Grid>
 
+                {/* "Add sets" button */}
                 <Grid item xs={6} align="right">
                     <Button
                         onClick={() => { setShowAddSetsPopup(true) }}

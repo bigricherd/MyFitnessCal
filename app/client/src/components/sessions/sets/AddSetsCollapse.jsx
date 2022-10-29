@@ -91,7 +91,9 @@ function AddSetsCollapse(props) {
                 </TableCell>
 
                 {/* Select exercise dropdown */}
-                <TableCell>
+                <TableCell sx={{
+                    width: "100%"
+                }}>
                     <FormControl fullWidth>
                         <Dropdown
                             id="exercise"
@@ -109,7 +111,7 @@ function AddSetsCollapse(props) {
                 </TableCell>
 
                 {/* Remove group button */}
-                <TableCell>
+                <TableCell align="right">
                     <Button
                         onClick={(e) => {
                             props.onDelete(props.index);

@@ -285,11 +285,12 @@ function AddSession(props) {
 
                 <Grid container>
 
+                    {/* "Sets" heading */}
                     <Grid item xs={3}>
-
                         <Typography variant="h5">Sets</Typography>
                     </Grid>
 
+                    {/* "Add Exercise" button */}
                     <Grid item xs={6}>
 
                         {/* Add a new collapse containing SetRows (AddSetsCollapse)  */}
@@ -301,6 +302,7 @@ function AddSession(props) {
                         </Button>
                     </Grid>
 
+                    {/* Table containing an array of AddSetsCollapses */}
                     <Grid item xs={12}>
                         <TableContainer
                         // TODO this is a desktop style; needs to actually be limited on mobile
