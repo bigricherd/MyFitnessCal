@@ -89,7 +89,6 @@ export default function useForm({ initialValues }) {
                 headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
                 withCredentials: true
             }).then(res => {
-                console.log(res.data);
                 setEdited(res.data.count);
                 setError(null);
                 return true;

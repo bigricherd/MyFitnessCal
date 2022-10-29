@@ -36,7 +36,6 @@ export default function useForm({ initialValues }) {
                 withCredentials: true
 
             }).then(res => {
-                console.log(res.data.count);
                 setNumSets(res.data.count);
                 setError(null);
             })
