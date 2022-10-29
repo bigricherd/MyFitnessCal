@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { appTheme } from "./themes/theme";
 import RegisterPage from "./components/auth/RegisterPage";
 import LoginPage from "./components/auth/LoginPage";
 import SessionsPage from "./components/sessions/SessionsPage";
@@ -67,66 +69,69 @@ function App() {
     );
 
     return (
-        <Router>
-            <div className="App">
-                <header className="App-header">
-                    <Nav user={user} />
-                    <Routes>
-                        <Route
-                            exact
-                            path="/"
-                            element={<SessionsPage
-                                user={user}
-                                userId={userId}
-                                timezone={timezone}
-                                firstVisit={firstVisit}
-                                setFirstVisit={setFirstVisit}
-                                muscleGroups={muscleGroups}
-                            />}
-                        />
-                        <Route
-                            exact
-                            path="/sessions"
-                            element={
-                                <SessionsPage
+        <ThemeProvider theme={appTheme}>
+            <CssBaseline enableColorScheme />
+            <Router>
+                <div className="App">
+                    <header className="App-header">
+                        <Nav user={user} />
+                        <Routes>
+                            <Route
+                                exact
+                                path="/"
+                                element={<SessionsPage
                                     user={user}
                                     userId={userId}
                                     timezone={timezone}
                                     firstVisit={firstVisit}
                                     setFirstVisit={setFirstVisit}
                                     muscleGroups={muscleGroups}
-                                />
-                            }
-                        />
-                        <Route
-                            exact
-                            path="/exercises"
-                            element={
-                                <ExercisesPage
-                                    user={user}
-                                    userId={userId}
-                                    muscleGroups={muscleGroups}
-                                    setFirstVisit={setFirstVisit}
-                                />
-                            }
-                        />
-                        <Route
-                            exact
-                            path="/analytics"
-                            element={
-                                <AnalyticsPage
-                                    user={user}
-                                    muscleGroups={muscleGroupsForAnalytics}
-                                />
-                            }
-                        />
-                        <Route exact path="/register" element={<RegisterPage />} />
-                        <Route exact path="/login" element={<LoginPage />} />
-                    </Routes>
-                    {/* {debugText} */}
-                </header>
-            </div>
-        </Router>
+                                />}
+                            />
+                            <Route
+                                exact
+                                path="/sessions"
+                                element={
+                                    <SessionsPage
+                                        user={user}
+                                        userId={userId}
+                                        timezone={timezone}
+                                        firstVisit={firstVisit}
+                                        setFirstVisit={setFirstVisit}
+                                        muscleGroups={muscleGroups}
+                                    />
+                                }
+                            />
+                            <Route
+                                exact
+                                path="/exercises"
+                                element={
+                                    <ExercisesPage
+                                        user={user}
+                                        userId={userId}
+                                        muscleGroups={muscleGroups}
+                                        setFirstVisit={setFirstVisit}
+                                    />
+                                }
+                            />
+                            <Route
+                                exact
+                                path="/analytics"
+                                element={
+                                    <AnalyticsPage
+                                        user={user}
+                                        muscleGroups={muscleGroupsForAnalytics}
+                                    />
+                                }
+                            />
+                            <Route exact path="/register" element={<RegisterPage />} />
+                            <Route exact path="/login" element={<LoginPage />} />
+                        </Routes>
+                        {/* {debugText} */}
+                    </header>
+                </div>
+            </Router>
+        </ThemeProvider>
     );
 }
 
