@@ -10,7 +10,8 @@ import {
     Table,
     TableRow,
     TableBody,
-    TableCell
+    TableCell,
+    Stack
 } from '@mui/material';
 import { DeleteOutline } from '@mui/icons-material/';
 import Dropdown from '../Dropdown';
@@ -171,7 +172,7 @@ function MyExercises(props) {
     }, [error, prevError]);
 
     return (
-        <Grid item xs={10} sm={8}>
+        <Stack justifyContent="center" alignItems="center" spacing={2}>
 
             {/* Confirm delete dialog, which opens when a user clicks the 'X' button corresponding to some exercise */}
 
@@ -245,9 +246,11 @@ function MyExercises(props) {
             </TableContainer>
 
             {/* Feedback messages */}
-            {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ mt: '1rem' }}>{successMsg}</Alert>}
-            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
-        </Grid>
+            <Stack justifyContent="center" alignItems="center">
+                {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ mt: '1rem' }}>{successMsg}</Alert>}
+                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+            </Stack>
+        </Stack>
     )
 }
 

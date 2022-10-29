@@ -118,7 +118,7 @@ function LoginPage() {
             </Button>
 
             {/* Feedback message -- error */}
-            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+            {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ mb: '1rem' }}>{error}</Alert>}
 
             {/* Link to Register page */}
             <Typography>New user? <Link to="/register">Register</Link></Typography>

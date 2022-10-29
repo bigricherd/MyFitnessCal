@@ -75,13 +75,16 @@ function ExercisesPage(props) {
     }
 
     else return (
-        <Stack direction="column" spacing={2} sx={{ marginTop: "7%" }}>
+        <Stack direction="column" spacing={1} sx={{ marginTop: "7%" }}>
             <AddExercise muscleGroups={muscleGroups} liftState={setExercisesByUser} />
             <MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />
-            <Stack justifyContent="center" alignItems="center">
+            <Stack justifyContent="center" alignItems="center" spacing={1}>
+                {/* Feedback messages */}
+                {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg}>{successMsg}</Alert>}
+
                 <Button
                     variant="outlined"
-                    onClick={() => { setShowSuggestedExercises(!showSuggestedExercises) }}
+                    onClick={() => { setShowSuggestedExercises(true) }}
                 >
                     Suggested Exercises
                 </Button>
@@ -99,9 +102,6 @@ function ExercisesPage(props) {
                 setCount={setCount}
                 parent="exercises"
             />
-
-            {/* Feedback messages */}
-            {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ marginTop: '5.5rem' }}>{successMsg}</Alert>}
         </Stack>
 
     )

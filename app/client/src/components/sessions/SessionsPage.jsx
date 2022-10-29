@@ -5,7 +5,8 @@ import {
     Button,
     Tab,
     Box,
-    Alert
+    Alert,
+    Stack
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import AddSession from "./AddSession";
@@ -139,14 +140,16 @@ function SessionsPage(props) {
         <>
             {user ? (
                 <>
-                    {/* Feedback messages TODO: fix styles*/}
-                    {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ marginTop: '5.5rem' }}>{successMsg}</Alert>}
+                    {/* Feedback messages */}
+                    <Stack justifyContent="center" alignItems="center">
+                        {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ marginTop: '5rem', marginBottom: '1rem' }}>{successMsg}</Alert>}
+                    </Stack>
 
                     <Button
                         variant="outlined"
                         onClick={() => { setShowAddSession(true) }}
                         sx={!showSuccessMsg && {
-                            marginTop: "5.5rem",
+                            marginTop: "5rem",
                             marginBottom: "1rem"
                         }}
                     >
@@ -196,7 +199,7 @@ function SessionsPage(props) {
                                     liftNumSessions={setNumSessions}
                                     liftNumEdits={setNumEdits}
                                     getSessions={getAllSessions}
-                                    exercises={exercises}
+                                    exercisesByUser={exercisesByUser}
                                     timezone={props.timezone}
                                 />
                             </TabPanel>

@@ -143,8 +143,10 @@ function AddExercise(props) {
             </Box>
 
             {/* Feedback messages */}
-            {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg}>{successMsg}</Alert>}
-            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+            <Stack justifyContent="center" alignItems="center">
+                {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg}>{successMsg}</Alert>}
+                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+            </Stack>
         </Grid>
     );
 }

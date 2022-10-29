@@ -21,6 +21,7 @@ import ProgressChart from './ProgressChart';
 // TODO store muscle Groups array here
 
 function ProgressTracker(props) {
+    console.log(props.muscleGroups);
     const [exercises, setExercises] = useState(null);
     const [exerciseOptions, setExerciseOptions] = useState([]);
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups.slice(1));
@@ -46,12 +47,12 @@ function ProgressTracker(props) {
     useEffect(() => {
         fetchExercises()
             .then((res) => {
-                console.log(res);
+                console.log(res.data);
                 let groupsTmp = muscleGroups.slice();
                 let filtered = groupsTmp.filter((group) => {
                     console.log(group);
-                    let g = group.toLowerCase().split(" ").join("_");
-                    return res.data[g] && res.data[g].length > 0;
+                    //let g = group.toLowerCase().split(" ").join("_");
+                    return res.data[group] && res.data[group].length > 0;
                 });
                 setMuscleGroups(filtered);
             });
@@ -209,15 +210,18 @@ function ProgressTracker(props) {
 
                     </Box>
 
+                    {/* Feedback messages */}
+                    {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+
                     {/* Results */}
                     <Stack>
                         {data && <ProgressTable data={data} exercise={values.exercise} />}
+                        {/* <Typography variant="h5">No sets found for that exercise.</Typography> */}
                     </Stack>
 
                 </Stack>
 
-                {/* Feedback messages */}
-                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+
 
                 {/* {data && <ProgressChart data={data} exercise={values.exercise} />} */}
             </Container>

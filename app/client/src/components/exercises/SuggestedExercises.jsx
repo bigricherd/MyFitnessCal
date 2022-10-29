@@ -106,6 +106,7 @@ function SuggestedExercises(props) {
 
 
                 <DialogContent>
+                    {/* Styles good */}
                     {error && showError && < Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
                     <TableContainer >
                         {/* The smaller the maxWidth (in percent) of the TableContainer above, the more the content scrolls horizontally -- mobile only */}

@@ -78,7 +78,7 @@ function DefaultCalendarView(props) {
                 onClose={handlePopupClose}
                 liftNumSessions={props.liftNumSessions}
                 liftNumEdits={props.liftNumEdits}
-                exercises={props.exercises} />
+                exercisesByUser={props.exercisesByUser} />
             <Kalend
                 onEventClick={onEventClick}
                 onNewEventClick={onNewEventClick}

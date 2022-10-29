@@ -77,7 +77,8 @@ function SessionData(props) {
                 <Grid item xs={6} align="right">
                     <Button
                         onClick={() => { setShowEditSessionPopup(true) }}
-                        variant="contained"
+                        size="small"
+                        variant="outlined"
                     >
                         Edit Session
                     </Button>
@@ -91,7 +92,8 @@ function SessionData(props) {
                 <Grid item xs={6} align="right">
                     <Button
                         onClick={() => { setShowAddSetsPopup(true) }}
-                        variant="contained"
+                        size="small"
+                        variant="outlined"
                     >
                         Add Sets
                     </Button>
@@ -105,42 +107,46 @@ function SessionData(props) {
 
 
                 {/* Popup that is triggered when "Add Sets" button (above) is clicked */}
-                {session && <AddSetsToSessionPopup session={session} open={showAddSetsPopup} setOpen={setShowAddSetsPopup} liftState={props.liftNumSets} exercises={props.exercises} />}
+                {session && <AddSetsToSessionPopup session={session} open={showAddSetsPopup} setOpen={setShowAddSetsPopup} liftState={props.liftNumSets} exercisesByUser={props.exercisesByUser} />}
 
                 {session && <EditSessionPopup session={session} open={showEditSessionPopup} setOpen={setShowEditSessionPopup} liftState={props.liftEdited} />}
 
             </Grid>
 
             {/* Sets performed during this session */}
-            <Grid container>
-                {/* This is the master table, where each row is a collapsible table with its heading being some exercise*/}
-                <TableContainer>
-                    <Table>
+            {session && exercises.length > 0 ?
+                <Grid container>
+                    {/* This is the master table, where each row is a collapsible table with its heading being some exercise*/}
+                    <TableContainer>
+                        <Table>
 
-                        {/* Table heading 'Sets' */}
-                        <TableHead>
-                            <TableRow>
-                                <TableCell sx={{ borderBottom: 'unset' }}>
-                                    <Typography
-                                        variant="h5"
-                                        sx={{ fontWeight: "500" }}
-                                    >
-                                        Sets
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
+                            {/* Table heading 'Sets'*/}
+                            <TableHead>
+                                <TableRow>
 
-                        {/* Array of collapsibles, one per exercise, each showing the sets of that exercise */}
-                        <TableBody>
-                            {session && exercises.map((exercise, index) =>
-                                <ShowSetsCollapse key={index} exercise={exercise} sets={session.sets[exercise]} session={session} liftState={props.liftNumSets} />
-                            )
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>
+                                    <TableCell sx={{ borderBottom: 'unset' }}>
+                                        <Typography
+                                            variant="h5"
+                                            sx={{ fontWeight: "500" }}
+                                        >
+                                            Sets
+                                        </Typography>
+                                    </TableCell>
+
+                                </TableRow>
+                            </TableHead>
+
+                            {/* Array of collapsibles, one per exercise, each showing the sets of that exercise */}
+                            <TableBody>
+                                {session && exercises.map((exercise, index) =>
+                                    <ShowSetsCollapse key={index} exercise={exercise} sets={session.sets[exercise]} session={session} liftState={props.liftNumSets} />
+                                )
+                                }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+                : <Typography> No sets for this session. Add sets above.</Typography>}
         </>
     )
 }

@@ -167,6 +167,9 @@ function VolumeCounter(props) {
 
                 </Box>
 
+                {/* Feedback messages */}
+                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+
                 {/* Show number of sets for selected muscle group; rows are collapsible and show exercise breakdowns */}
                 <Stack >
                     {data && (
@@ -178,9 +181,6 @@ function VolumeCounter(props) {
                 </Stack>
 
             </Stack>
-
-            {/* Feedback messages */}
-            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
 
         </Container>
     );

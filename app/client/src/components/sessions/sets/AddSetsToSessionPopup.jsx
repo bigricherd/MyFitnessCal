@@ -7,7 +7,8 @@ import {
     Grid,
     Table,
     TableBody,
-    Alert
+    Alert,
+    Stack
 } from '@mui/material';
 import addSetsToSession from '../../../hooks/sessions/sets/addSetsToSession';
 import { useEffect, useState } from 'react';
@@ -121,13 +122,15 @@ function AddSetsToSessionPopup(props) {
 
                 <DialogContent>
                     {/* Add a new collapse containing SetRows (AddSetsCollapse)  */}
-                    <Button
-                        type="submit"
-                        onClick={addExercise}
-                        variant="contained"
-                    >
-                        Add exercise
-                    </Button>
+                    <Stack justifyContent="center" alignItems="center">
+                        <Button
+                            type="submit"
+                            onClick={addExercise}
+                            variant="contained"
+                        >
+                            Add exercise
+                        </Button>
+                    </Stack>
 
                     {/* Sets to be added, grouped by exercise */}
                     <Grid container>
@@ -136,7 +139,7 @@ function AddSetsToSessionPopup(props) {
                                 {exercises.map((exercise, index) => (
                                     <AddSetsCollapse
                                         key={index}
-                                        exerciseOptions={props.exercises}
+                                        exerciseOptions={props.exercisesByUser}
                                         index={index}
                                         exercise={exercise}
                                         exercises={exercises}
@@ -149,7 +152,9 @@ function AddSetsToSessionPopup(props) {
                     </Grid>
 
                     {/* Feedback messages */}
-                    {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+                    <Stack justifyContent="center" alignItems="center">
+                        {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ marginTop: '1rem' }}>{error}</Alert>}
+                    </Stack>
                 </DialogContent>
 
                 <DialogActions>

@@ -13,6 +13,7 @@ import ProgressCollapse from './ProgressCollapse';
 import formatExercise from '../../../helpers/formatExercise';
 
 function ProgressTable(props) {
+    console.log(props.data);
 
     const [data, setData] = useState(Object.entries(props.data));
     const [exercise, setExercise] = useState(formatExercise(props.exercise.split(":")[0]));
@@ -22,7 +23,11 @@ function ProgressTable(props) {
         setExercise(formatExercise(props.exercise.split(":")[0]))
     }, [props.data]);
 
-    return (
+    if (data.length === 0) {
+        return (
+            <Typography variant="h6" sx={{ fontWeight: "400" }}>No sets found for that exercise.</Typography>
+        )
+    } else return (
         <TableContainer component={Paper} sx={{ mt: '1rem' }}>
             <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
                 {exercise}

@@ -117,10 +117,10 @@ function ShowSession(props) {
                 {/* Session information */}
                 <DialogContent>
                     {/* Populate the dialog with session data */}
-                    {data && <SessionData session={data.session} sets={data.sets} liftNumSets={setNumSets} liftEdited={setEdited} exercises={props.exercises} />}
+                    {data && <SessionData session={data.session} sets={data.sets} liftNumSets={setNumSets} liftEdited={setEdited} exercisesByUser={props.exercisesByUser} />}
 
                     {/* Feedback message -- error */}
-                    {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
+                    {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ marginTop: "1rem" }}>{error}</Alert>}
                 </DialogContent>
 
                 <DialogActions>

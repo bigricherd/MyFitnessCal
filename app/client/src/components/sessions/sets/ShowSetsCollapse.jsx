@@ -184,12 +184,9 @@ function ShowSetsCollapse(props) {
 
                                         </TableRow>
                                     )}
-                                    <TableRow>
-                                        {/* Feedback message -- error */}
-                                        <TableCell colSpan={6}>
-                                            {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
-                                        </TableCell>
-                                    </TableRow>
+
+                                    {/* Feedback message -- error */}
+                                    {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ marginTop: "1rem" }}>{error}</Alert>}
 
                                     {setToDelete
                                         && <DeleteSetPopup

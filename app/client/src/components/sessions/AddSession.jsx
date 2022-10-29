@@ -280,6 +280,9 @@ function AddSession(props) {
 
                 </Grid>
 
+                {/* Feedback messages */}
+                {error && showError && <Alert severity="error" onClose={handleCloseError} sx={{ mb: "1rem" }}>{error}</Alert>}
+
                 <Grid container>
 
                     <Grid item xs={3}>
@@ -292,7 +295,7 @@ function AddSession(props) {
                         {/* Add a new collapse containing SetRows (AddSetsCollapse)  */}
                         <Button
                             onClick={addExercise}
-                            variant="contained"
+                            variant="outlined"
                         >
                             Add exercise
                         </Button>
@@ -327,9 +330,6 @@ function AddSession(props) {
                     </Grid>
 
                 </Grid>
-
-                {/* Feedback messages */}
-                {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
             </DialogContent>
 
             <DialogActions>

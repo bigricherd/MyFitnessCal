@@ -20,11 +20,12 @@ const getEnums = async () => {
 // ---------- HELPERS: ADD SETS ----------
 const addSet = async (sessionId, userId, set, date) => {
     const { reps, weight, exercise } = set;
+    let key = `${exercise}:${userId}`;
     const id = uuid();
 
     const muscleGroup = exercise.split(":")[1];
 
-    const query = `INSERT INTO set(id, reps, weight, date, exercise, musclegroup, owner, session) VALUES ('${id}', ${reps}, ${weight}, '${date}', '${exercise}', '${muscleGroup}', '${userId}', '${sessionId}')`;
+    const query = `INSERT INTO set(id, reps, weight, date, exercise, musclegroup, owner, session) VALUES ('${id}', ${reps}, ${weight}, '${date}', '${key}', '${muscleGroup}', '${userId}', '${sessionId}')`;
     await performQuery(query);
 };
 
