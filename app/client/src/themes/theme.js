@@ -1,9 +1,18 @@
-import { blue, pink } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 export const appTheme = createTheme({
     palette: {
-        primary: pink,
+        primary: {
+            light: '#799a78',
+            main: '#588157',
+            dark: '#3d5a3c'
+
+        },
+        secondary: {
+            light: '#617b66',
+            main: '#3a5a40',
+            dark: '#283e2c'
+        }
     },
     breakpoints: {
         values: {

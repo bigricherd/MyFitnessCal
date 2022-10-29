@@ -53,11 +53,11 @@ function DefaultCalendarView(props) {
         console.log("page change");
     };
 
-    // TODO: Edit Session start and end times on event drag
+    // Nice to have: Edit Session start and end times on event drag
     const onEventDragFinish = (prevEvent, updatedEvent) => {
-        console.log('an event was dragged');
-        console.log(prevEvent);
-        console.log(updatedEvent);
+        // console.log('an event was dragged');
+        // console.log(prevEvent);
+        // console.log(updatedEvent);
     }
 
     return (
@@ -66,7 +66,7 @@ function DefaultCalendarView(props) {
             style={{
                 backgroundColor: "white",
                 height: "75vh",
-                maxWidth: "1000px",
+                maxWidth: "90%",
                 margin: "auto"
             }}
         >

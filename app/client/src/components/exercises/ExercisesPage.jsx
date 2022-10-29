@@ -93,6 +93,7 @@ function ExercisesPage(props) {
                 <Button
                     variant="outlined"
                     onClick={() => { setShowSuggestedExercises(true) }}
+                    sx={{ borderWidth: "2px" }}
                 >
                     Suggested Exercises
                 </Button>

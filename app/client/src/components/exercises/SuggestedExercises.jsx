@@ -184,7 +184,11 @@ function SuggestedExercises(props) {
                     <Button
                         onClick={(e) => {
                             handleSubmit(e);
-                        }}>
+                        }}
+                        variant="outlined"
+                        color="success"
+                        sx={{ borderWidth: "2px" }}
+                    >
                         Add
                     </Button>
                 </DialogActions>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+//import "bootstrap/dist/css/bootstrap.min.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { appTheme } from "./themes/theme";
 import RegisterPage from "./components/auth/RegisterPage";

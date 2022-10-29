@@ -46,7 +46,12 @@ const Nav = (props) => {
                     <Button>
                         <Link
                             to={`/${item.toLowerCase()}`}
-                            className='text-decoration-none drawerLink'>
+                            className='drawerLink'
+                            style={{
+                                textDecoration: "none",
+                                color: "#515151"
+                            }}
+                        >
                             {item}
                         </Link>
                     </Button>
@@ -57,8 +62,8 @@ const Nav = (props) => {
             {props.user ?
                 <ListItem>
                     <Button onClick={handleLogout}>
-                        <span className='drawerLink'>Logout |
-                            <span className="ms-1 text-success">{props.user}</span>
+                        <span style={{ color: "#515151" }}>Logout |
+                            <span style={{ marginLeft: "3px", color: '#588157' }}>{props.user}</span>
                         </span>
                     </Button>
                 </ListItem>
@@ -90,7 +95,10 @@ const Nav = (props) => {
                                     <Button key={page} sx={{ my: 2, display: 'block' }}>
                                         <Link
                                             to={`/${page.toLowerCase()}`}
-                                            className='text-white text-decoration-none'>
+                                            style={{
+                                                color: "white",
+                                                textDecoration: "none"
+                                            }}>
                                             {page}
                                         </Link>
                                     </Button>
@@ -98,7 +106,7 @@ const Nav = (props) => {
                             }
                             {props.user ?
                                 <Button sx={{ color: 'white' }} onClick={handleLogout}>
-                                    Logout |<span className='ms-1 text-info'>{props.user}</span>
+                                    Logout | <span style={{ marginLeft: "3px", color: "#c8e6c9" }}>{props.user}</span>
                                 </Button>
                                 : null}
                         </Stack>

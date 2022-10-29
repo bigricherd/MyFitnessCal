@@ -20,8 +20,8 @@ function DeleteSessionPopup(props) {
                     <Button onClick={props.onClose}>Back</Button>
                     <Button
                         onClick={props.handleDelete}
-                        variant="contained"
-                        sx={{ backgroundColor: "red" }}
+                        variant="outlined"
+                        color="error"
                     >
                         Delete session
                     </Button>

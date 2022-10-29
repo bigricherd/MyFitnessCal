@@ -3,14 +3,13 @@ import DefaultCalendarView from "./CalendarView";
 import axios from 'axios';
 import {
     Button,
-    Tab,
+    // Tab,
     Box,
     Alert,
     Stack
 } from "@mui/material";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+// import { TabContext, TabList, TabPanel } from "@mui/lab";
 import AddSession from "./AddSession";
-import LoginPage from "../auth/LoginPage";
 import SuggestedExercises from "../exercises/SuggestedExercises";
 
 function SessionsPage(props) {
@@ -64,14 +63,12 @@ function SessionsPage(props) {
             });
             exercisesByUserArr = userExercises.data.exercisesByUser;
             setExercisesByUser(exercisesByUserArr);
-            console.log(exercisesByUserArr);
             setCount(exercisesByUserArr.length);
         }
     }, [userId]);
 
 
     const getAllSessions = async () => {
-        console.log('Fetching sessions');
         const baseUrl = "http://localhost:5000";
         const data = await fetch(`${baseUrl}/api/sessions/all`, {
             credentials: "include",
@@ -82,8 +79,8 @@ function SessionsPage(props) {
         });
         const json = await data.json();
         convertToCalendarEvents(json);
-        console.log(calEvents);
-        console.log(dbEvents);
+        // console.log(calEvents);
+        // console.log(dbEvents);
     };
 
     const convertToCalendarEvents = (sessions) => {
@@ -93,7 +90,6 @@ function SessionsPage(props) {
             endAt: session.enddatetime,
             summary: session.title,
         }));
-        console.log(calendarEvents);
         setCalEvents(calendarEvents);
         setDbEvents(sessions);
     };
@@ -147,8 +143,12 @@ function SessionsPage(props) {
                 variant="outlined"
                 onClick={() => { setShowAddSession(true) }}
                 sx={!showSuccessMsg && {
-                    marginTop: "5rem",
-                    marginBottom: "1rem"
+                    marginTop: {
+                        xs: "5rem",
+                        md: "5.5rem"
+                    },
+                    marginBottom: "1rem",
+                    borderWidth: "2px"
                 }}
             >
                 Create Session
@@ -179,36 +179,46 @@ function SessionsPage(props) {
                 parent="sessions"
             />
 
-
-            <Box>
-                <TabContext value={view} aria-label="tabs" centered>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <TabList aria-label="tabs" onChange={handleChange} centered>
-                            <Tab label="Calendar" value={"0"} />
-                            <Tab label="Cards" value={"1"} />
-                        </TabList>
-                    </Box>
-
-
-                    <TabPanel value={"0"}>
-                        <DefaultCalendarView
-                            calEvents={calEvents}
-                            dbEvents={dbEvents}
-                            liftNumSessions={setNumSessions}
-                            liftNumEdits={setNumEdits}
-                            getSessions={getAllSessions}
-                            exercisesByUser={exercisesByUser}
-                            timezone={props.timezone}
-                        />
-                    </TabPanel>
-
-                    <TabPanel value={"1"}>
-                        Card View
-                    </TabPanel>
-                </TabContext>
-            </Box>
+            <DefaultCalendarView
+                calEvents={calEvents}
+                dbEvents={dbEvents}
+                liftNumSessions={setNumSessions}
+                liftNumEdits={setNumEdits}
+                getSessions={getAllSessions}
+                exercisesByUser={exercisesByUser}
+                timezone={props.timezone}
+            />
         </>
     );
 }
 
 export default SessionsPage;
+
+{/* Tabbed version with Card View (not developed) */ }
+{/* <Box> 
+            <TabContext value={view} aria-label="tabs" centered>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <TabList aria-label="tabs" onChange={handleChange} centered>
+                            <Tab label="Calendar" value={"0"} />
+                            <Tab label="Cards" value={"1"} />
+                        </TabList>
+                    </Box> 
+
+
+            <TabPanel value={"0"}>
+            <DefaultCalendarView
+                calEvents={calEvents}
+                dbEvents={dbEvents}
+                liftNumSessions={setNumSessions}
+                liftNumEdits={setNumEdits}
+                getSessions={getAllSessions}
+                exercisesByUser={exercisesByUser}
+                timezone={props.timezone}
+            />
+             </TabPanel>
+
+                    <TabPanel value={"1"}>
+                        Coming Soon
+                    </TabPanel>
+                </TabContext> 
+            </Box> */}

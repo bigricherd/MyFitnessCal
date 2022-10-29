@@ -14,7 +14,8 @@ import {
     TableContainer,
     Table,
     TableBody,
-    Alert
+    Alert,
+    Tooltip
 } from '@mui/material';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -54,7 +55,6 @@ function AddSession(props) {
     const handleExerciseChange = (event) => {
         let exists = false;
         for (let exercise of exercises) {
-            console.log(exercise);
             if (exercise.name === event.target.value) {
                 exists = true;
                 break;
@@ -139,7 +139,7 @@ function AddSession(props) {
     }, [error, prevError]);
 
     return (
-        <Dialog
+        < Dialog
             open={props.open}
             onClose={props.onClose}
         >
@@ -297,6 +297,7 @@ function AddSession(props) {
                         <Button
                             onClick={addExercise}
                             variant="outlined"
+                            sx={{ borderWidth: "2px" }}
                         >
                             Add exercise
                         </Button>
@@ -341,9 +342,9 @@ function AddSession(props) {
                 <Button
                     type="submit"
                     onClick={customHandleSubmit}
-                    variant="contained"
+                    variant="outlined"
                     color="success"
-                    sx={{ color: 'white' }}
+                    sx={{ borderWidth: "2px" }}
                 >
                     Create Session
                 </Button>

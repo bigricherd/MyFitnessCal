@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import {
-    Box,
-    Collapse,
     Grid,
     Typography,
-    IconButton,
     TableContainer,
     Table,
     TableHead,
@@ -52,7 +49,7 @@ function SessionData(props) {
 
     return (
         <>
-            <Grid container sx={{ "marginBottom": "1.5rem" }} spacing={1}>
+            <Grid container sx={{ "marginBottom": "1.5rem", maxWidth: "90%" }} spacing={1}>
 
                 {/* Top row: Session title and date */}
                 <Grid item xs={8}>
@@ -80,6 +77,7 @@ function SessionData(props) {
                         onClick={() => { setShowEditSessionPopup(true) }}
                         size="small"
                         variant="outlined"
+                        sx={{ borderWidth: "2px" }}
                     >
                         Edit Session
                     </Button>
@@ -96,6 +94,7 @@ function SessionData(props) {
                         onClick={() => { setShowAddSetsPopup(true) }}
                         size="small"
                         variant="outlined"
+                        sx={{ borderWidth: "2px" }}
                     >
                         Add Sets
                     </Button>

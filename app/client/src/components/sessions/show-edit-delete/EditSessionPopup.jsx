@@ -1,14 +1,11 @@
 import {
-    Box,
     Grid,
-    Typography,
     TextField,
     FormControl,
     Button,
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogContentText,
     DialogActions,
     Alert
 } from '@mui/material';
@@ -226,8 +223,9 @@ function EditSessionPopup(props) {
                                 props.setOpen(false);
                             }
                         }}
-                        variant="contained"
-                        sx={{ backgroundColor: "green" }}
+                        variant="outlined"
+                        color="success"
+                        sx={{ borderWidth: "2px" }}
                     >
                         Save changes
                     </Button>

@@ -22,7 +22,7 @@ function DeleteExercisePopup(props) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={props.backOnClick}>Back</Button>
-                <Button onClick={props.deleteOnClick} sx={{ color: 'red' }}>Delete</Button>
+                <Button onClick={props.deleteOnClick} variant="outlined" color="error">Delete</Button>
             </DialogActions>
         </Dialog>
     )

@@ -132,8 +132,8 @@ function ShowSession(props) {
 
                     <Button
                         onClick={(e) => { handleOpenDelete(e) }}
-                        variant="contained"
-                        sx={{ backgroundColor: "red" }}
+                        variant="outlined"
+                        color="error"
                     >
                         Delete
                     </Button>
@@ -164,8 +164,8 @@ function ShowSession(props) {
                                 setShowConfirmBack(false);
                                 handleClose();
                             }}
-                            variant="contained"
-                            sx={{ backgroundColor: "red" }}
+                            variant="outlined"
+                            color="error"
                         >
                             Exit
                         </Button>

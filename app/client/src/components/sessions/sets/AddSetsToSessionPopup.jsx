@@ -126,7 +126,9 @@ function AddSetsToSessionPopup(props) {
                         <Button
                             type="submit"
                             onClick={addExercise}
-                            variant="contained"
+                            variant="outlined"
+                            color="primary"
+                            sx={{ borderWidth: "2px" }}
                         >
                             Add exercise
                         </Button>
@@ -164,7 +166,7 @@ function AddSetsToSessionPopup(props) {
                         Back
                     </Button>
                     <Button
-                        variant="contained"
+                        variant="outlined"
                         color="success"
                         onClick={(e) => {
                             values.sessionId = props.session.id;
@@ -173,6 +175,7 @@ function AddSetsToSessionPopup(props) {
                                 resetFormFields();
                             }
                         }}
+                        sx={{ borderWidth: "2px" }}
                     >
                         Add Sets
                     </Button>

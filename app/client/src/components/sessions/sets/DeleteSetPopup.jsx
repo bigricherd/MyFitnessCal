@@ -33,8 +33,8 @@ function DeleteSetPopup(props) {
                         onClick={(e) => {
                             props.handleDelete(e);
                         }}
-                        variant="contained"
-                        sx={{ backgroundColor: "red" }}
+                        variant="outlined"
+                        color="error"
                     >
                         Delete set
                     </Button>
