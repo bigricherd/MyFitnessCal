@@ -110,20 +110,20 @@ function SuggestedExercises(props) {
                     {error && showError && < Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
                     <TableContainer >
                         {/* The smaller the maxWidth (in percent) of the TableContainer above, the more the content scrolls horizontally -- mobile only */}
-                        <Table>
+                        <Table >
                             <TableHead>
-                                <TableRow sx={{
-                                    position: "sticky"
-                                }}>
+                                <TableRow>
                                     <TableCell>
                                         Exercise
                                     </TableCell>
                                     <TableCell>
                                         Muscle Group
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell colSpan={1}>
                                         <Button
                                             onClick={() => { setShowSelectedPopup(true) }}
+                                            variant="outlined"
+                                            size="small"
                                         >
                                             Selected
                                         </Button>

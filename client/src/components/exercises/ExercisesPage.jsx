@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+//simport { Link } from 'react-router-dom';
 import axios from 'axios';
 import AddExercise from './AddExercise';
 import MyExercises from './MyExercises';
@@ -21,12 +21,10 @@ function ExercisesPage(props) {
 
     // Fetch exercises created by currently logged in user
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
-
-    const url = `${baseUrl}/api/exercises/byCurrentUser?id=${userId}`;
-    const fetchExercisesByUser = useCallback(async () => {
+    const fetchExercisesByUser = async () => {
         const userExercises = await axios({
             method: 'GET',
-            url: url,
+            url: `${baseUrl}/api/exercises/byCurrentUser?id=${userId}`,
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -37,7 +35,16 @@ function ExercisesPage(props) {
         exercisesByUserArr = userExercises.data.exercisesByUser;
         setExercisesByUser(exercisesByUserArr);
         setCount(exercisesByUserArr.length);
-    }, [url]);
+    };
+
+    // Fetch user exercises on initial render
+    useEffect(() => {
+        fetchExercisesByUser();
+    }, []);
+
+    useEffect(() => {
+        fetchExercisesByUser();
+    }, [count]);
 
     // Update user information, muscle groups list, and exercisesByUser when props changes
     useEffect(() => {
@@ -45,7 +52,7 @@ function ExercisesPage(props) {
         setUserId(props.userId);
         setMuscleGroups(props.muscleGroups);
         fetchExercisesByUser();
-    }, [props, fetchExercisesByUser, count]);
+    }, [props]);
 
     // Setup to show feedback message -- success
     const [showSuccessMsg, setShowSuccessMsg] = useState(false);
@@ -63,16 +70,17 @@ function ExercisesPage(props) {
     }, [successMsg, prevSuccessMsg]);
 
 
-    // If there is no logged in user, show the prompt with links to Login and Register pages
-    if (!user) {
-        return (
-            <div>
-                <p><Link to={'/register'} className="text-decoration-none">Register</Link> or <Link to={'/login'} className="text-decoration-none">Login</Link> first</p>
-            </div>
-        )
-    }
+    // // If there is no logged in user, show the prompt with links to Login and Register pages
+    // if (!user) {
+    //     return (
+    //         <div>
+    //             <p><Link to={'/register'} className="text-decoration-none">Register</Link> or <Link to={'/login'} className="text-decoration-none">Login</Link> first</p>
+    //         </div>
+    //     )
+    // }
 
-    else return (
+    // else
+    return (
         <Stack
             direction="column"
             spacing={1}

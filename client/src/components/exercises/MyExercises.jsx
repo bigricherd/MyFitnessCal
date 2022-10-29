@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import formatExercise from '../../helpers/formatExercise';
 import {
-    Grid,
     Button,
-    Box,
     Alert,
     Typography,
     TableContainer,
@@ -14,7 +12,7 @@ import {
     Stack
 } from '@mui/material';
 import { DeleteOutline } from '@mui/icons-material/';
-import Dropdown from '../Dropdown';
+//import Dropdown from '../Dropdown';
 import deleteExercise from '../../hooks/exercises/deleteExercise';
 import DeleteExercisePopup from './DeleteExercisePopup';
 //import editExercise from '../hooks/editExercise';

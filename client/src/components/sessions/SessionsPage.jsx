@@ -34,19 +34,19 @@ function SessionsPage(props) {
 
     const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
 
-    // Fetch all exercises
-    let exercisesArr = [];
-    const [exercises, setExercises] = useState([]);
-    const fetchExercises = async () => {
-        const data = await fetch(`${baseUrl}/api/exercises/all`);
-        const json = await data.json();
-        exercisesArr = json.exercises;
-        setExercises(exercisesArr);
-    };
+    // // Fetch all exercises
+    // let exercisesArr = [];
+    // const [exercises, setExercises] = useState([]);
+    // const fetchExercises = async () => {
+    //     const data = await fetch(`${baseUrl}/api/exercises/all`);
+    //     const json = await data.json();
+    //     exercisesArr = json.exercises;
+    //     setExercises(exercisesArr);
+    // };
 
-    useEffect(() => {
-        fetchExercises();
-    }, []);
+    // useEffect(() => {
+    //     fetchExercises();
+    // }, []);
 
     // Fetch exercises by current user
     let exercisesByUserArr = [];
@@ -99,12 +99,11 @@ function SessionsPage(props) {
         getAllSessions();
         setUser(props.user);
         setUserId(props.userId);
-        fetchExercises();
+        //fetchExercises();
         fetchExercisesByUser(props.userId);
     }, [props, view]);
 
     useEffect(() => {
-        console.log(numSessions);
         getAllSessions();
     }, [numSessions, numEdits]);
 
@@ -160,7 +159,7 @@ function SessionsPage(props) {
                 open={showAddSession}
                 onClose={() => setShowAddSession(false)}
                 setShow={setShowAddSession}
-                exercises={exercises}
+                //exercises={exercises}
                 exercisesByUser={exercisesByUser}
                 liftState={setNumSessions}
             />

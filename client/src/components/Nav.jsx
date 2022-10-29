@@ -46,7 +46,6 @@ const Nav = (props) => {
                     <Button>
                         <Link
                             to={`/${item.toLowerCase()}`}
-                            className='drawerLink'
                             style={{
                                 textDecoration: "none",
                                 color: "#515151"

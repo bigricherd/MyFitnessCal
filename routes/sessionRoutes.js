@@ -194,18 +194,13 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
         // VALIDATION
         const sessionFromDb = await performQuery(`select * from sessions WHERE id = '${id}'`);
         const sessionSets = await performQuery(`SELECT count(id) FROM set WHERE session = '${id}'`);
-        console.log(sets.length);
-        console.log(sessionSets.rows[0].count);
-        console.log(parseInt(sessionSets.rows[0].count) === sets.length);
 
-        // TODO test this validation
         if (sessionFromDb.rows.length === 1
             && (parseInt(sessionSets.rows[0].count) === sets.length)) {
             response.message = `Successfully added session from ${req.body.startdatetime} to ${req.body.enddatetime}`;
         } else {
             response.message = "Session was not added";
         }
-        console.log(response.message);
 
         return res.send(response);
     }

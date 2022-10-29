@@ -21,17 +21,18 @@ function AnalyticsPage(props) {
         setMuscleGroups(props.muscleGroups);
     }, [props])
 
-    // If there is no logged in user, show the prompt with links to Login and Register pages
-    if (!user) {
-        return (
-            <>
-                <p><Link to={'/register'} className="text-decoration-none">Register</Link> or <Link to={'/login'} className="text-decoration-none">Login</Link> first</p>
-            </>
-        )
-    }
+    // // If there is no logged in user, show the prompt with links to Login and Register pages
+    // if (!user) {
+    //     return (
+    //         <>
+    //             <p><Link to={'/register'} className="text-decoration-none">Register</Link> or <Link to={'/login'} className="text-decoration-none">Login</Link> first</p>
+    //         </>
+    //     )
+    // }
 
-    // Show the user a form to assess their volume (# of sets performed) for some date range, filtered by muscle group 
-    else return (
+    // // Show the user a form to assess their volume (# of sets performed) for some date range, filtered by muscle group 
+    // else
+    return (
         <>
             <Box
                 sx={{
