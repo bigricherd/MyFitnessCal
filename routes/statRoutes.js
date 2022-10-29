@@ -132,7 +132,7 @@ router.get('/setsOfExercise', isLoggedIn, async (req, res, next) => {
 
         let sets = {};
         for (let row of data.rows) {
-            const session = await performQuery(`SELECT title FROM session WHERE id = '${row.session}'`);
+            const session = await performQuery(`SELECT title FROM sessions WHERE id = '${row.session}'`);
             const title = session.rows[0].title;
 
             let set = {

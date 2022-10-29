@@ -75,7 +75,7 @@ const validateAdd = (values, next) => {
 };
 
 const authorizeEdit = async (sessionId, user, next) => {
-    const session = await performQuery(`SELECT * FROM Session WHERE id = '${sessionId}'`);
+    const session = await performQuery(`SELECT * FROM Sessions WHERE id = '${sessionId}'`);
     if (session.rows.length < 1) {
         return next(new Error("Session does not exist."));
     } else if (session.rows[0].owner !== user) {
@@ -119,7 +119,7 @@ const validateDeleteSet = async (setId, user, next) => {
 
 // Get all sessions of the current user
 router.get("/all", isLoggedIn, async (req, res) => {
-    const query = `SELECT * FROM session WHERE owner = '${req.user.id}'`;
+    const query = `SELECT * FROM sessions WHERE owner = '${req.user.id}'`;
     const all = await performQuery(query);
     res.send(all.rows);
 });
@@ -128,7 +128,7 @@ router.get("/all", isLoggedIn, async (req, res) => {
 router.get("/", async (req, res) => {
     const { id } = req.query;
 
-    const query = `SELECT * FROM session WHERE id = '${id}'`;
+    const query = `SELECT * FROM sessions WHERE id = '${id}'`;
     const all = await performQuery(query);
     const session = all.rows[0];
 
@@ -188,11 +188,11 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
         const response = { count: 0, message: "" };
 
         // Set response.count to liftState
-        const numSessions = await performQuery(`SELECT count(id) FROM session WHERE owner = '${userId}'`);
+        const numSessions = await performQuery(`SELECT count(id) FROM sessions WHERE owner = '${userId}'`);
         response.count = numSessions.rows[0].count;
 
         // VALIDATION
-        const sessionFromDb = await performQuery(`select * from session WHERE id = '${id}'`);
+        const sessionFromDb = await performQuery(`select * from sessions WHERE id = '${id}'`);
 
         // TODO test this validation
         if (sessionFromDb.rows.length === 1 && sessionFromDb.rows[0].sets.length === sets.length) {
@@ -200,16 +200,6 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
         } else {
             response.message = "Session was not added";
         }
-
-        // Simpler validation of the session being added - we check its existence and the number of sets associated with it
-        // const newSession = await performQuery(`select * from session where id = '${id}'`);
-        // const newSessionSets = await performQuery(`select * from set1 WHERE session = '${id}'`);
-        // const sessionAdded = newSession.rows.length === 1 && newSessionSets.rows.length === sets.length;
-        // if (sessionAdded) {
-        //     response.message = `Successfully added session from ${req.body.startdatetime} to ${req.body.enddatetime}`;
-        // } else {
-        //     response.message = "Session was not added";
-        // }
 
         return res.send(response);
     }
@@ -219,9 +209,9 @@ router.post("/add", isLoggedIn, async (req, res, next) => {
 router.delete("/", isLoggedIn, async (req, res, next) => {
     const { sessionId } = req.query;
     if (await validateDelete(sessionId, req.user.id, next)) {
-        const query = `DELETE FROM session WHERE id = '${sessionId}'`;
+        const query = `DELETE FROM sessions WHERE id = '${sessionId}'`;
         await performQuery(query);
-        const all = await performQuery('SELECT count(id) from session');
+        const all = await performQuery('SELECT count(id) from sessions');
         res.send({ count: all.rows[0].count });
     }
 });
@@ -276,7 +266,7 @@ router.patch("/", isLoggedIn, async (req, res, next) => {
                     WHERE id = '${id}'`;
         await performQuery(query);
 
-        const row = await performQuery(`SELECT * FROM session WHERE id = '${id}'`);
+        const row = await performQuery(`SELECT * FROM sessions WHERE id = '${id}'`);
 
         res.send({ count: edited + 1 });
     }

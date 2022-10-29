@@ -12,7 +12,7 @@ app.use(express.json());
 //app.use(methodOverride("_method"));
 
 // ---------- CORS SETUP ----------
-const homeUrl = process.env.HOMEPAGE_URL || "http://localhost:3000";
+const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
 const whitelist = [homeUrl, "http://localhost:3000", "http://localhost:5000"];
 const corsConfig = {
     origin: function (origin, callback) {
@@ -42,8 +42,7 @@ if (process.env.NODE_ENV === "production") {
     const store = new pgSession({
         pool,
         createTableIfMissing: true,
-        pruneSessionInterval: false,
-        tableName: "userSession"
+        pruneSessionInterval: false
     });
     app.set('trust proxy', 1); // trust first proxy
     sessionConfig.cookie.secure = true; // serve secure cookies

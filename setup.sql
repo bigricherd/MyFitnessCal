@@ -12,7 +12,7 @@
 -- -- ); 
 
 -- --DROP TABLE appUser CASCADE;
--- CREATE TABLE appUser(
+-- CREATE TABLE IF NOT EXISTS appUser(
 --     id UUID PRIMARY KEY,
 --     username varchar(30) NOT NULL UNIQUE,
 --     password varchar(60),
@@ -26,7 +26,7 @@
 
 -- -- DROP TABLE exercises CASCADE;
 -- -- DROP TABLE exercise CASCADE;
---   CREATE TABLE EXERCISE(
+--   CREATE TABLE IF NOT EXISTS EXERCISE(
 --       id UUID,
 --       name varchar(25),
 --       musclegroup MUSCLEGROUP NOT NULL,
@@ -41,8 +41,8 @@
 
 -- select * from exercise;
 
---DROP TABLE SESSION CASCADE;
--- CREATE TABLE SESSION (
+--DROP TABLE SESSIONS CASCADE;
+-- CREATE TABLE IF NOT EXISTS SESSIONS (
 --    id UUID PRIMARY KEY NOT NULL,
 --    title varchar(35) NOT NULL,
 --    startdatetime timestamptz NOT NULL,
@@ -55,30 +55,44 @@
 --    comments varchar(40)
 -- );
 
--- -- select * from session
+-- -- select * from sessions
 
--- DROP TABLE set CASCADE;
---  CREATE TABLE IF NOT EXISTS SET (
---                    id UUID NOT NULL,
---                    reps INT NOT NULL,
---                    weight INT NOT NULL,
---                    date DATE NOT NULL,
---                    exercise varchar(85) NOT NULL,
---                                   CONSTRAINT fk_exercise
---                                      FOREIGN KEY(exercise)
---                                      REFERENCES exercise(key)
---                                      ON DELETE CASCADE,
---                    musclegroup MUSCLEGROUP NOT NULL,
---                    owner UUID NOT NULL,
---                                  CONSTRAINT fk_owner
---                                      FOREIGN KEY(owner)
---                                      REFERENCES appUser(id)
---                                      ON DELETE CASCADE,
---                    session UUID NOT NULL,
---                                  CONSTRAINT fk_session
---                                      FOREIGN KEY(session)
---                                      REFERENCES session(id)
---                                      ON DELETE CASCADE
--- );
+DROP TABLE set CASCADE; --comment out later
+DROP TABLE SESSION CASCADE; -- can remove later
+ CREATE TABLE IF NOT EXISTS SET (
+                   id UUID NOT NULL,
+                   reps INT NOT NULL,
+                   weight INT NOT NULL,
+                   date DATE NOT NULL,
+                   exercise varchar(85) NOT NULL,
+                                  CONSTRAINT fk_exercise
+                                     FOREIGN KEY(exercise)
+                                     REFERENCES exercise(key)
+                                     ON DELETE CASCADE,
+                   musclegroup MUSCLEGROUP NOT NULL,
+                   owner UUID NOT NULL,
+                                 CONSTRAINT fk_owner
+                                     FOREIGN KEY(owner)
+                                     REFERENCES appUser(id)
+                                     ON DELETE CASCADE,
+                   session UUID NOT NULL,
+                                 CONSTRAINT fk_session
+                                     FOREIGN KEY(session)
+                                     REFERENCES sessions(id)
+                                     ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS SESSIONS (
+   id UUID PRIMARY KEY NOT NULL,
+   title varchar(35) NOT NULL,
+   startdatetime timestamptz NOT NULL,
+   enddatetime timestamptz NOT NULL,
+   owner uuid NOT NULL,
+                 CONSTRAINT fk_owner
+                 FOREIGN KEY(OWNER)
+                 REFERENCES appUser(id)
+                 ON DELETE CASCADE,
+   comments varchar(40)
+);
 
 --SELECT * FROM set
