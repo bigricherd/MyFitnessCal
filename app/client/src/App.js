@@ -10,6 +10,7 @@ import SessionsPage from "./components/sessions/SessionsPage";
 import Nav from "./components/Nav";
 import AnalyticsPage from "./components/analytics/AnalyticsPage";
 import ExercisesPage from "./components/exercises/ExercisesPage";
+import NotFoundPage from "./components/NotFoundPage";
 
 const muscleGroups = ["chest", "shoulders", "biceps", "triceps",
     "forearms", "traps", "neck", "lats", "lower_back", "abs",
@@ -79,19 +80,19 @@ function App() {
                             <Route
                                 exact
                                 path="/"
-                                element={<SessionsPage
+                                element={user ? <SessionsPage
                                     user={user}
                                     userId={userId}
                                     timezone={timezone}
                                     firstVisit={firstVisit}
                                     setFirstVisit={setFirstVisit}
                                     muscleGroups={muscleGroups}
-                                />}
+                                /> : <LoginPage />}
                             />
                             <Route
                                 exact
                                 path="/sessions"
-                                element={
+                                element={user ?
                                     <SessionsPage
                                         user={user}
                                         userId={userId}
@@ -100,32 +101,33 @@ function App() {
                                         setFirstVisit={setFirstVisit}
                                         muscleGroups={muscleGroups}
                                     />
-                                }
+                                    : <LoginPage />}
                             />
                             <Route
                                 exact
                                 path="/exercises"
-                                element={
+                                element={user ?
                                     <ExercisesPage
                                         user={user}
                                         userId={userId}
                                         muscleGroups={muscleGroups}
                                         setFirstVisit={setFirstVisit}
                                     />
-                                }
+                                    : <LoginPage />}
                             />
                             <Route
                                 exact
                                 path="/analytics"
-                                element={
+                                element={user ?
                                     <AnalyticsPage
                                         user={user}
                                         muscleGroups={muscleGroupsForAnalytics}
                                     />
-                                }
+                                    : <LoginPage />}
                             />
                             <Route exact path="/register" element={<RegisterPage />} />
                             <Route exact path="/login" element={<LoginPage />} />
+                            <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                         {/* {debugText} */}
                     </header>

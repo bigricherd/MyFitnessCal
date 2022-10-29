@@ -88,13 +88,7 @@ function ExercisesPage(props) {
             {/* Add exercise form component */}
             <AddExercise muscleGroups={muscleGroups} liftState={setExercisesByUser} />
 
-            {/* List of user's exercises with delete functionality */}
-            <MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />
-
-            <Stack justifyContent="center" alignItems="center" spacing={1}>
-                {/* Feedback messages */}
-                {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg}>{successMsg}</Alert>}
-
+            <Stack justifyContent="center" alignItems="center">
                 {/* Toggle suggested exercises */}
                 <Button
                     variant="outlined"
@@ -102,6 +96,14 @@ function ExercisesPage(props) {
                 >
                     Suggested Exercises
                 </Button>
+            </Stack>
+
+            {/* List of user's exercises with delete functionality */}
+            <MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />
+
+            <Stack justifyContent="center" alignItems="center">
+                {/* Feedback messages */}
+                {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg}>{successMsg}</Alert>}
             </Stack>
 
             {/* Suggested exercises popup */}

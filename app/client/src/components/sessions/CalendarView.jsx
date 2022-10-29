@@ -86,7 +86,7 @@ function DefaultCalendarView(props) {
                 events={calEvents}
                 initialDate={new Date().toISOString()}
                 hourHeight={60}
-                initialView={CalendarView.WEEK}
+                initialView={CalendarView.MONTH}
                 onPageChange={onPageChange}
                 timeFormat={"24"}
                 weekDayStart={"Monday"}

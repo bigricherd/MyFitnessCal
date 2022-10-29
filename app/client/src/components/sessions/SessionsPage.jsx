@@ -138,82 +138,75 @@ function SessionsPage(props) {
 
     return (
         <>
-            {user ? (
-                <>
-                    {/* Feedback messages */}
-                    <Stack justifyContent="center" alignItems="center">
-                        {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ marginTop: '5rem', marginBottom: '1rem' }}>{successMsg}</Alert>}
-                    </Stack>
+            {/* Feedback messages */}
+            <Stack justifyContent="center" alignItems="center">
+                {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ marginTop: '5rem', marginBottom: '1rem' }}>{successMsg}</Alert>}
+            </Stack>
 
-                    <Button
-                        variant="outlined"
-                        onClick={() => { setShowAddSession(true) }}
-                        sx={!showSuccessMsg && {
-                            marginTop: "5rem",
-                            marginBottom: "1rem"
-                        }}
-                    >
-                        Create Session
-                    </Button>
+            <Button
+                variant="outlined"
+                onClick={() => { setShowAddSession(true) }}
+                sx={!showSuccessMsg && {
+                    marginTop: "5rem",
+                    marginBottom: "1rem"
+                }}
+            >
+                Create Session
+            </Button>
 
-                    {/* Add Session (dialog) */}
-                    <AddSession
-                        open={showAddSession}
-                        onClose={() => setShowAddSession(false)}
-                        setShow={setShowAddSession}
-                        exercises={exercises}
-                        exercisesByUser={exercisesByUser}
-                        liftState={setNumSessions}
-                    />
+            {/* Add Session (dialog) */}
+            <AddSession
+                open={showAddSession}
+                onClose={() => setShowAddSession(false)}
+                setShow={setShowAddSession}
+                exercises={exercises}
+                exercisesByUser={exercisesByUser}
+                liftState={setNumSessions}
+            />
 
-                    {/* Suggested Exercises (dialog) */}
-                    <SuggestedExercises
-                        open={showSuggestedExercises}
-                        onClose={() => setShowSuggestedExercises(false)}
-                        setShow={setShowSuggestedExercises}
-                        user={props.user}
-                        exercisesByUser={exercisesByUser}
-                        muscleGroups={props.muscleGroups}
-                        setFirstVisit={props.setFirstVisit}
-                        setSuccessMsg={setSuccessMsg}
-                        setPrevSuccessMsg={setPrevSuccessMsg}
-                        setCount={setCount}
-                        parent="sessions"
-                    />
+            {/* Suggested Exercises (dialog) */}
+            <SuggestedExercises
+                open={showSuggestedExercises}
+                onClose={() => setShowSuggestedExercises(false)}
+                setShow={setShowSuggestedExercises}
+                user={props.user}
+                exercisesByUser={exercisesByUser}
+                muscleGroups={props.muscleGroups}
+                setFirstVisit={props.setFirstVisit}
+                setSuccessMsg={setSuccessMsg}
+                setPrevSuccessMsg={setPrevSuccessMsg}
+                setCount={setCount}
+                parent="sessions"
+            />
 
 
-                    <Box>
-                        <TabContext value={view} aria-label="tabs" centered>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <TabList aria-label="tabs" onChange={handleChange} centered>
-                                    <Tab label="Calendar" value={"0"} />
-                                    <Tab label="Cards" value={"1"} />
-                                </TabList>
-                            </Box>
-
-
-                            <TabPanel value={"0"}>
-                                <DefaultCalendarView
-                                    calEvents={calEvents}
-                                    dbEvents={dbEvents}
-                                    liftNumSessions={setNumSessions}
-                                    liftNumEdits={setNumEdits}
-                                    getSessions={getAllSessions}
-                                    exercisesByUser={exercisesByUser}
-                                    timezone={props.timezone}
-                                />
-                            </TabPanel>
-
-                            <TabPanel value={"1"}>
-                                Card View
-                            </TabPanel>
-                        </TabContext>
+            <Box>
+                <TabContext value={view} aria-label="tabs" centered>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <TabList aria-label="tabs" onChange={handleChange} centered>
+                            <Tab label="Calendar" value={"0"} />
+                            <Tab label="Cards" value={"1"} />
+                        </TabList>
                     </Box>
-                </>
 
-            ) : (
-                <LoginPage />
-            )}
+
+                    <TabPanel value={"0"}>
+                        <DefaultCalendarView
+                            calEvents={calEvents}
+                            dbEvents={dbEvents}
+                            liftNumSessions={setNumSessions}
+                            liftNumEdits={setNumEdits}
+                            getSessions={getAllSessions}
+                            exercisesByUser={exercisesByUser}
+                            timezone={props.timezone}
+                        />
+                    </TabPanel>
+
+                    <TabPanel value={"1"}>
+                        Card View
+                    </TabPanel>
+                </TabContext>
+            </Box>
         </>
     );
 }
