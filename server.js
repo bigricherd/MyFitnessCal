@@ -42,7 +42,8 @@ if (process.env.NODE_ENV === "production") {
     const store = new pgSession({
         pool,
         createTableIfMissing: true,
-        pruneSessionInterval: false
+        pruneSessionInterval: false,
+        tableName: "userSession"
     });
     app.set('trust proxy', 1); // trust first proxy
     sessionConfig.cookie.secure = true; // serve secure cookies
