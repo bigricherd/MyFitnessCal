@@ -98,7 +98,6 @@ function AddExercise(props) {
                     {/* Heading */}
                     <Typography
                         variant="h5"
-                        sx={{ marginTop: '8%' }}
                     >
                         Add Exercise
                     </Typography>

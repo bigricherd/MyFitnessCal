@@ -6,7 +6,6 @@ import MyExercises from './MyExercises';
 import SuggestedExercises from './SuggestedExercises';
 import { Stack, Button, Alert } from '@mui/material';
 
-
 function ExercisesPage(props) {
 
     const [user, setUser] = useState(props.user);
@@ -75,13 +74,28 @@ function ExercisesPage(props) {
     }
 
     else return (
-        <Stack direction="column" spacing={1} sx={{ marginTop: "7%" }}>
+        <Stack
+            direction="column"
+            spacing={1}
+            sx={{
+                marginTop: {
+                    xs: "17%",
+                    ml: "10%",
+                    xl: "7%"
+                }
+            }}>
+
+            {/* Add exercise form component */}
             <AddExercise muscleGroups={muscleGroups} liftState={setExercisesByUser} />
+
+            {/* List of user's exercises with delete functionality */}
             <MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />
+
             <Stack justifyContent="center" alignItems="center" spacing={1}>
                 {/* Feedback messages */}
                 {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg}>{successMsg}</Alert>}
 
+                {/* Toggle suggested exercises */}
                 <Button
                     variant="outlined"
                     onClick={() => { setShowSuggestedExercises(true) }}
@@ -89,6 +103,8 @@ function ExercisesPage(props) {
                     Suggested Exercises
                 </Button>
             </Stack>
+
+            {/* Suggested exercises popup */}
             <SuggestedExercises
                 open={showSuggestedExercises}
                 onClose={() => setShowSuggestedExercises(false)}
@@ -103,7 +119,6 @@ function ExercisesPage(props) {
                 parent="exercises"
             />
         </Stack>
-
     )
 }
 

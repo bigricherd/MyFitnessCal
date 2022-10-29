@@ -172,84 +172,83 @@ function MyExercises(props) {
     }, [error, prevError]);
 
     return (
-        <Stack justifyContent="center" alignItems="center" spacing={2}>
+        //     {/* Edit dialog  */ }
+        // {/* <Dialog
+        //             open={editing}
+        //             onClose={handleCloseEdit}
+        //         >
+        //             <DialogTitle>Edit exercise {props.exercisesByUser[indexOfEditing]}</DialogTitle>
+        //             <DialogContent>
+        //                 <Box component="form" onSubmit={(e) => customHandleEdit(e)}>
+        //                     <FormControl fullWidth>
+        //                         <FormLabel>Name</FormLabel>
+        //                         <TextField
+        //                             name="newName"
+        //                             id="newName"
+        //                             value={props.exercisesByUser[indexOfEditing]}
+        //                             onChange={handleChangeEdit}
+        //                             onKeyDown={handleKeyDownEdit}
+        //                         ></TextField>
+        //                     </FormControl>
 
-            {/* Confirm delete dialog, which opens when a user clicks the 'X' button corresponding to some exercise */}
-
-            <DeleteExercisePopup open={open} onClose={handleClose} name={props.exercisesByUser[indexToDelete]}
-                backOnClick={handleClose} deleteOnClick={handleConfirmDelete} />
-
-            {/* Edit dialog */}
-            {/* <Dialog
-                open={editing}
-                onClose={handleCloseEdit}
-            >
-                <DialogTitle>Edit exercise {props.exercisesByUser[indexOfEditing]}</DialogTitle>
-                <DialogContent>
-                    <Box component="form" onSubmit={(e) => customHandleEdit(e)}>
-                        <FormControl fullWidth>
-                            <FormLabel>Name</FormLabel>
-                            <TextField
-                                name="newName"
-                                id="newName"
-                                value={props.exercisesByUser[indexOfEditing]}
-                                onChange={handleChangeEdit}
-                                onKeyDown={handleKeyDownEdit}
-                            ></TextField>
-                        </FormControl>
-
-                        <FormControl fullWidth>
-                            <FormLabel>Muscle Group</FormLabel>
-                            <Dropdown
-                                name="newMuscleGroup"
-                                id="newMuscleGroup"
-                                options={muscleGroups}
-                                value={editValues.newMuscleGroup}
-                                onChange={handleChangeEdit}
-                                onKeyDown={handleKeyDownEdit}
-                            />
-                        </FormControl>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            onClick={(e) => { customHandleEdit(e) }}
-                        >Save Changes</Button>
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseEdit}>Back</Button>
-                </DialogActions>
-            </Dialog> */}
+        //                     <FormControl fullWidth>
+        //                         <FormLabel>Muscle Group</FormLabel>
+        //                         <Dropdown
+        //                             name="newMuscleGroup"
+        //                             id="newMuscleGroup"
+        //                             options={muscleGroups}
+        //                             value={editValues.newMuscleGroup}
+        //                             onChange={handleChangeEdit}
+        //                             onKeyDown={handleKeyDownEdit}
+        //                         />
+        //                     </FormControl>
+        //                     <Button
+        //                         type="submit"
+        //                         variant="contained"
+        //                         onClick={(e) => { customHandleEdit(e) }}
+        //                     >Save Changes</Button>
+        //                 </Box>
+        //             </DialogContent>
+        //             <DialogActions>
+        //                 <Button onClick={handleCloseEdit}>Back</Button>
+        //             </DialogActions>
+        //         </Dialog> */}
+        <Stack justifyContent="center" alignItems="center" spacing={1}>
 
             {/* List of exercises (main component content) */}
             <Typography
                 variant="h5"
-                sx={{
-                    marginTop: '2%',
-                    marginBottom: '4%'
-                }}
             >
                 My Exercises
             </Typography>
 
-            <TableContainer
-                sx={{
-                    maxHeight: "40vh",
-                    maxWidth: "80%",
-                    margin: "auto"
-                }}>
-                <Table>
-                    <TableBody>
-                        {list}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Stack justifyContent="center" alignItems="center">
+
+                <TableContainer
+                    sx={{
+                        maxHeight: "40vh",
+                        maxWidth: "100%",
+                        margin: "auto"
+                    }}>
+                    <Table>
+                        <TableBody>
+                            {list}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+            </Stack>
 
             {/* Feedback messages */}
             <Stack justifyContent="center" alignItems="center">
                 {successMsg && showSuccessMsg && <Alert severity="success" onClose={handleCloseSuccessMsg} sx={{ mt: '1rem' }}>{successMsg}</Alert>}
                 {error && showError && <Alert severity="error" onClose={handleCloseError}>{error}</Alert>}
             </Stack>
+
+            {/* Confirm delete dialog, which opens when a user clicks the 'X' button corresponding to some exercise */}
+
+            <DeleteExercisePopup open={open} onClose={handleClose} name={props.exercisesByUser[indexToDelete]}
+                backOnClick={handleClose} deleteOnClick={handleConfirmDelete} />
         </Stack>
     )
 }
