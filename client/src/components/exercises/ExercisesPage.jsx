@@ -20,19 +20,26 @@ function ExercisesPage(props) {
     let [exercisesByUser, setExercisesByUser] = useState([]);
 
     // Fetch exercises created by currently logged in user
-    //const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
     const fetchExercisesByUser = async () => {
-        const userExercises = await axios({
-            method: 'GET',
-            url: `/api/exercises/byCurrentUser?id=${userId}`,
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }),
-            withCredentials: true
+        // const userExercises = await axios({
+        //     method: 'GET',
+        //     url: `/api/exercises/byCurrentUser?id=${userId}`,
+        //     headers: new Headers({
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     }),
+        //     withCredentials: true
 
+        // });
+        const userExercises = await fetch(`/api/exercises/byCurrentUser?id=${userId}`, {
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
         });
-        exercisesByUserArr = userExercises.data.exercisesByUser;
+        const json = await userExercises.json();
+        exercisesByUserArr = json.exercisesByUser;
         setExercisesByUser(exercisesByUserArr);
         setCount(exercisesByUserArr.length);
     };

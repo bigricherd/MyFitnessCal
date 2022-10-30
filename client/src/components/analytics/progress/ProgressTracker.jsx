@@ -28,18 +28,25 @@ function ProgressTracker(props) {
     const [attempted, setAttempted] = useState(false);
 
     const fetchExercises = async () => {
-
-        const res = await axios({
-            method: 'GET',
-            url: "/api/stats/exercisesGrouped",
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }),
-            withCredentials: true
+        // const res = await axios({
+        //     method: 'GET',
+        //     url: "/api/stats/exercisesGrouped",
+        //     headers: new Headers({
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     }),
+        //     withCredentials: true
+        // });
+        const res = await fetch("/api/stats/exercisesGrouped", {
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
         });
-        setExercises(res.data);
-        return res;
+        const data = await res.json();
+        setExercises(data);
+        return data;
     }
 
     // Fetch exercises on initial render
@@ -48,7 +55,7 @@ function ProgressTracker(props) {
             .then((res) => {
                 let groupsTmp = muscleGroups.slice();
                 let filtered = groupsTmp.filter((group) => {
-                    return res.data[group] && res.data[group].length > 0;
+                    return res[group] && res[group].length > 0;
                 });
                 setMuscleGroups(filtered);
             });

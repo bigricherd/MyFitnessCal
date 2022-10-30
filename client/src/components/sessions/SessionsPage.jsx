@@ -21,7 +21,7 @@ function SessionsPage(props) {
 
     // User
     const [user, setUser] = useState(null);
-    const [userId, setUserId] = useState(null);
+    const [userId, setUserId] = useState(props.userId);
 
     // Calendar
     const [calEvents, setCalEvents] = useState([]);
@@ -52,20 +52,46 @@ function SessionsPage(props) {
     let exercisesByUserArr = [];
     const [exercisesByUser, setExercisesByUser] = useState([]);
 
-    const fetchExercisesByUser = useCallback(async (id) => {
-        if (id) {
-            const userExercises = await axios({
-                method: 'GET',
-                url: `/api/exercises/byCurrentUser?id=${id}`,
-                headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
-                withCredentials: true
+    // const fetchExercisesByUser = useCallback(async (id) => {
+    //     if (id) {
+    //         const userExercises = await axios({
+    //             method: 'GET',
+    //             url: `/api/exercises/byCurrentUser?id=${id}`,
+    //             headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
+    //             withCredentials: true
 
-            });
-            exercisesByUserArr = userExercises.data.exercisesByUser;
-            setExercisesByUser(exercisesByUserArr);
-            setCount(exercisesByUserArr.length);
-        }
-    }, [userId]);
+    //         });
+    //         exercisesByUserArr = userExercises.data.exercisesByUser;
+    //         setExercisesByUser(exercisesByUserArr);
+    //         setCount(exercisesByUserArr.length);
+    //     }
+    // }, [userId]);
+
+    // Fetch exercises created by currently logged in user
+    const fetchExercisesByUser = async () => {
+        // const userExercises = await axios({
+        //     method: 'GET',
+        //     url: `/api/exercises/byCurrentUser?id=${userId}`,
+        //     headers: new Headers({
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     }),
+        //     withCredentials: true
+
+        // });
+        const userExercises = await fetch(`/api/exercises/byCurrentUser?id=${userId}`, {
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        const json = await userExercises.json();
+        console.log(json);
+        exercisesByUserArr = json.exercisesByUser;
+        setExercisesByUser(exercisesByUserArr);
+        setCount(exercisesByUserArr.length);
+    };
 
 
     const getAllSessions = async () => {
@@ -78,6 +104,7 @@ function SessionsPage(props) {
             },
         });
         const json = await data.json();
+        console.log(json);
         convertToCalendarEvents(json);
         // console.log(calEvents);
         // console.log(dbEvents);
