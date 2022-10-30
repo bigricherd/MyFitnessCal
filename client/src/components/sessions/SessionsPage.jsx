@@ -32,7 +32,7 @@ function SessionsPage(props) {
     const [numEdits, setNumEdits] = useState(0);
     const [count, setCount] = useState(0); // exercisesByUser.length
 
-    //const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+
 
     // // Fetch all exercises
     // let exercisesArr = [];
@@ -69,7 +69,7 @@ function SessionsPage(props) {
 
 
     const getAllSessions = async () => {
-        //const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
+
         const data = await fetch("/api/sessions/all", {
             credentials: "include",
             headers: {

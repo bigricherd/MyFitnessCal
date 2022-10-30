@@ -52,7 +52,7 @@ export default function useForm({ initialValues, muscleGroups = [], setExercises
         }
     };
 
-    //const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
+
 
     //send data to database
     const submitData = async (formValues) => {

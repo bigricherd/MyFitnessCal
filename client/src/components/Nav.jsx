@@ -17,7 +17,7 @@ const Nav = (props) => {
 
     const handleLogout = async (e) => {
         e.preventDefault();
-        //const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+
         const res = await fetch("/api/auth/logout", { credentials: "include" });
         if (res.ok) {
             window.location = '/';

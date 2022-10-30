@@ -20,7 +20,7 @@ const muscleGroupsForAnalytics = muscleGroups.slice();
 muscleGroupsForAnalytics.unshift("all");
 
 function App() {
-    //const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
+
 
     const [message, setMessage] = useState(null);
     const [isFetching, setIsFetching] = useState(false);

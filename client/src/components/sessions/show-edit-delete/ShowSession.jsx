@@ -56,7 +56,7 @@ function ShowSession(props) {
         id: ''
     });
 
-    //const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+
 
     const getSessionInfo = async () => {
         if (props.id) {
