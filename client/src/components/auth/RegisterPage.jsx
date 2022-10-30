@@ -146,21 +146,16 @@ function RegisterPage() {
 
                 <FormControl>
                     <FormLabel>Time Zone</FormLabel>
-                    <Tooltip
-                        title={passwordFieldHover
-                        }
-                        arrow>
-                        <Dropdown
-                            id="timezone"
-                            name="timezone"
-                            value={values.timezone || ""}
-                            options={timezones}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                            error={attempted && (!values.timezone || values.timezone === "")}
-                            tooltip={"This will ensure that your sessions display on the calendar correctly."}
-                        />
-                    </Tooltip>
+                    <Dropdown
+                        id="timezone"
+                        name="timezone"
+                        value={values.timezone || ""}
+                        options={timezones}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        error={attempted && (!values.timezone || values.timezone === "")}
+                        tooltip={"This will ensure that your sessions display on the calendar correctly."}
+                    />
                 </FormControl>
             </Stack >
 
