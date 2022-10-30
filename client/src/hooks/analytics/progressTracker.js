@@ -63,7 +63,7 @@ export default function useForm({ initialValues }) {
         }
     };
 
-    const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
+    //const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
 
     //send data to database
     const submitData = async (formValues) => {
@@ -73,7 +73,7 @@ export default function useForm({ initialValues }) {
         try {
             await axios({
                 method: "GET",
-                url: `${baseUrl}/api/stats/setsOfExercise?exercise=${exercise}&fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`,
+                url: `/api/stats/setsOfExercise?exercise=${exercise}&fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`,
                 headers: new Headers({
                     "Content-Type": "application/json",
                     Accept: "application/json",

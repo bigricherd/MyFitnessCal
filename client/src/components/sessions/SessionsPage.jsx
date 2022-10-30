@@ -32,13 +32,13 @@ function SessionsPage(props) {
     const [numEdits, setNumEdits] = useState(0);
     const [count, setCount] = useState(0); // exercisesByUser.length
 
-    const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+    //const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
 
     // // Fetch all exercises
     // let exercisesArr = [];
     // const [exercises, setExercises] = useState([]);
     // const fetchExercises = async () => {
-    //     const data = await fetch(`${baseUrl}/api/exercises/all`);
+    //     const data = await fetch(`/api/exercises/all`);
     //     const json = await data.json();
     //     exercisesArr = json.exercises;
     //     setExercises(exercisesArr);
@@ -56,7 +56,7 @@ function SessionsPage(props) {
         if (id) {
             const userExercises = await axios({
                 method: 'GET',
-                url: `${baseUrl}/api/exercises/byCurrentUser?id=${id}`,
+                url: `/api/exercises/byCurrentUser?id=${id}`,
                 headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
                 withCredentials: true
 
@@ -69,8 +69,8 @@ function SessionsPage(props) {
 
 
     const getAllSessions = async () => {
-        const baseUrl = "http://localhost:5000";
-        const data = await fetch(`${baseUrl}/api/sessions/all`, {
+        //const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
+        const data = await fetch("/api/sessions/all", {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",

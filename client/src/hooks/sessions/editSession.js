@@ -63,7 +63,7 @@ export default function useForm({ initialValues }) {
         return false;
     };
 
-    const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+    //const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
 
     //send data to database
     const submitData = async (formValues) => {
@@ -77,7 +77,7 @@ export default function useForm({ initialValues }) {
 
             await axios({
                 method: 'PATCH',
-                url: `${baseUrl}/api/sessions/?id=${sessionId}`,
+                url: `/api/sessions/?id=${sessionId}`,
                 data: {
                     title,
                     comments,

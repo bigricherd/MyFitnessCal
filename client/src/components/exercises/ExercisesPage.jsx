@@ -20,11 +20,11 @@ function ExercisesPage(props) {
     let [exercisesByUser, setExercisesByUser] = useState([]);
 
     // Fetch exercises created by currently logged in user
-    const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+    //const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
     const fetchExercisesByUser = async () => {
         const userExercises = await axios({
             method: 'GET',
-            url: `${baseUrl}/api/exercises/byCurrentUser?id=${userId}`,
+            url: `/api/exercises/byCurrentUser?id=${userId}`,
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

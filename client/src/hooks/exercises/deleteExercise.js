@@ -26,7 +26,7 @@ export default function useForm({ initialValues }) {
         submitData({ values });
     };
 
-    const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+    //  = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
 
     //send data to database
     const submitData = async (formValues) => {
@@ -36,7 +36,7 @@ export default function useForm({ initialValues }) {
         try {
             await axios({
                 method: 'DELETE',
-                url: `${baseUrl}/api/exercises/?nameandmusclegroup=${exercise}`,
+                url: `/api/exercises/?nameandmusclegroup=${exercise}`,
                 withCredentials: true
 
             }).then(res => {

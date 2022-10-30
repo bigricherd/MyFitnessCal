@@ -28,10 +28,10 @@ function ProgressTracker(props) {
     const [attempted, setAttempted] = useState(false);
 
     const fetchExercises = async () => {
-        const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
+        //const baseUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:5000';
         const res = await axios({
             method: 'GET',
-            url: `${baseUrl}/api/stats/exercisesGrouped`,
+            url: "/api/stats/exercisesGrouped",
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

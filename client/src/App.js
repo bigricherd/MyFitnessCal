@@ -20,7 +20,7 @@ const muscleGroupsForAnalytics = muscleGroups.slice();
 muscleGroupsForAnalytics.unshift("all");
 
 function App() {
-    const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
+    //const baseUrl = process.env.REACT_APP_HOME_URL || "http://localhost:5000";
 
     const [message, setMessage] = useState(null);
     const [isFetching, setIsFetching] = useState(false);
@@ -28,10 +28,10 @@ function App() {
     const [userId, setUserId] = useState(null);
     const [firstVisit, setFirstVisit] = useState(false);
     const [timezone, setTimezone] = useState(null);
-    const fetchUserUrl = `${baseUrl}/api/auth/getUser`;
+    const fetchUserUrl = `/api/auth/getUser`;
 
     const fetchUser = useCallback(async () => {
-        const response = await fetch(fetchUserUrl, { credentials: "include" });
+        const response = await fetch("/api/auth/getUser", { credentials: "include" });
         if (!response.ok) {
             throw new Error(`status ${response.status}`);
         }
