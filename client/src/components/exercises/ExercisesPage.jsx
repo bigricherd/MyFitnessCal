@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 //simport { Link } from 'react-router-dom';
-import axios from 'axios';
 import AddExercise from './AddExercise';
 import MyExercises from './MyExercises';
 import SuggestedExercises from './SuggestedExercises';
@@ -16,21 +15,10 @@ function ExercisesPage(props) {
 
     // Fetching exercises by logged in user could not be done in App.js because user begins as undefined
     // Instead, we do it here where user can be passed in as props
-    let exercisesByUserArr = [];
-    let [exercisesByUser, setExercisesByUser] = useState([]);
+    const [exercisesByUser, setExercisesByUser] = useState([]);
 
     // Fetch exercises created by currently logged in user
     const fetchExercisesByUser = async () => {
-        // const userExercises = await axios({
-        //     method: 'GET',
-        //     url: `/api/exercises/byCurrentUser?id=${userId}`,
-        //     headers: new Headers({
-        //         'Content-Type': 'application/json',
-        //         'Accept': 'application/json'
-        //     }),
-        //     withCredentials: true
-
-        // });
         const userExercises = await fetch(`/api/exercises/byCurrentUser?id=${userId}`, {
             credentials: "include",
             headers: {
@@ -38,10 +26,9 @@ function ExercisesPage(props) {
                 Accept: "application/json",
             },
         });
-        const json = await userExercises.json();
-        exercisesByUserArr = json.exercisesByUser;
-        setExercisesByUser(exercisesByUserArr);
-        setCount(exercisesByUserArr.length);
+        const data = await userExercises.json();
+        setExercisesByUser(data.exercisesByUser);
+        setCount(data.exercisesByUser.length);
     };
 
     // Fetch user exercises on initial render

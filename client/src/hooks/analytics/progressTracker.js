@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { isBefore } from 'date-fns';
 
 // ------ This hook submits the forms in the ExerciseProgress component with a GET reqyest; its values are {fromDate, toDate, exercise} ------
@@ -63,31 +62,27 @@ export default function useForm({ initialValues }) {
         }
     };
 
-
-
     //send data to database
     const submitData = async (formValues) => {
         const dataObject = formValues.values;
         let { fromDate, toDate, exercise } = dataObject;
 
         try {
-            await axios({
-                method: "GET",
-                url: `/api/stats/setsOfExercise?exercise=${exercise}&fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`,
-                headers: new Headers({
+            const res = await fetch(`/api/stats/setsOfExercise?exercise=${exercise}&fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`, {
+                credentials: "include",
+                headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
-                }),
-                withCredentials: true,
-            }).then((res) => {
-                setResponse(res.data);
-                if (res.data.redirect === "/") {
-                    window.location = "/";
-                } else if (res.data.redirect === "/login") {
-                    window.location = "/login";
-                }
-                setError(null);
+                },
             });
+            const data = await res.json();
+            setResponse(data);
+            if (data.redirect === "/") {
+                window.location = "/";
+            } else if (data.redirect === "/login") {
+                window.location = "/login";
+            }
+            setError(null);
         } catch (err) {
             // Handles identical, consecutive errors (else block)
             if (!prevError || (error !== prevError)) {

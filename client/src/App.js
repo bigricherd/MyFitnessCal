@@ -20,8 +20,6 @@ const muscleGroupsForAnalytics = muscleGroups.slice();
 muscleGroupsForAnalytics.unshift("all");
 
 function App() {
-
-
     const [message, setMessage] = useState(null);
     const [isFetching, setIsFetching] = useState(false);
     const [user, setUser] = useState(null);
