@@ -55,8 +55,6 @@ export default function useForm({ initialValues }) {
         return false;
     };
 
-
-
     //send data to database
     const submitData = async (formValues) => {
         const dataObject = formValues.values;

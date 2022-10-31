@@ -39,6 +39,10 @@ export default function useForm({ initialValues, slug, timezones }) {
             setError("Please fill out empty fields.");
             return false;
         }
+        else if (username.length > 30) {
+            setError("Username is too long. Limit: 30 characters.");
+            return false;
+        }
         else if (slug === "api/auth/register" && timezone === "") {
             setError("Please fill out empty fields.");
             return false;
@@ -47,11 +51,7 @@ export default function useForm({ initialValues, slug, timezones }) {
             setError("Invalid time zone.");
             return false;
         }
-        else if (username.length > 30) {
-            setError("Username is too long. Limit: 30 characters.");
-            return false;
-        }
-        else if (!regexNoSymbol.test(password)) {
+        else if (slug === "api/auth/register" && !regexNoSymbol.test(password)) {
             setError("Password is not strong enough.");
             return false;
         }

@@ -47,6 +47,20 @@ function AddSetsCollapse(props) {
         const name = event.target.name.split("_")[0];
         const index = event.target.name.split("_")[1];
 
+        // Another type of defense evaluating the most recently-entered character
+        // let val = event.target.value;
+        // let digits = /(?=.*\d)/;
+
+        // Last character entered was a digit or the first dot in a non-empty input
+        // if (digits.test(val[val.length - 1])
+        //     || (val.length > 1 && val.indexOf(".") === -1 && val[val.length - 1] === ".")) {
+        //     setsTemp[index][name] = event.target.value;
+        //     exercises[props.index]['sets'] = setsTemp;
+
+        //     setSets(setsTemp);
+        //     props.setExercises(exercises);
+        // }
+
         if (event.target.value >= 0 && event.target.value !== "-0") {
             setsTemp[index][name] = event.target.value;
             exercises[props.index]['sets'] = setsTemp;
@@ -54,11 +68,6 @@ function AddSetsCollapse(props) {
             setSets(setsTemp);
             props.setExercises(exercises);
         }
-        setsTemp[index][name] = event.target.value;
-        exercises[props.index]['sets'] = setsTemp;
-
-        setSets(setsTemp);
-        props.setExercises(exercises);
     }
 
     const removeSet = (i) => {
