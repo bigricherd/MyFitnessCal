@@ -31,6 +31,8 @@ export default function useForm({ initialValues, slug, timezones }) {
         } else {
             setPrevError(null);
         }
+
+        const regexNoSymbol = /(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
         const { username, password, timezone } = values;
 
         if (username === "" || password === "") {
@@ -49,6 +51,11 @@ export default function useForm({ initialValues, slug, timezones }) {
             setError("Username is too long. Limit: 30 characters.");
             return false;
         }
+        else if (!regexNoSymbol.test(password)) {
+            setError("Password is not strong enough.");
+            return false;
+        }
+
         return true;
     }
 

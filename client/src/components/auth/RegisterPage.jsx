@@ -43,14 +43,13 @@ function RegisterPage() {
     });
 
     // Password requirements that appear when the user hovers over the password input
-    // const passwordFieldHover = <Stack>
-    //     <Typography>Password must contain at least:</Typography>
-    //     <Typography>- 6 characters</Typography>
-    //     <Typography>- one lowercase letter (a-z)</Typography>
-    //     <Typography>- one uppercase letter (A-Z)</Typography>
-    //     <Typography> - one digit (0-9)</Typography>
-    //     <Typography>- one symbol {`(!@#$%^&*)`}</Typography>
-    // </Stack>;
+    const passwordFieldHover = <Stack>
+        <Typography>Password must contain at least:</Typography>
+        <Typography>-6 characters</Typography>
+        <Typography>- one lowercase letter (a-z)</Typography>
+        <Typography>- one uppercase letter (A-Z)</Typography>
+        <Typography> - one digit (0-9)</Typography>
+    </Stack>;
 
     // Setup to display feedback message -- error
     const [showError, setShowError] = useState(false);
@@ -118,30 +117,30 @@ function RegisterPage() {
                 {/* Password input */}
                 < FormControl >
                     <FormLabel>Password</FormLabel>
-                    {/* <Tooltip
+                    <Tooltip
                         title={passwordFieldHover}
-                        arrow> */}
-                    <TextField
-                        name="password"
-                        type={showPassword ? 'text' : 'password'}
-                        value={values.password}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        error={attempted && (!values.password || values.password === "")}
+                        arrow>
+                        <TextField
+                            name="password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={values.password}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
+                            error={attempted && (!values.password || values.password === "")}
 
-                        // endAdornment represents show / hide password button
-                        InputProps={{
-                            endAdornment:
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={handleClickShowPassword}
-                                    > {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                        }}
-                        required>
-                    </TextField>
-                    {/* </Tooltip> */}
+                            // endAdornment represents show / hide password button
+                            InputProps={{
+                                endAdornment:
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                        > {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                            }}
+                            required>
+                        </TextField>
+                    </Tooltip>
                 </FormControl >
 
                 <FormControl>

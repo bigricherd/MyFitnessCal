@@ -5,7 +5,7 @@ module.exports = (err, req, res, next) => {
         if (err.message === 'Username cannot be empty') return err = handleMissingUsernameError(err, res);
         if (err.message === 'Password cannot be empty') return err = handleMissingPasswordError(err, res);
         if (err.message === 'Username is too long') return err = handleLongUsernameError(err, res);
-        if (err.message === 'Password is not strong enough') return err = handleWeakPasswordError(err, res);
+        if (err.message === "Password is not strong enough.") return res.status(409).send({ message: err.message });
         if (err.message === 'Invalid time zone.') return res.status(409).send({ message: err.message });
 
         // ---------- EXERCISES ----------

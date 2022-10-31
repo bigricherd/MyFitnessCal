@@ -20,6 +20,7 @@ const timezones = ["US/Samoa", "US/Hawaii", "US/Alaska", "US/Pacific", "US/Arizo
 const validateInputs = (values, next) => {
     const { username, password } = values;
     const regex = /(?=^.{6,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    const regexNoSymbol = /(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 
     // Empty fields
     if (username === "") {
@@ -32,9 +33,9 @@ const validateInputs = (values, next) => {
         return next(new Error("Username is too long"));
     }
     // Password requirements: at least 6 characters, one digit, one lowercase letter, one uppercase letter, one symbol -- FIX overkill?
-    // else if (regex.test(password) === false) {
-    //     return next(new Error('Password is not strong enough'));
-    // }
+    else if (regexNoSymbol.test(password) === false) {
+        return next(new Error('Password is not strong enough.'));
+    }
 
     return true;
 };
