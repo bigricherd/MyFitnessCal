@@ -11,7 +11,7 @@ A React app with a calendar to visualize your training periodization and feature
   <summary>
     <h4> Suggested Exercises </h4>
   </summary>
-  ![suggestedExercises](https://user-images.githubusercontent.com/106716130/199360393-41aacfba-db92-4a65-85b2-43cc1b94885f.gif)
+  <img src="https://user-images.githubusercontent.com/106716130/199360393-41aacfba-db92-4a65-85b2-43cc1b94885f.gif" />
 
 </details>
 
