@@ -11,18 +11,32 @@ A React app with a calendar to visualize your training periodization and feature
   <summary>
     <h4> Suggested Exercises </h4>
   </summary>
+  ![suggestedExercises](https://user-images.githubusercontent.com/106716130/199360393-41aacfba-db92-4a65-85b2-43cc1b94885f.gif)
+
 </details>
 
 <details>
   <summary>
     <h4> Add Exercise </h4>
   </summary>
+  
+
+https://user-images.githubusercontent.com/106716130/199360518-f1760680-0308-437e-a600-59c0ead20ca0.mov
+
+
 </details>
 
 <details>
   <summary>
     <h4> Delete Exercise </h4>
   </summary>
+  ![deleteExercise](https://user-images.githubusercontent.com/106716130/199360645-9c03e692-b8e9-4aec-a18c-fe1a310e52bb.gif)
+
+
+https://user-images.githubusercontent.com/106716130/199360671-3162687c-1f53-4039-967b-bcafc554d10f.mov
+
+
+  
 </details>
 
 
@@ -42,7 +56,7 @@ A React app with a calendar to visualize your training periodization and feature
 
 <details>
   <summary>
-    <h4> Delete Exercise </h4>
+    <h4> Delete Session </h4>
   </summary>
 </details>
 
