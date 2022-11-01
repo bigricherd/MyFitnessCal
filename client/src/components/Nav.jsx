@@ -91,9 +91,9 @@ const Nav = (props) => {
                     <ListItem>
                         <Button
                             onClick={handleLogout}
-                            sx={{ color: '#515151' }}
+                            sx={{ color: 'red' }}
                         >
-                            Logout | <span style={{ marginLeft: "3px", color: "darkGreen" }}>{props.user}</span>
+                            Logout | <span style={{ marginLeft: "3px", color: "#515151" }}>{props.user}</span>
                         </Button>
                     </ListItem>
                 </>
