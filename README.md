@@ -3,7 +3,7 @@
 <h2> Overview </h2>
 A React app with a calendar to visualize your training periodization and features to track your training volume and progress on lifts.
 
-<h2> Features </h2>
+<h2> Features (with demo GIFs)</h2>
 
 <details>
 <summary>
@@ -58,7 +58,7 @@ A React app with a calendar to visualize your training periodization and feature
           <img src="https://user-images.githubusercontent.com/106716130/199361814-8b61b346-5ec8-4a00-a5d0-7db1e3d038fd.gif" />
 
 
-    <h4> Progress Tracker </h4>
+  <h4> Progress Tracker </h4>
   Returns all the sets performed for the chosen exercise within the given date range, grouped by session and sorted by date in descending order, such       that the most recent session is shown first. </br>
     <img src="https://user-images.githubusercontent.com/106716130/199361877-b2e64b8f-32b3-4d62-bcab-2356cb7716fd.gif" />
 
@@ -69,18 +69,18 @@ A React app with a calendar to visualize your training periodization and feature
 <h3> Additional Settings </h3>
     </summary>
 
-    <h4> Toggle dark / light themes </h4>
+  <h4> Toggle dark / light theme </h4>
       <img src="https://user-images.githubusercontent.com/106716130/199361961-f86e8efe-50ee-439b-91f4-7b1dfdd91141.gif" />
 
-    <h4> Time zone support </h4>
+  <h4> Time zone support </h4>
       So that calendar events (sessions) display on the calendar at the correct time.
             <img src="https://user-images.githubusercontent.com/106716130/199361972-48c3211d-0b56-41a7-b750-20b3ffe88654.gif" />
 
 
-    <h4> Deactivate account </h4>
+  <h4> Deactivate account </h4>
       <img src="https://user-images.githubusercontent.com/106716130/199361960-1e55baae-a2b0-4492-b662-c5a21819228e.gif" />
 
-</details>
+  </details>
 
 <h2> Known Bugs </h2>
   <ul>
