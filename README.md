@@ -5,110 +5,84 @@ A React app with a calendar to visualize your training periodization and feature
 
 <h2> Features </h2>
 
+<details>
+<summary>
 <h3> Exercises </h3>
-
-<details>
-  <summary>
-    <h4> Suggested Exercises </h4>
-  </summary>
-  <img src="https://user-images.githubusercontent.com/106716130/199360393-41aacfba-db92-4a65-85b2-43cc1b94885f.gif" />
-
-</details>
-
-<details>
-  <summary>
-    <h4> Add Exercise </h4>
-  </summary>
+</summary>
   
-
-https://user-images.githubusercontent.com/106716130/199360518-f1760680-0308-437e-a600-59c0ead20ca0.mov
-
+  <h4> Suggested Exercises </h4>
+  On your first login, a popup will appear containing suggested exercises to add to your list. You can see which exercises you've selected in a sub-popup   that also allows you to un-select exercises. The list of suggested exercises can also be accessed from the Exercises page.
+    <img src="https://user-images.githubusercontent.com/106716130/199360393-41aacfba-db92-4a65-85b2-43cc1b94885f.gif" />
+  
+  <h4> Add Exercise </h4>
+  Add an exercise to your list. Attempting to add a duplicate exercise results in an error.
+  <img src="https://user-images.githubusercontent.com/106716130/199361142-609194b9-7231-4f25-be5e-128c24280ead.gif" />
+  
+  <h4> Delete Exercise </h4>
+  Delete an exercise from your list. </br>
+  <img src="https://user-images.githubusercontent.com/106716130/199360645-9c03e692-b8e9-4aec-a18c-fe1a310e52bb.gif" />
 
 </details>
+
 
 <details>
-  <summary>
-    <h4> Delete Exercise </h4>
-  </summary>
-  ![deleteExercise](https://user-images.githubusercontent.com/106716130/199360645-9c03e692-b8e9-4aec-a18c-fe1a310e52bb.gif)
-
-
-https://user-images.githubusercontent.com/106716130/199360671-3162687c-1f53-4039-967b-bcafc554d10f.mov
-
-
-  
-</details>
-
-
+    <summary>
 <h3> Sessions </h3>
+      </summary>
 
-<details>
-  <summary>
-    <h4> Add Session </h4>
-  </summary>
+  <h4> Add Session </h4>
+    <img src="https://user-images.githubusercontent.com/106716130/199361529-3432734d-1367-4f28-97f0-94360d5581f8.gif" />
+  
+  <h4> Edit Session </h4>
+    <img src="https://user-images.githubusercontent.com/106716130/199361537-45ccbfbe-84c7-448a-834f-4372d954f145.gif" />
+  
+  <h4> Delete Session </h4>
+    <img src="https://user-images.githubusercontent.com/106716130/199361548-c7e455d1-06bd-44c4-9c37-2c20c6eef34b.gif" />
+
+  <h4> Add Sets to Session </h4>
+      <img src="https://user-images.githubusercontent.com/106716130/199361550-97b195ad-7a0a-4cf1-b558-a70847c14620.gif" />
+
+  <h4> Delete Sets from Session </h4>
+    <img src="https://user-images.githubusercontent.com/106716130/199361555-9a16f8b9-10e3-43fa-8c86-01d8f4605516.gif" />
+  
 </details>
 
+    
 <details>
   <summary>
-    <h4> Edit Session </h4>
-  </summary>
-</details>
-
-<details>
-  <summary>
-    <h4> Delete Session </h4>
-  </summary>
-</details>
-
-<details>
-  <summary>
-    <h4> Add Sets to Session </h4>
-  </summary>
-</details>
-
-<details>
-  <summary>
-    <h4> Delete Sets from Session </h4>
-  </summary>
-</details>
-
 <h3> Analytics </h3>
-<details>
-  <summary>
-    <h4> Volume Counter </h4>
-  </summary>
-  Returns the number of sets performed for the chosen muscle group within the given date range. Also includes a breakdown of exercises (per muscle group) as well as extra statistics like maximum weight and average reps per set.
-</details>
+    </summary>
 
-<details>
-  <summary>
+   <h4> Volume Counter </h4>
+    Returns the number of sets performed for the chosen muscle group within the given date range. Also includes a breakdown of exercises (per muscle            group) as well as extra statistics like maximum weight and average reps per set.
+          <img src="https://user-images.githubusercontent.com/106716130/199361814-8b61b346-5ec8-4a00-a5d0-7db1e3d038fd.gif" />
+
+
     <h4> Progress Tracker </h4>
-  </summary>
-  Returns all the sets performed for the chosen exercise within the given date range, grouped by session and sorted by date in descending order, such that the most recent session is shown first.
-</details>
+  Returns all the sets performed for the chosen exercise within the given date range, grouped by session and sorted by date in descending order, such       that the most recent session is shown first. </br>
+    <img src="https://user-images.githubusercontent.com/106716130/199361877-b2e64b8f-32b3-4d62-bcab-2356cb7716fd.gif" />
 
+  </details>
+
+<details>
+  <summary>
 <h3> Additional Settings </h3>
+    </summary>
 
-<details>
-  <summary>
     <h4> Toggle dark / light themes </h4>
-  </summary>
-</details>
+      <img src="https://user-images.githubusercontent.com/106716130/199361961-f86e8efe-50ee-439b-91f4-7b1dfdd91141.gif" />
 
-<details>
-  <summary>
     <h4> Time zone support </h4>
-  </summary>
-  So that calendar events (sessions) display on the calendar at the correct time.
-</details>
+      So that calendar events (sessions) display on the calendar at the correct time.
+            <img src="https://user-images.githubusercontent.com/106716130/199361972-48c3211d-0b56-41a7-b750-20b3ffe88654.gif" />
 
-<details>
-  <summary>
+
     <h4> Deactivate account </h4>
-  </summary>
+      <img src="https://user-images.githubusercontent.com/106716130/199361960-1e55baae-a2b0-4492-b662-c5a21819228e.gif" />
+
 </details>
 
-<h2> Known Bugs <h2>
+<h2> Known Bugs </h2>
   <ul>
     <li> Suggested Exercises continues to pop up on Sessions page if user only hits 'SKIP' button and does not use it to add exercises.</li>
         <li> Changing a user's time zone only updates calendar event rendering, not the start / end time attributes of that Session in the database.</li>
