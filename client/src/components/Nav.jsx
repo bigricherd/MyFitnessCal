@@ -155,8 +155,8 @@ const Nav = (props) => {
                                             sx={{ color: 'white' }}
                                         >
                                             Settings | <Typography
-                                                sx={{ marginLeft: "4px", fontSize: "inherit" }}
-                                                color="primary"
+                                                sx={{ marginLeft: "4px", fontSize: "inherit", color: darkMode ? null : "#81d4fa" }}
+                                                color={darkMode ? "primary" : null}
                                             >
                                                 {props.user}
                                             </Typography>
