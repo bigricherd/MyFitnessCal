@@ -80,19 +80,22 @@ const Nav = (props) => {
                 //     </Button>
                 // </ListItem>
                 <>
-                    <Tooltip
-                        title={authSettings}
-                    >
-                        <ListItem>
-                            <Button
-                                // onMouseEnter={() => { setShowAuthTooltip(true) }}
-                                // onMouseLeave={() => { setShowAuthTooltip(false) }}
-                                sx={{ color: '#515151' }}
-                            >
-                                Account | <span style={{ marginLeft: "3px", color: "darkGreen" }}>{props.user}</span>
-                            </Button>
-                        </ListItem>
-                    </Tooltip>
+                    <ListItem>
+                        <Button>
+                            <Link to="/settings" style={{
+                                color: "white",
+                                textDecoration: "none"
+                            }}>Settings</Link>
+                        </Button>
+                    </ListItem>
+                    <ListItem>
+                        <Button
+                            onClick={handleLogout}
+                            sx={{ color: '#515151' }}
+                        >
+                            Logout | <span style={{ marginLeft: "3px", color: "darkGreen" }}>{props.user}</span>
+                        </Button>
+                    </ListItem>
                 </>
                 : null}
         </List>
