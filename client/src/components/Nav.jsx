@@ -83,7 +83,7 @@ const Nav = (props) => {
                     <ListItem>
                         <Button>
                             <Link to="/settings" style={{
-                                color: "white",
+                                color: "#515151",
                                 textDecoration: "none"
                             }}>Settings</Link>
                         </Button>
