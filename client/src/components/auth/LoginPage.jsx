@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import authHook from '../../hooks/auth';
+import authHook from '../../hooks/auth/auth';
 import {
     Typography,
     Stack,

@@ -1,4 +1,4 @@
-import { AppBar, Drawer, Box, Toolbar, Button, IconButton, List, ListItem, Container, Typography, Divider, Stack } from '@mui/material';
+import { AppBar, Drawer, Box, Toolbar, Button, IconButton, List, ListItem, Container, Typography, Divider, Stack, Tooltip } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // This is what we are using right now, as MUILink refreshes the page and logs the user out. Seems like a session problem.
@@ -11,13 +11,14 @@ const Nav = (props) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [pages, setPages] = useState(authPages);
 
+    const [showAuthTooltip, setShowAuthTooltip] = useState(false);
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     }
 
     const handleLogout = async (e) => {
         e.preventDefault();
-
         const res = await fetch("/api/auth/logout", { credentials: "include" });
         if (res.ok) {
             window.location = '/';
@@ -39,8 +40,8 @@ const Nav = (props) => {
         </Typography>
         <Divider />
 
+        {/* List of pages */}
         <List>
-            {/* List of pages */}
             {pages.map((item) => (
                 <ListItem key={item}>
                     <Button>
@@ -68,7 +69,19 @@ const Nav = (props) => {
                 </ListItem>
                 : null}
         </List>
-    </Box >
+    </Box >;
+
+    const authSettings = <Stack direction="column" alignItems="center" justifyContent="center">
+        <Button>
+            <Link to="/settings" style={{
+                color: "white",
+                textDecoration: "none"
+            }}>Settings</Link>
+        </Button>
+        <Button sx={{ color: '#f44336' }} onClick={handleLogout}>
+            Logout
+        </Button>
+    </Stack >
 
 
     return (
@@ -104,9 +117,24 @@ const Nav = (props) => {
                                 ))
                             }
                             {props.user ?
-                                <Button sx={{ color: 'white' }} onClick={handleLogout}>
-                                    Logout | <span style={{ marginLeft: "3px", color: "#c8e6c9" }}>{props.user}</span>
-                                </Button>
+                                <>
+                                    <Tooltip
+                                        title={authSettings}
+                                    >
+                                        <Button
+                                            // onMouseEnter={() => { setShowAuthTooltip(true) }}
+                                            // onMouseLeave={() => { setShowAuthTooltip(false) }}
+                                            sx={{ color: 'white' }}
+                                        >
+                                            Account | <span style={{ marginLeft: "3px", color: "#c8e6c9" }}>{props.user}</span>
+                                        </Button>
+                                    </Tooltip>
+                                    {/* <Button sx={{ color: 'white' }} onClick={handleLogout}>
+                                        Logout | <span style={{ marginLeft: "3px", color: "#c8e6c9" }}>{props.user}</span>
+                                    </Button> */}
+
+
+                                </>
                                 : null}
                         </Stack>
 

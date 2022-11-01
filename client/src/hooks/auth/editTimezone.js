@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 
-// ------ This hook is identical to useForm, except it submits the forms in Register and Login components so its values are {username, password} ------
-export default function useForm({ initialValues, slug, timezones }) {
+export default function useForm({ initialValues, timezones, setTimezone }) {
     const [values, setValues] = useState(initialValues || {});
+
+    // Feedback
+    const [success, setSuccess] = useState(null);
+    const [prevSuccess, setPrevSuccess] = useState(null);
     const [error, setError] = useState(null);
     const [prevError, setPrevError] = useState(null);
 
@@ -26,36 +29,11 @@ export default function useForm({ initialValues, slug, timezones }) {
     };
 
     const validateInputs = (values) => {
-        if (!prevError || (error !== prevError)) {
-            setPrevError(error);
-        } else {
-            setPrevError(null);
-        }
-
-        const regexNoSymbol = /(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-        const { username, password, timezone } = values;
-
-        if (username === "" || password === "") {
-            setError("Please fill out empty fields.");
-            return false;
-        }
-        else if (username.length > 30) {
-            setError("Username is too long. Limit: 30 characters.");
-            return false;
-        }
-        else if (slug === "api/auth/register" && timezone === "") {
-            setError("Please fill out empty fields.");
-            return false;
-        }
-        else if (slug === "api/auth/register" && timezones.indexOf(timezone) === -1) {
+        console.log(values.timezone);
+        if (timezones.indexOf(values.timezone) === -1) {
             setError("Invalid time zone.");
             return false;
         }
-        else if (slug === "api/auth/register" && !regexNoSymbol.test(password)) {
-            setError("Password is not strong enough.");
-            return false;
-        }
-
         return true;
     }
 
@@ -63,32 +41,35 @@ export default function useForm({ initialValues, slug, timezones }) {
     const handleSubmit = event => {
         event.preventDefault();
         if (validateInputs(values)) {
+            console.log('valid tz');
+            console.log(values);
             submitData({ values });
         }
     };
 
-
-
     //send data to database
     const submitData = async (formValues) => {
         const dataObject = formValues.values;
-        const { username, password, timezone } = dataObject;
+        let { timezone, userId } = dataObject;
+
         try {
             await axios({
-                method: 'POST',
-                url: `/${slug}`,
+                method: 'PATCH',
+                url: `/api/auth/timezone`,
                 data: {
-                    username,
-                    password,
-                    timezone
+                    timezone,
+                    userId
                 },
                 headers: new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' }),
                 withCredentials: true
-
             }).then(res => {
-                if (res.data.redirect) {
-                    window.location = res.data.redirect;
+                if (!prevSuccess || (success !== prevSuccess)) {
+                    setPrevSuccess(success);
+                } else {
+                    setPrevSuccess(null);
                 }
+                setSuccess(res.data.success);
+                setTimezone(res.data.timezone);
                 setError(null);
             })
         } catch (err) {
@@ -100,11 +81,14 @@ export default function useForm({ initialValues, slug, timezones }) {
             setError(err.response.data.message);
         }
     };
+
     return {
+        values,
         handleChange,
         handleKeyDown,
-        values,
         handleSubmit,
+        success,
+        prevSuccess,
         error,
         prevError
     }

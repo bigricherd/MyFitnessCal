@@ -7,6 +7,11 @@ module.exports = (err, req, res, next) => {
         if (err.message === 'Username is too long') return err = handleLongUsernameError(err, res);
         if (err.message === "Password is not strong enough.") return res.status(409).send({ message: err.message });
         if (err.message === 'Invalid time zone.') return res.status(409).send({ message: err.message });
+        if (err.message === "Timezone was not updated. Please try again.") return res.status(409).send({ message: err.message });
+        if (err.message === "User account was not deactivated. Please try again.") return res.status(409).send({ message: err.message });
+        if (err.message === "That user does not exist.") return res.status(409).send({ message: err.message });
+
+
 
         // ---------- EXERCISES ----------
         if (err.code === '23505' && err.constraint === 'exercise_pkey') return err = handleExerciseExistsError(err, res); // FIX based on new DB setup

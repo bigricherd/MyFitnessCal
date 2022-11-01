@@ -19,8 +19,7 @@ const timezones = ["US/Samoa", "US/Hawaii", "US/Alaska", "US/Pacific", "US/Arizo
 // ---------- VALIDATION OF USER INPUTS ----------
 const validateInputs = (values, next) => {
     const { username, password } = values;
-    const regex = /(?=^.{6,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-    const regexNoSymbol = /(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    const regex = /(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 
     // Empty fields
     if (username === "") {
@@ -33,7 +32,7 @@ const validateInputs = (values, next) => {
         return next(new Error("Username is too long"));
     }
     // Password requirements: at least 6 characters, one digit, one lowercase letter, one uppercase letter, one symbol -- FIX overkill?
-    else if (regexNoSymbol.test(password) === false) {
+    else if (!regex.test(password)) {
         return next(new Error('Password is not strong enough.'));
     }
 
@@ -48,7 +47,39 @@ const validateRegister = (values, next) => {
         return next(new Error("Invalid time zone."));
     }
     return validateInputs(values, next);
+};
+
+const validateUser = async (userId, user, next) => {
+    const u = await performQuery(`SELECT * FROM appUser WHERE id = '${userId}'`);
+
+    if (user !== userId) {
+        return next(new Error("You do not have permission to do that."));
+    } else if (u.rows.length < 1) {
+        return next(new Error("That user does not exist."));
+    }
+    return true;
 }
+
+// const validatePasswordChange = async (values, next) => {
+//     const { userId, oldPassword, newPassword } = values;
+//     const regex = /(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+
+//     try {
+//         const u = await performQuery(`SELECT * FROM appuser WHERE id = '${userId}'`);
+//         const user = u.rows[0];
+
+//         const salt = await bcrypt.genSalt(9);
+//         const hash = await bcrypt.hash(oldPassword, salt);
+
+//         console.log(values);
+//         console.log(user);
+//         console.log(hash);
+//         // HASH IS NOT IDENTICAL -- FIND A SOLUTION TO CHECK IF USER'S PASSWORD IS 
+//     } catch (err) {
+//         return next(err);
+//     }
+//     return true;
+// }
 
 // ---------- ROUTES ----------
 
@@ -120,6 +151,73 @@ router.get('/getUser', (req, res) => {
         data.firstVisit = req.user.firstvisit;
     }
     return res.json(data);
-})
+});
+
+// Change timezone
+router.patch('/timezone', async (req, res, next) => {
+    const { timezone, userId } = req.body;
+
+    const response = {};
+    if (timezones.indexOf(timezone) !== -1) {
+        try {
+            await performQuery(`UPDATE appUser SET timezone='${timezone}' WHERE id = '${userId}'`);
+
+            const updated = await performQuery(`SELECT timezone FROM appUser WHERE id = '${userId}'`);
+            console.log(updated.rows[0]);
+
+            if (updated.rows.length === 1 && updated.rows[0].timezone === timezone) {
+                response.success = `Successfully changed timezone to ${timezone}.`;
+                response.timezone = updated.rows[0].timezone;
+            } else return next(new Error("Timezone was not updated. Please try again."));
+        } catch (e) {
+            return next(e);
+        }
+    } else return next(new Error("Invalid time zone."));
+    res.send(response);
+});
+
+// // Change password
+// router.patch('/keyChange', async (req, res, next) => {
+//     const { userId, oldPassword, newPassword } = req.body;
+//     const response = {};
+
+//     if (await validatePasswordChange({ userId, oldPassword, newPassword }, next)) {
+//         console.log('valid BE');
+//     }
+
+//     res.send(response);
+// });
+
+// Delete user
+router.delete('/user', async (req, res, next) => {
+    const { userId } = req.query;
+    console.log(userId);
+    const user = req.user.id;
+    const response = {};
+
+    if (await validateUser(userId, user, next)) {
+        if (req.user) {
+            const username = req.user.username;
+            req.logout((err, next) => {
+                if (err) return next(err);
+            });
+            console.log(`Logged out user ${username}`);
+
+            await performQuery(`DELETE FROM appuser WHERE id='${userId}'`);
+
+            const rows = await performQuery(`SELECT * FROM appuser WHERE id='${userId}'`);
+            console.log(rows.rows);
+            if (rows.rows.length !== 0) {
+                return next(new Error("User account was not deactivated. Please try again."));
+            } else {
+                response.success = `Successfully deleted user ${username}`;
+                response.redirect = '/login';
+            }
+        }
+    }
+
+    console.log(response);
+    res.send(response);
+});
 
 module.exports = router;
