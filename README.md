@@ -1,5 +1,3 @@
-# MyFitnessCal
-
 <h2> Overview </h2>
 A React app with a calendar to visualize your training periodization and features to track your training volume and progress on lifts.
 
