@@ -92,7 +92,8 @@ const Nav = (props) => {
                             onClick={handleLogout}
                             sx={{ color: props.darkMode ? "white" : "#515151" }}
                         >
-                            Logout | <Typography
+                            Logout |
+                            <Typography
                                 sx={{ marginLeft: "4px", fontSize: "inherit" }}
                                 color="primary"
                             >
@@ -155,8 +156,11 @@ const Nav = (props) => {
                                             sx={{ color: 'white' }}
                                         >
                                             Settings | <Typography
-                                                sx={{ marginLeft: "4px", fontSize: "inherit", color: props.darkMode ? null : "#81d4fa" }}
-                                                color={props.darkMode ? "primary" : null}
+                                                sx={{
+                                                    marginLeft: "4px",
+                                                    fontSize: "inherit",
+                                                    color: props.darkMode ? "#42a5f5" : "#81d4fa"
+                                                }}
                                             >
                                                 {props.user}
                                             </Typography>
