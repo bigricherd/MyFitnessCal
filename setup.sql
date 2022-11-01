@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS SESSIONS (
  CREATE TABLE IF NOT EXISTS SET (
                    id UUID NOT NULL,
                    reps INT NOT NULL,
-                   weight INT NOT NULL,
+                   weight INT NOT NULL, -- weight DECIMAL NOT NULL (when the time comes)
                    date DATE NOT NULL,
                    exercise varchar(85) NOT NULL,
                                   CONSTRAINT fk_exercise

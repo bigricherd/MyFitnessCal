@@ -1,16 +1,26 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 //import "bootstrap/dist/css/bootstrap.min.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+import { darkTheme } from "./themes/dark";
+import { lightTheme } from "./themes/light";
 import { appTheme } from "./themes/theme";
 import RegisterPage from "./components/auth/RegisterPage";
 import LoginPage from "./components/auth/LoginPage";
+import SettingsPage from "./components/auth/SettingsPage";
 import SessionsPage from "./components/sessions/SessionsPage";
 import Nav from "./components/Nav";
 import AnalyticsPage from "./components/analytics/AnalyticsPage";
 import ExercisesPage from "./components/exercises/ExercisesPage";
 import NotFoundPage from "./components/NotFoundPage";
+
+const timezones = ["US/Samoa", "US/Hawaii", "US/Alaska", "US/Pacific", "US/Arizona", "US/Mountain",
+    "US/Central", "US/Eastern", "Canada/Atlantic", "Canada/Newfoundland", "America/Buenos_Aires",
+    "America/Noronha", "Atlantic/Cape_Verde", "Atlantic/Reykjavik", "Europe/London", "Europe/Amsterdam",
+    "Africa/Cairo", "Europe/Istanbul", "Asia/Dubai", "Asia/Karachi", "Asia/Omsk", "Asia/Jakarta", "Asia/Hong_Kong",
+    "Asia/Tokyo", "Australia/Brisbane", "Australia/Melbourne", "Pacific/Fiji"];
 
 const muscleGroups = ["chest", "shoulders", "biceps", "triceps",
     "forearms", "traps", "neck", "lats", "lower_back", "abs",
@@ -19,15 +29,23 @@ const muscleGroups = ["chest", "shoulders", "biceps", "triceps",
 const muscleGroupsForAnalytics = muscleGroups.slice();
 muscleGroupsForAnalytics.unshift("all");
 
+const ColorContext = React.createContext("light");
+
 function App() {
     const [message, setMessage] = useState(null);
     const [isFetching, setIsFetching] = useState(false);
+    const [mode, setMode] = useState("light");
+
+    const theme = useMemo(() => createTheme(mode === "light" ? lightTheme : darkTheme),
+        [mode]);
+
+    // User information
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(null);
     const [firstVisit, setFirstVisit] = useState(false);
     const [timezone, setTimezone] = useState(null);
-    const fetchUserUrl = `/api/auth/getUser`;
 
+    const fetchUserUrl = `/api/auth/getUser`;
     const fetchUser = useCallback(async () => {
         const response = await fetch("/api/auth/getUser", { credentials: "include" });
         if (!response.ok) {
@@ -68,6 +86,7 @@ function App() {
     );
 
     return (
+        // <ColorContext.Provider value={colorMode}>
         <ThemeProvider theme={appTheme}>
             <CssBaseline enableColorScheme />
             <Router>
@@ -123,7 +142,21 @@ function App() {
                                     />
                                     : <LoginPage />}
                             />
-                            <Route exact path="/register" element={<RegisterPage />} />
+                            <Route
+                                exact
+                                path="/settings"
+                                element={user ?
+                                    <SettingsPage
+                                        user={user}
+                                        userId={userId}
+                                        timezones={timezones}
+                                        timezone={timezone}
+                                        setTimezone={setTimezone}
+                                    />
+                                    : <LoginPage />}
+                            />
+
+                            <Route exact path="/register" element={<RegisterPage timezones={timezones} />} />
                             <Route exact path="/login" element={<LoginPage />} />
                             <Route path="*" element={<NotFoundPage />} />
                         </Routes>

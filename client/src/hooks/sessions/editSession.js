@@ -25,7 +25,7 @@ export default function useForm({ initialValues }) {
         if (event.keyCode === enter) {
             return handleSubmit(event);
         }
-    }
+    };
 
     // Form validation
     const validateInputs = (values) => {
