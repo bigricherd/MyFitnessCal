@@ -28,7 +28,19 @@ const Nav = (props) => {
     // Set the list of pages depending on whether a user is logged in
     useEffect(() => {
         setPages(props.user ? navItems : authPages);
-    }, [props])
+    }, [props]);
+
+    const authSettings = <Stack direction="column" alignItems="center" justifyContent="center">
+        <Button>
+            <Link to="/settings" style={{
+                color: "white",
+                textDecoration: "none"
+            }}>Settings</Link>
+        </Button>
+        <Button sx={{ color: '#f44336' }} onClick={handleLogout}>
+            Logout
+        </Button>
+    </Stack >
 
 
     // Sidebar that opens when the hamburger icon is clicked
@@ -60,29 +72,31 @@ const Nav = (props) => {
 
             {/* Logout button if a user is logged in */}
             {props.user ?
-                <ListItem>
-                    <Button onClick={handleLogout}>
-                        <span style={{ color: "#515151" }}>Logout |
-                            <span style={{ marginLeft: "3px", color: '#588157' }}>{props.user}</span>
-                        </span>
-                    </Button>
-                </ListItem>
+                // <ListItem>
+                //     <Button onClick={handleLogout}>
+                //         <span style={{ color: "#515151" }}>Logout |
+                //             <span style={{ marginLeft: "3px", color: '#588157' }}>{props.user}</span>
+                //         </span>
+                //     </Button>
+                // </ListItem>
+                <>
+                    <Tooltip
+                        title={authSettings}
+                    >
+                        <ListItem>
+                            <Button
+                                // onMouseEnter={() => { setShowAuthTooltip(true) }}
+                                // onMouseLeave={() => { setShowAuthTooltip(false) }}
+                                sx={{ color: '#515151' }}
+                            >
+                                Account | <span style={{ marginLeft: "3px", color: "darkGreen" }}>{props.user}</span>
+                            </Button>
+                        </ListItem>
+                    </Tooltip>
+                </>
                 : null}
         </List>
     </Box >;
-
-    const authSettings = <Stack direction="column" alignItems="center" justifyContent="center">
-        <Button>
-            <Link to="/settings" style={{
-                color: "white",
-                textDecoration: "none"
-            }}>Settings</Link>
-        </Button>
-        <Button sx={{ color: '#f44336' }} onClick={handleLogout}>
-            Logout
-        </Button>
-    </Stack >
-
 
     return (
         <Box sx={{ display: 'flex' }}>
