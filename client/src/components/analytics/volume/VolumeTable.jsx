@@ -30,7 +30,7 @@ function VolumeTable(props) {
     }, [props]);
 
     return (
-        <TableContainer component={Paper} sx={{ mt: '1rem' }}>
+        <TableContainer component={Paper} sx={{ mt: '1rem', borderRadius: "0.88rem" }}>
             <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
                 Results
             </Typography>

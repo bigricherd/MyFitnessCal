@@ -183,6 +183,7 @@ function SessionsPage(props) {
                 getSessions={getAllSessions}
                 exercisesByUser={exercisesByUser}
                 timezone={props.timezone}
+                darkMode={props.darkMode}
             />
         </>
     );

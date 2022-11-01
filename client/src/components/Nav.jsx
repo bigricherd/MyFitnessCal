@@ -31,11 +31,17 @@ const Nav = (props) => {
     }, [props]);
 
     const authSettings = <Stack direction="column" alignItems="center" justifyContent="center">
+        <Button
+            onClick={props.toggleDarkMode}
+            sx={{ color: "white" }}
+        >
+            {props.darkMode ? "Light mode" : "Dark mode"}
+        </Button>
         <Button>
             <Link to="/settings" style={{
                 color: "white",
                 textDecoration: "none"
-            }}>Settings</Link>
+            }}>Account</Link>
         </Button>
         <Button sx={{ color: '#f44336' }} onClick={handleLogout}>
             Logout
@@ -47,7 +53,7 @@ const Nav = (props) => {
     const drawer = <Box onClick={handleDrawerToggle}>
         <Typography
             variant='h6'
-            sx={{ my: 2, mx: 3, color: '#373737' }}>
+            sx={{ my: 2, mx: 3, color: props.darkMode ? "white" : "#373737" }}>
             MyFitnessCal
         </Typography>
         <Divider />
@@ -61,7 +67,7 @@ const Nav = (props) => {
                             to={`/${item.toLowerCase()}`}
                             style={{
                                 textDecoration: "none",
-                                color: "#515151"
+                                color: props.darkMode ? "white" : "#515151"
                             }}
                         >
                             {item}
@@ -70,20 +76,13 @@ const Nav = (props) => {
                 </ListItem>
             ))}
 
-            {/* Logout button if a user is logged in */}
+            {/* Settings and logout buttons if a user is logged in */}
             {props.user ?
-                // <ListItem>
-                //     <Button onClick={handleLogout}>
-                //         <span style={{ color: "#515151" }}>Logout |
-                //             <span style={{ marginLeft: "3px", color: '#588157' }}>{props.user}</span>
-                //         </span>
-                //     </Button>
-                // </ListItem>
                 <>
                     <ListItem>
                         <Button>
                             <Link to="/settings" style={{
-                                color: "#515151",
+                                color: props.darkMode ? "white" : "#515151",
                                 textDecoration: "none"
                             }}>Settings</Link>
                         </Button>
@@ -91,13 +90,29 @@ const Nav = (props) => {
                     <ListItem>
                         <Button
                             onClick={handleLogout}
-                            sx={{ color: 'red' }}
+                            sx={{ color: props.darkMode ? "white" : "#515151" }}
                         >
-                            Logout | <span style={{ marginLeft: "3px", color: "#515151" }}>{props.user}</span>
+                            Logout | <Typography
+                                sx={{ marginLeft: "4px", fontSize: "inherit" }}
+                                color="primary"
+                            >
+                                {props.user}
+                            </Typography>
                         </Button>
                     </ListItem>
                 </>
                 : null}
+
+            {/* Toggle theme button */}
+            <ListItem>
+                <Button
+                    variant="outlined"
+                    onClick={props.toggleDarkMode}
+                    sx={{ color: props.darkMode ? "white" : "#515151" }}
+                >
+                    {props.darkMode ? "Light mode" : "Dark mode"}
+                </Button>
+            </ListItem>
         </List>
     </Box >;
 
@@ -135,22 +150,18 @@ const Nav = (props) => {
                             }
                             {props.user ?
                                 <>
-                                    <Tooltip
-                                        title={authSettings}
-                                    >
+                                    <Tooltip title={authSettings} >
                                         <Button
-                                            // onMouseEnter={() => { setShowAuthTooltip(true) }}
-                                            // onMouseLeave={() => { setShowAuthTooltip(false) }}
                                             sx={{ color: 'white' }}
                                         >
-                                            Account | <span style={{ marginLeft: "3px", color: "#c8e6c9" }}>{props.user}</span>
+                                            Settings | <Typography
+                                                sx={{ marginLeft: "4px", fontSize: "inherit" }}
+                                                color="primary"
+                                            >
+                                                {props.user}
+                                            </Typography>
                                         </Button>
                                     </Tooltip>
-                                    {/* <Button sx={{ color: 'white' }} onClick={handleLogout}>
-                                        Logout | <span style={{ marginLeft: "3px", color: "#c8e6c9" }}>{props.user}</span>
-                                    </Button> */}
-
-
                                 </>
                                 : null}
                         </Stack>

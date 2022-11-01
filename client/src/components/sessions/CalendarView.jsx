@@ -58,7 +58,7 @@ function DefaultCalendarView(props) {
         // temporary styles, will fix later
         <div
             style={{
-                backgroundColor: "white",
+                backgroundColor: props.darkMode ? "#bdbdbd" : "white",
                 height: "75vh",
                 maxWidth: "90%",
                 margin: "auto"

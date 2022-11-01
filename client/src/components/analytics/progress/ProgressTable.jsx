@@ -26,7 +26,7 @@ function ProgressTable(props) {
             <Typography variant="h6" sx={{ fontWeight: "400" }}>No sets found for that exercise.</Typography>
         )
     } else return (
-        <TableContainer component={Paper} sx={{ mt: '1rem' }}>
+        <TableContainer component={Paper} sx={{ mt: '1rem', borderRadius: "0.88rem" }}>
             <Typography variant="h5" gutterBottom sx={{ mt: '0.5rem' }}>
                 {exercise}
             </Typography>

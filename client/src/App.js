@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-//import "bootstrap/dist/css/bootstrap.min.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { darkTheme } from "./themes/dark";
-import { lightTheme } from "./themes/light";
-import { appTheme } from "./themes/theme";
 import RegisterPage from "./components/auth/RegisterPage";
 import LoginPage from "./components/auth/LoginPage";
 import SettingsPage from "./components/auth/SettingsPage";
@@ -34,10 +30,24 @@ const ColorContext = React.createContext("light");
 function App() {
     const [message, setMessage] = useState(null);
     const [isFetching, setIsFetching] = useState(false);
-    const [mode, setMode] = useState("light");
+    const [darkMode, setDarkMode] = useState(false);
 
-    const theme = useMemo(() => createTheme(mode === "light" ? lightTheme : darkTheme),
-        [mode]);
+    const theme = createTheme({
+        palette: {
+            mode: darkMode ? "dark" : "light",
+        },
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 450,
+                md: 660,
+                ml: 900,
+                lg: 1150,
+                xl: 1400,
+                xxl: 1700
+            },
+        }
+    });
 
     // User information
     const [user, setUser] = useState(null);
@@ -87,12 +97,12 @@ function App() {
 
     return (
         // <ColorContext.Provider value={colorMode}>
-        <ThemeProvider theme={appTheme}>
+        <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
             <Router>
                 <div className="App">
                     <header className="App-header">
-                        <Nav user={user} />
+                        <Nav user={user} darkMode={darkMode} toggleDarkMode={() => { setDarkMode(!darkMode) }} />
                         <Routes>
                             <Route
                                 exact
@@ -104,6 +114,7 @@ function App() {
                                     firstVisit={firstVisit}
                                     setFirstVisit={setFirstVisit}
                                     muscleGroups={muscleGroups}
+                                    darkMode={darkMode}
                                 /> : <LoginPage />}
                             />
                             <Route
@@ -117,6 +128,7 @@ function App() {
                                         firstVisit={firstVisit}
                                         setFirstVisit={setFirstVisit}
                                         muscleGroups={muscleGroups}
+                                        darkMode={darkMode}
                                     />
                                     : <LoginPage />}
                             />
