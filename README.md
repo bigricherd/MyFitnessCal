@@ -3,6 +3,9 @@
 <h2> Overview </h2>
 A React app with a calendar to visualize your training periodization and features to track your training volume and progress on lifts.
 
+<h2> Preview </h2>
+<img src="https://user-images.githubusercontent.com/106716130/199363179-84006275-a13a-4081-9311-b49125f18d2f.png" />
+
 <h2> Features (with demo GIFs)</h2>
 
 <details>
