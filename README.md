@@ -4,7 +4,7 @@ Developed and maintained by Chino Rodriguez with the help of Tricia Cu. </br> </
 Try it here: https://myfitnesscal.herokuapp.com
 
 <h2> Preview </h2>
-<img src="https://user-images.githubusercontent.com/106716130/199363179-84006275-a13a-4081-9311-b49125f18d2f.png" />
+<img src="https://user-images.githubusercontent.com/106716130/199367479-3157d927-735e-49a1-a91f-8a42da579a30.png"/>
 
 <h2> Features (with demo GIFs)</h2>
 
