@@ -24,7 +24,6 @@ Try it here: https://myfitnesscal.herokuapp.com
   <h4> Delete Exercise </h4>
   Delete an exercise from your list. </br>
   <img src="https://user-images.githubusercontent.com/106716130/199436042-ac79b38d-2997-4c39-95ee-8908bac6ed25.GIF" />
-/>
 
 </details>
 
