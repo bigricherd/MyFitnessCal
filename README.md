@@ -1,5 +1,7 @@
 <h2> Overview </h2>
-A React app with a calendar to visualize your training periodization and features to track your training volume and progress on lifts.
+A React app with a calendar to visualize your training periodization and features to track your training volume and progress on lifts. Built with a PERN stack, Passport.js for authentication, and MUI for styles. </br> </br>
+Developed and maintained by Chino Rodriguez with the help of Tricia Cu. </br> </br>
+Try it here: https://myfitnesscal.herokuapp.com
 
 <h2> Preview </h2>
 <img src="https://user-images.githubusercontent.com/106716130/199363179-84006275-a13a-4081-9311-b49125f18d2f.png" />
@@ -69,6 +71,11 @@ A React app with a calendar to visualize your training periodization and feature
   <summary>
 <h3> Additional Settings </h3>
     </summary>
+    
+    <h4> Password strength requirements </h4>
+    In this example, the password lacks an uppercase letter, hence the error.
+    <img src="https://user-images.githubusercontent.com/106716130/199365818-1caca15e-9b06-47a7-a25e-303cbf3be6d5.gif" />
+
 
   <h4> Toggle dark / light theme </h4>
       <img src="https://user-images.githubusercontent.com/106716130/199361961-f86e8efe-50ee-439b-91f4-7b1dfdd91141.gif" />
@@ -76,12 +83,23 @@ A React app with a calendar to visualize your training periodization and feature
   <h4> Time zone support </h4>
       So that calendar events (sessions) display on the calendar at the correct time.
             <img src="https://user-images.githubusercontent.com/106716130/199361972-48c3211d-0b56-41a7-b750-20b3ffe88654.gif" />
-
-
   <h4> Deactivate account </h4>
       <img src="https://user-images.githubusercontent.com/106716130/199361960-1e55baae-a2b0-4492-b662-c5a21819228e.gif" />
 
   </details>
+  
+  <h2> Current Limitation </h2>
+  <ul>
+  <li>
+  Cardio exercises are not supported.
+  </li>
+  <li>
+  Weight units are assumed to be in pounds and no validation is being done on this front.
+  </li>
+  <li>
+  A separate list of exercises is maintained for each user. That is, "Push ups" for user A and "Push ups" for user B would occupy two separate rows in the database. This would not scale well and would have to be redesigned if the app were to grow past tens of users.
+  </li>
+  </ul>
 
 <h2> Known Bugs </h2>
   <ul>
