@@ -81,7 +81,7 @@ Try it here: https://myfitnesscal.herokuapp.com
       <img src="https://user-images.githubusercontent.com/106716130/199437517-117859a4-00a5-4dfb-9979-066eb0ce917e.gif" />
 
   <h4> Time zone support </h4>
-      So that calendar events (sessions) display on the calendar at the correct time.
+      So that calendar events (sessions) display on the calendar at the correct time. Changing time zone from Pacific to Eastern Time results in the session being rendered on the calendar three hours later.
             <img src="https://user-images.githubusercontent.com/106716130/199437363-bfa3cc23-66cb-48d5-bf87-23db93148c76.gif" />
   <h4> Deactivate account </h4>
   The error "user does not exist" is proof that the user "demo" was deleted.
