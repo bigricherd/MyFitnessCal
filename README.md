@@ -15,15 +15,16 @@ Try it here: https://myfitnesscal.herokuapp.com
   
   <h4> Suggested Exercises </h4>
   On your first login, a popup will appear containing suggested exercises to add to your list. You can see which exercises you've selected in a sub-popup   that also allows you to un-select exercises. The list of suggested exercises can also be accessed from the Exercises page.
-    <img src="https://user-images.githubusercontent.com/106716130/199360393-41aacfba-db92-4a65-85b2-43cc1b94885f.gif" />
+  <img src="https://user-images.githubusercontent.com/106716130/199435951-3d76c90e-2e0e-4d64-b45c-cf833d36e2e9.GIF" />
   
   <h4> Add Exercise </h4>
   Add an exercise to your list. Attempting to add a duplicate exercise results in an error.
-  <img src="https://user-images.githubusercontent.com/106716130/199361142-609194b9-7231-4f25-be5e-128c24280ead.gif" />
+  <img src="https://user-images.githubusercontent.com/106716130/199436024-d565e220-93d4-4b70-af75-8398ef9f57d9.GIF" />
   
   <h4> Delete Exercise </h4>
   Delete an exercise from your list. </br>
-  <img src="https://user-images.githubusercontent.com/106716130/199360645-9c03e692-b8e9-4aec-a18c-fe1a310e52bb.gif" />
+  <img src="https://user-images.githubusercontent.com/106716130/199436042-ac79b38d-2997-4c39-95ee-8908bac6ed25.GIF" />
+/>
 
 </details>
 
@@ -34,19 +35,19 @@ Try it here: https://myfitnesscal.herokuapp.com
       </summary>
 
   <h4> Add Session </h4>
-    <img src="https://user-images.githubusercontent.com/106716130/199361529-3432734d-1367-4f28-97f0-94360d5581f8.gif" />
+    <img src="https://user-images.githubusercontent.com/106716130/199436285-18a28c7a-6a20-4f91-8bc5-381698ec0cb5.GIF" />
   
   <h4> Edit Session </h4>
-    <img src="https://user-images.githubusercontent.com/106716130/199361537-45ccbfbe-84c7-448a-834f-4372d954f145.gif" />
+    <img src="https://user-images.githubusercontent.com/106716130/199436290-b8f62674-6a63-4ed0-b2f8-2fd2f881fa65.GIF" />
   
   <h4> Delete Session </h4>
-    <img src="https://user-images.githubusercontent.com/106716130/199361548-c7e455d1-06bd-44c4-9c37-2c20c6eef34b.gif" />
+    <img src="https://user-images.githubusercontent.com/106716130/199436324-7e271e9d-fe0c-4523-8e5a-4ea20cd36482.GIF"/>
 
   <h4> Add Sets to Session </h4>
-      <img src="https://user-images.githubusercontent.com/106716130/199361550-97b195ad-7a0a-4cf1-b558-a70847c14620.gif" />
+      <img src="https://user-images.githubusercontent.com/106716130/199436358-9d3e0898-7085-4559-9aba-6cf2739749b1.GIF" />
 
   <h4> Delete Sets from Session </h4>
-    <img src="https://user-images.githubusercontent.com/106716130/199361555-9a16f8b9-10e3-43fa-8c86-01d8f4605516.gif" />
+    <img src="https://user-images.githubusercontent.com/106716130/199436368-d3750582-f37e-44a1-9ddc-2b04dd78b927.GIF" />
   
 </details>
 
@@ -58,12 +59,12 @@ Try it here: https://myfitnesscal.herokuapp.com
 
    <h4> Volume Counter </h4>
     Returns the number of sets performed for the chosen muscle group within the given date range. Also includes a breakdown of exercises (per muscle            group) as well as extra statistics like maximum weight and average reps per set.
-          <img src="https://user-images.githubusercontent.com/106716130/199361814-8b61b346-5ec8-4a00-a5d0-7db1e3d038fd.gif" />
+          <img src="https://user-images.githubusercontent.com/106716130/199436244-17bde4de-f1d4-465a-b0d7-c17280dbdf8e.GIF"/>
 
 
   <h4> Progress Tracker </h4>
   Returns all the sets performed for the chosen exercise within the given date range, grouped by session and sorted by date in descending order, such       that the most recent session is shown first. </br>
-    <img src="https://user-images.githubusercontent.com/106716130/199361877-b2e64b8f-32b3-4d62-bcab-2356cb7716fd.gif" />
+    <img src="https://user-images.githubusercontent.com/106716130/199436257-a1f2ded7-e078-405f-bdca-124d93ca5b49.GIF" />
 
   </details>
 
@@ -74,21 +75,22 @@ Try it here: https://myfitnesscal.herokuapp.com
     
   <h4> Password strength requirements </h4>
     In this example, the password lacks an uppercase letter, hence the error.
-    <img src="https://user-images.githubusercontent.com/106716130/199365818-1caca15e-9b06-47a7-a25e-303cbf3be6d5.gif" />
+    <img src="https://user-images.githubusercontent.com/106716130/199437569-4dd5052f-e966-4e31-abc3-7ffb4c9af214.gif"/>
 
 
   <h4> Toggle dark / light theme </h4>
-      <img src="https://user-images.githubusercontent.com/106716130/199361961-f86e8efe-50ee-439b-91f4-7b1dfdd91141.gif" />
+      <img src="https://user-images.githubusercontent.com/106716130/199437517-117859a4-00a5-4dfb-9979-066eb0ce917e.gif" />
 
   <h4> Time zone support </h4>
       So that calendar events (sessions) display on the calendar at the correct time.
-            <img src="https://user-images.githubusercontent.com/106716130/199361972-48c3211d-0b56-41a7-b750-20b3ffe88654.gif" />
+            <img src="https://user-images.githubusercontent.com/106716130/199437363-bfa3cc23-66cb-48d5-bf87-23db93148c76.gif" />
   <h4> Deactivate account </h4>
-      <img src="https://user-images.githubusercontent.com/106716130/199361960-1e55baae-a2b0-4492-b662-c5a21819228e.gif" />
+  The error "user does not exist" is proof that the user "demo" was deleted.
+      <img src="https://user-images.githubusercontent.com/106716130/199437335-590b55ff-9d63-44f6-95e2-74eed0d38997.gif" />
 
   </details>
   
-  <h2> Current Limitation </h2>
+  <h2> Current Limitations </h2>
   <ul>
   <li>
   Cardio exercises are not supported.
