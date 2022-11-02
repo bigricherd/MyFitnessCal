@@ -69,7 +69,7 @@ Try it here: https://myfitnesscal.herokuapp.com
 
 <details>
   <summary>
-<h3> Additional Settings </h3>
+<h3> Additional Features </h3>
     </summary>
     
     <h4> Password strength requirements </h4>
