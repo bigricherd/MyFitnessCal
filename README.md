@@ -72,7 +72,7 @@ Try it here: https://myfitnesscal.herokuapp.com
 <h3> Additional Features </h3>
     </summary>
     
-    <h4> Password strength requirements </h4>
+  <h4> Password strength requirements </h4>
     In this example, the password lacks an uppercase letter, hence the error.
     <img src="https://user-images.githubusercontent.com/106716130/199365818-1caca15e-9b06-47a7-a25e-303cbf3be6d5.gif" />
 
