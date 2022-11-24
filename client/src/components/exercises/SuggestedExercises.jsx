@@ -18,7 +18,7 @@ import ShowSelectedPopup from './ShowSelectedPopup';
 import addManyExercises from '../../hooks/exercises/addManyExercises';
 import formatExercise from '../../helpers/formatExercise';
 
-const exerciseOptions = ["bb_bench_press:chest", "incline_db_press:chest", "dips:chest", "bb_oh_press:shoulders", "db_oh_press:shoulders", "db_lateral_raise:shoulders",
+const exerciseOptions = ["bench_press:chest", "incline_db_press:chest", "dips:chest", "bb_oh_press:shoulders", "db_oh_press:shoulders", "db_lateral_raise:shoulders",
     "lat_pulldown:lats", "bb_row:lats", "seated_cable_row:lats", "bb_shrug:traps", "neck_curl:neck", "neck_extension:neck", "back_extension:lower_back", "db_curl:biceps", "bb_curl:biceps",
     "cable_tricep_pushdown:triceps", "lying_db_skullcrusher:triceps", "bb_back_squat:quads", "leg_extension:quads", "bb_romanian_deadlift:hamstrings", "hamstring_curl:hamstrings",
     "bb_hip_thrust:glutes", "standing_calf_raise:calves", "seated_calf_raise:calves", "sit_up:abs", "lying_leg_raise:abs"];

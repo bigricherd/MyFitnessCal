@@ -88,6 +88,7 @@ function ShowSetsCollapse(props) {
                     <IconButton
                         aria-label="expand row"
                         size="small"
+                        colSpan={1}
                         onClick={() => {
                             const temp = open;
                             if (open) setEditing(false);
@@ -99,13 +100,26 @@ function ShowSetsCollapse(props) {
                     </IconButton>
                 </TableCell>
 
-                {/* Exercise name */}
-                <TableCell component="th" scope="row" sx={{ fontSize: "1.1em" }}>
+                {/* Exercise name*/}
+                <TableCell
+                component="th"
+                colSpan={4}
+                sx={{
+                    fontSize: {
+                        xs: "0.92em",
+                        ml: "1.1em"
+                    },
+                    padding: {
+                        xs: 0
+                    }
+                     }}>
                     {formatExercise(props.exercise.split(":")[0])}
                 </TableCell>
 
                 {/* Edit or Back button, depending on whether the user is editing*/}
-                <TableCell>
+                <TableCell
+                colSpan={1}
+                >
                     {
                         editing ?
                             // Back button
