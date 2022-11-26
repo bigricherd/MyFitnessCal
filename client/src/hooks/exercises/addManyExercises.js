@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 
-// ------ Custom form control: submits AddSet and AddExercise forms and redirects to home if successful or login if unsuccessful ------
 export default function useForm({ initialValues, muscleGroups = [], setExercises, setCount }) {
     const [values, setValues] = useState(initialValues || {});
     const [error, setError] = useState(null);
@@ -9,7 +8,6 @@ export default function useForm({ initialValues, muscleGroups = [], setExercises
     const [successMsg, setSuccessMsg] = useState(null);
     const [prevSuccessMsg, setPrevSuccessMsg] = useState(null);
     const [firstVisit, setFirstVisit] = useState(true);
-    //const [count, setCount] = useState(0);
 
     const validateExercises = (exercises) => {
         if (exercises.length === 0) {
@@ -95,6 +93,7 @@ export default function useForm({ initialValues, muscleGroups = [], setExercises
     return {
         values,
         handleSubmit,
+        submitData,
         error,
         prevError,
         successMsg,

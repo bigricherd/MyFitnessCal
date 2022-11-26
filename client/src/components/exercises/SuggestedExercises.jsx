@@ -36,7 +36,7 @@ function SuggestedExercises(props) {
         setOptions(tmp);
     }, [props.exercisesByUser]);
 
-    const { values, handleSubmit, error, prevError, successMsg, prevSuccessMsg, firstVisit, count } = addManyExercises({
+    const { values, handleSubmit, submitData, error, prevError, successMsg, prevSuccessMsg, firstVisit, count } = addManyExercises({
         initialValues: {
             exercises: []
         },
@@ -176,7 +176,14 @@ function SuggestedExercises(props) {
 
                 <DialogActions>
                     <Button
-                        onClick={props.onClose}
+                        onClick={() => {
+                            submitData({
+                                values: {
+                                    exercises: []
+                                }
+                            })
+                            props.onClose();
+                        }}
                     >
                         {backButtonText}
                     </Button>

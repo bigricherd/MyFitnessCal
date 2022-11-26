@@ -168,7 +168,7 @@ router.delete('/', isLoggedIn, async (req, res, next) => {
 router.post("/addMany", isLoggedIn, async (req, res, next) => {
     const { exercises } = req.body;
     const userId = req.user.id;
-    const response = { message: "No exercises added." };
+    const response = { message: "" };
 
     // Loop through exercises array
     for (let exercise of exercises) {
@@ -206,7 +206,8 @@ router.post("/addMany", isLoggedIn, async (req, res, next) => {
     // Set current user's firstVisit to false
     await performQuery(`UPDATE appUser SET firstvisit = 'false' WHERE id = '${req.user.id}'`);
     response.firstVisit = false;
-    response.message = "Successfully added exercises.";
+
+    if (exercises.length > 0) response.message = "Successfully added exercises.";
 
     const c = await performQuery(`SELECT count(id) FROM Exercise WHERE owner = '${req.user.id}'`);
     response.count = c.rows[0].count;
