@@ -75,6 +75,12 @@ export default function useForm({ initialValues }) {
             startdatetime.setDate(date.getDate());
             enddatetime.setDate(date.getDate());
 
+            startdatetime.setMonth(date.getMonth());
+            enddatetime.setMonth(date.getMonth());
+
+            startdatetime.setFullYear(date.getFullYear());
+            enddatetime.setFullYear(date.getFullYear());
+            
             await axios({
                 method: 'PATCH',
                 url: `/api/sessions/?id=${sessionId}`,

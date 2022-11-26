@@ -88,9 +88,15 @@ export default function useForm({ initialValues }) {
 
         try {
             // Sets start and end times to be on the selected date; necessary because it defaults to today.
-            // FIX do the same with month
             startdatetime.setDate(date.getDate());
             enddatetime.setDate(date.getDate());
+            
+            startdatetime.setMonth(date.getMonth());
+            enddatetime.setMonth(date.getMonth());
+
+            startdatetime.setFullYear(date.getFullYear());
+            enddatetime.setFullYear(date.getFullYear());
+
             await axios({
                 method: 'POST',
                 url: `/api/sessions/add`,
