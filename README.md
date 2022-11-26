@@ -104,9 +104,6 @@ Try it here: https://myfitnesscal.herokuapp.com
 
 <h2> Known Bugs </h2>
   <ul>
-    <li> Suggested Exercises continues to pop up on Sessions page if user only hits 'SKIP' button and does not use it to add exercises.</li>
         <li> Changing a user's time zone only updates calendar event rendering, not the start / end time attributes of that Session in the database.</li>
-        <li> Add session popup sometimes does not close on a successful CREATE Session.</li>
-        <li> Adding a session results in the date's month always being the current month. The same occurs on edit. Day and year are working fine, AFAIK. </li>
   </ul>
     
