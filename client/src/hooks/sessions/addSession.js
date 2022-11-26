@@ -88,6 +88,7 @@ export default function useForm({ initialValues }) {
 
         try {
             // Sets start and end times to be on the selected date; necessary because it defaults to today.
+            // FIX do the same with month
             startdatetime.setDate(date.getDate());
             enddatetime.setDate(date.getDate());
             await axios({
@@ -131,6 +132,7 @@ export default function useForm({ initialValues }) {
         setValues,
         handleSubmit,
         error,
+        setError,
         prevError,
         numSessions
     }

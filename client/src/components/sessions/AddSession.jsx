@@ -79,21 +79,8 @@ function AddSession(props) {
         setExercises([]);
     }
 
-    // Assign state variable 'exercises' to values.sets array
-    const customHandleSubmit = (event) => {
-        const allSets = [];
-        for (let exercise of exercises) {
-            allSets.push(...exercise.sets);
-        }
-        values.sets = allSets;
-        if (handleSubmit(event)) {
-            props.onClose();
-            resetFormFields();
-        }
-    }
-
     // Add Session hook
-    const { handleChange, handleKeyDown, values, setValues, handleSubmit, error, prevError, numSessions } = addSession({
+    const { handleChange, handleKeyDown, values, setValues, handleSubmit, error, setError, prevError, numSessions } = addSession({
         initialValues: {
             title: '',
             comments: '',
@@ -103,6 +90,20 @@ function AddSession(props) {
             sets: []
         }
     });
+
+    // Assign state variable 'exercises' to values.sets array
+    const customHandleSubmit = (event) => {
+        const allSets = [];
+        for (let exercise of exercises) {
+            allSets.push(...exercise.sets);
+        }
+        values.sets = allSets;
+        if (handleSubmit(event)) {
+            setError(null);
+            props.onClose();
+            resetFormFields();
+        } 
+    }
 
     const handleKeySubmit = (event) => {
         if (handleKeyDown(event)) {
@@ -123,6 +124,7 @@ function AddSession(props) {
         setShowError(false);
     }
 
+    // BUG MIGHT BE HERE FIX 
     useEffect(() => {
         if (error) {
             setAttempted(true);
