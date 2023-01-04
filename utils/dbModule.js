@@ -17,7 +17,6 @@ const prodConfig = {
 
 
 const pool = new Pool(process.env.NODE_ENV === "production" ? prodConfig : devConfig);
-//console.log(dbConfig);
 
 pool.on('error', (e) => {
     console.log(e, e.stack, e.message);

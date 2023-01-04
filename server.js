@@ -94,17 +94,3 @@ const port = process.env.PORT || 5000;
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port} `);
 });
-
-// --- DEBUGGING AUTH ---
-// app.use((req, res, next) => {
-//     console.log('req.session is currently:');
-//     console.log(req.session);
-
-//     console.log('req.user is currently:');
-//     console.log(req.user);
-
-//     if (req.session.passport) {
-//         console.log(req.session.passport.user);
-//     }
-//     next();
-// })
