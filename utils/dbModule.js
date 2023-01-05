@@ -5,14 +5,20 @@ if (process.env.NODE_ENV !== 'production') {
     dotenv.config({ path: '.env.dev' }); // .env.dev in top-level directory "app"
 }
 const devConfig = {
-    host: "localhost",
-    port: process.env.DBPORT,
-    user: process.env.DBUSER,
-    database: process.env.DBNAME,
+    host: process.env.INSTANCE_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
 };
 
 const prodConfig = {
-    connectionString: process.env.DATABASE_URL
+    host: process.env.INSTANCE_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    // connectionString: process.env.DATABASE_URL
 };
 
 
