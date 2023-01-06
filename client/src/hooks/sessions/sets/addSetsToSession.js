@@ -61,9 +61,10 @@ export default function useForm({ initialValues }) {
         let { sets, sessionId, date } = dataObject;
 
         try {
+            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'POST',
-                url: `/api/sessions/addSets`,
+                url: `${homeUrl}/api/sessions/addSets`,
                 data: {
                     sets,
                     sessionId,

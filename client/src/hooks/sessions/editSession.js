@@ -81,9 +81,10 @@ export default function useForm({ initialValues }) {
             startdatetime.setFullYear(date.getFullYear());
             enddatetime.setFullYear(date.getFullYear());
             
+            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'PATCH',
-                url: `/api/sessions/?id=${sessionId}`,
+                url: `${homeUrl}/api/sessions/?id=${sessionId}`,
                 data: {
                     title,
                     comments,

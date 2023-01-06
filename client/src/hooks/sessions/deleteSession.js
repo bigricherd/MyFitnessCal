@@ -29,9 +29,10 @@ export default function useForm({ initialValues }) {
         const dataObject = formValues.deleteValues;
         let { id } = dataObject;
         try {
+            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'DELETE',
-                url: `/api/sessions/?sessionId=${id}`,
+                url: `${homeUrl}/api/sessions/?sessionId=${id}`,
                 withCredentials: true
 
             }).then(res => {

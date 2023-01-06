@@ -55,9 +55,11 @@ function App() {
     const [firstVisit, setFirstVisit] = useState(false);
     const [timezone, setTimezone] = useState(null);
 
+    const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
+
     const fetchUserUrl = `/api/auth/getUser`;
     const fetchUser = useCallback(async () => {
-        const response = await fetch("/api/auth/getUser", { credentials: "include" });
+        const response = await fetch(`${homeUrl}/api/auth/getUser`, { credentials: "include" });
         if (!response.ok) {
             throw new Error(`status ${response.status}`);
         }

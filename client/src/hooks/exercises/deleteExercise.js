@@ -32,9 +32,10 @@ export default function useForm({ initialValues }) {
         let { exercise } = dataObject;
 
         try {
+            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'DELETE',
-                url: `/api/exercises/?nameandmusclegroup=${exercise}`,
+                url: `${homeUrl}/api/exercises/?nameandmusclegroup=${exercise}`,
                 withCredentials: true
 
             }).then(res => {

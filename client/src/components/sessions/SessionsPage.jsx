@@ -51,7 +51,8 @@ function SessionsPage(props) {
 
     // Fetch exercises created by currently logged in user
     const fetchExercisesByUser = async () => {
-        const userExercises = await fetch(`/api/exercises/byCurrentUser?id=${userId}`, {
+        const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
+        const userExercises = await fetch(`${homeUrl}/api/exercises/byCurrentUser?id=${userId}`, {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
@@ -65,8 +66,8 @@ function SessionsPage(props) {
 
 
     const getAllSessions = async () => {
-
-        const data = await fetch("/api/sessions/all", {
+        const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
+        const data = await fetch(`${homeUrl}/api/sessions/all`, {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
