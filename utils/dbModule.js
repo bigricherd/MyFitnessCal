@@ -1,7 +1,11 @@
 const dotenv = require('dotenv');
 const { Pool } = require("pg");
 
+console.log('Environment');
+console.log(process.env.NODE_ENV);
+
 if (process.env.NODE_ENV !== 'production') {
+    console.log('Dev environment')
     dotenv.config({ path: '.env.dev' }); // .env.dev in top-level directory "app"
 }
 const devConfig = {
@@ -21,10 +25,14 @@ const prodConfig = {
     // connectionString: process.env.DATABASE_URL
 };
 
+if (process.env.NODE_ENV === "production") {
+    console.log("You're on PROD");
+}
 
 const pool = new Pool(process.env.NODE_ENV === "production" ? prodConfig : devConfig);
 
 pool.on('error', (e) => {
+    console.log('Postgres  Pool error')
     console.log(e, e.stack, e.message);
 });
 
