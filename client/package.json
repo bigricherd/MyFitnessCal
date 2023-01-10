@@ -48,5 +48,5 @@
     ]
   },
   "proxy": "http://localhost:5000",
-  "homepage": "https://myfitnesscal.uw.r.appspot.com/"
+  "homepage": "http://myfitnesscal.uw.r.appspot.com/"
 }
