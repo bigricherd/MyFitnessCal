@@ -49,6 +49,7 @@ if (process.env.NODE_ENV === "production") {
     app.set('trust proxy', 1); // trust first proxy
     sessionConfig.cookie.secure = true; // serve secure cookies
     sessionConfig.store = store; // use Postgres for Session storage
+    console.log(sessionConfig);
 }
 app.use(session(sessionConfig));
 
@@ -94,5 +95,6 @@ app.get("*", (req, res) => {
 // ---------- START SERVER ----------
 const port = process.env.PORT || 5000;
 app.listen(port, (req, res) => {
+    console.log(req.session);
     console.log(`Listening on port ${port} `);
 });

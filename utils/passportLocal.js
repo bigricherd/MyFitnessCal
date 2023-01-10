@@ -18,6 +18,7 @@ const verifyPassword = async (password, hash) => {
 const verifyCallback = async (req, username, password, done) => {
     try {
         const query = `SELECT * FROM appUser WHERE username = '${username}'`;
+        console.log(username);
         const res = await performQuery(query);
         const user = res.rows[0];
 
@@ -46,10 +47,12 @@ const strategy = new LocalStrategy({ passReqToCallback: true }, verifyCallback);
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
+    console.log('serialize');
     done(null, user.id);
 })
 
 passport.deserializeUser(async (userId, done) => {
+    console.log('deserialize');
     const query = `SELECT * FROM appUser WHERE id = '${userId}'`;
     try {
         const res = await performQuery(query);
