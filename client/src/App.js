@@ -65,7 +65,7 @@ function App() {
         }
         try {
             const json = await response.json();
-            console.log(json);
+            console.log(json.user);
             setMessage(json.message);
             setUser(json.user);
             setUserId(json.id);
@@ -175,7 +175,7 @@ function App() {
                             <Route exact path="/login" element={<LoginPage />} />
                             <Route path="*" element={<NotFoundPage />} />
                         </Routes>
-                        {/* {debugText} */}
+                        {debugText}
                     </header>
                 </div>
             </Router>
