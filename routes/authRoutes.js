@@ -139,6 +139,8 @@ router.get('/login-success', (req, res) => {
 
 // Fetch currently logged in user
 router.get('/getUser', (req, res) => {
+    console.log('/api/auth/getUser ROUTE HANDLER');
+    console.log(req.user);
     const data = {
         message: "No user logged in",
         user: null
