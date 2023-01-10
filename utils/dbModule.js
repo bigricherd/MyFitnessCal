@@ -14,11 +14,9 @@ const devConfig = {
 
 const prodConfig = {
     host: process.env.INSTANCE_HOST,
-    //port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    // connectionString: process.env.DATABASE_URL
 };
 
 const pool = new Pool(process.env.NODE_ENV === "production" ? prodConfig : devConfig);

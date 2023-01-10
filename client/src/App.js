@@ -59,7 +59,7 @@ function App() {
 
     const fetchUserUrl = `/api/auth/getUser`;
     const fetchUser = useCallback(async () => {
-        const response = await fetch(`${homeUrl}/api/auth/getUser`, { credentials: "include" });
+        const response = await fetch(`/api/auth/getUser`, { credentials: "include" });
         if (!response.ok) {
             throw new Error(`status ${response.status}`);
         }
