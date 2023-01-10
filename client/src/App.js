@@ -25,7 +25,7 @@ const muscleGroups = ["chest", "shoulders", "biceps", "triceps",
 const muscleGroupsForAnalytics = muscleGroups.slice();
 muscleGroupsForAnalytics.unshift("all");
 
-// const basename = document.querySelector('base')?.getAttribute('href') ?? '/';
+const basename = document.querySelector('base')?.getAttribute('href') ?? '/';
 
 function App() {
     const [message, setMessage] = useState(null);
@@ -102,7 +102,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
-            <Router>
+            <Router basename={basename}>
                 <div className="App">
                     <header className="App-header">
                         <Nav user={user} darkMode={darkMode} toggleDarkMode={() => { setDarkMode(!darkMode) }} />
