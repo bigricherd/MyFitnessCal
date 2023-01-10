@@ -37,6 +37,7 @@ const sessionConfig = {
     },
 };
 
+// ---------- CONNECT TO DATABASE ----------
 if (process.env.NODE_ENV === "production") {
     const { pool } = require('./utils/dbModule')
     const store = new pgSession({

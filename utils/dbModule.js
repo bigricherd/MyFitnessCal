@@ -14,7 +14,7 @@ const devConfig = {
 
 const prodConfig = {
     host: process.env.INSTANCE_HOST,
-    port: process.env.DB_PORT,
+    //port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
@@ -27,6 +27,13 @@ const pool = new Pool(process.env.NODE_ENV === "production" ? prodConfig : devCo
 pool.on('error', (e) => {
     console.log(e, e.stack, e.message);
 });
+
+pool.on('connect', (res) => {
+    console.log('Connected to database');
+    if (process.env.NODE_ENV === "production") { 
+        console.log(prodConfig);
+    } else console.log(devConfig);
+})
 
 module.exports = {
     performQuery: (text) => {
