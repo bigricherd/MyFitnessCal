@@ -65,6 +65,7 @@ function App() {
         }
         try {
             const json = await response.json();
+            console.log(json);
             setMessage(json.message);
             setUser(json.user);
             setUserId(json.id);
@@ -79,6 +80,7 @@ function App() {
 
     useEffect(() => {
         setIsFetching(true);
+        console.log('About to call fetchUser');
         fetchUser();
     }, [fetchUser, firstVisit]);
 
