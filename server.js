@@ -30,8 +30,8 @@ app.use(cors(corsConfig));
 const secret = process.env.SECRET || "alwaysHungry";
 const sessionConfig = {
     secret,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
@@ -39,6 +39,7 @@ const sessionConfig = {
 
 // ---------- CONNECT TO DATABASE ----------
 if (process.env.NODE_ENV === "production") {
+    console.log('PROD DB Config');
     const { pool } = require('./utils/dbModule')
     const store = new pgSession({
         pool,
