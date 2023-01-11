@@ -33,8 +33,8 @@ const sessionConfig = {
     secret,
     resave: false,
     saveUninitialized: false,
-    httpOnly: false,
     cookie: {
+        httpOnly: false,
         maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
 };
