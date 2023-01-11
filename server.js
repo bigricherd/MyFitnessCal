@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === "production") {
         pruneSessionInterval: false
     });
     app.set('trust proxy', 1); // trust first proxy
-    sessionConfig.cookie.secure = true; // serve secure cookies
+    sessionConfig.cookie.secure = false; // serve secure cookies
     sessionConfig.store = store; // use Postgres for Session storage
     console.log(sessionConfig);
 }
