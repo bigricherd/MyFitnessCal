@@ -3,13 +3,11 @@ const cors = require('cors');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const passport = require('passport');
-//const methodOverride = require('method-override');
 const path = require('path');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//app.use(methodOverride("_method"));
 
 // ---------- CORS SETUP ----------
 const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
@@ -19,7 +17,6 @@ const corsConfig = {
         if (whitelist.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
         } else {
-            console.log(origin);
             callback(new Error("Not allowed by CORS."));
         }
     },
@@ -51,7 +48,6 @@ if (process.env.NODE_ENV === "production") {
     app.set('trust proxy', 1); // trust first proxy
     sessionConfig.cookie.secure = false; // serve secure cookies
     sessionConfig.store = store; // use Postgres for Session storage
-    console.log(sessionConfig);
 }
 app.use(session(sessionConfig));
 

@@ -10,7 +10,6 @@ const verifyPassword = async (password, hash) => {
         const res = await bcrypt.compare(password, hash);
         result = res;
     } catch (e) {
-        //console.log(`Error at bcrypt.compare: ${e}`);
     }
     return result;
 }
@@ -47,12 +46,10 @@ const strategy = new LocalStrategy({ passReqToCallback: true }, verifyCallback);
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
-    console.log('serialize');
     done(null, user.id);
 })
 
 passport.deserializeUser(async (userId, done) => {
-    console.log('deserialize');
     const query = `SELECT * FROM appUser WHERE id = '${userId}'`;
     try {
         const res = await performQuery(query);

@@ -26,12 +26,13 @@ pool.on('error', (e) => {
     console.log(e, e.stack, e.message);
 });
 
-pool.on('connect', (res) => {
-    console.log('Connected to database');
-    if (process.env.NODE_ENV === "production") { 
-        console.log(prodConfig);
-    } else console.log(devConfig);
-})
+// DEBUG database connection
+// pool.on('connect', (res) => {
+//     console.log('Connected to database');
+//     if (process.env.NODE_ENV === "production") { 
+//         console.log(prodConfig);
+//     } else console.log(devConfig);
+// })
 
 module.exports = {
     performQuery: (text) => {
