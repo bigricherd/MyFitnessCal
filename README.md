@@ -105,5 +105,6 @@ Try it here: https://myfitnesscal.uw.r.appspot.com/
 <h2> Known Bugs </h2>
   <ul>
         <li> Changing a user's time zone only updates calendar event rendering, not the start / end time attributes of that Session in the database.</li>
+  <li> Calendar sometimes does not update existing Sessions (events) after add or delete. Repro steps are unclear; under investigation. </li>
   </ul>
     
