@@ -84,7 +84,7 @@ export default function useForm({ initialValues }) {
             const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'PATCH',
-                url: `${homeUrl}/api/sessions/?id=${sessionId}`,
+                url: `/api/sessions/?id=${sessionId}`,
                 data: {
                     title,
                     comments,

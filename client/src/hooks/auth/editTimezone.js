@@ -56,7 +56,7 @@ export default function useForm({ initialValues, timezones, setTimezone }) {
             const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'PATCH',
-                url: `${homeUrl}/api/auth/timezone`,
+                url: `/api/auth/timezone`,
                 data: {
                     timezone,
                     userId

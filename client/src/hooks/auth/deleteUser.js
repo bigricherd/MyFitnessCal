@@ -32,7 +32,7 @@ export default function useForm({ initialValues }) {
             const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'DELETE',
-                url: `${homeUrl}/api/auth/user?userId=${userId}`,
+                url: `/api/auth/user?userId=${userId}`,
                 withCredentials: true
 
             }).then(res => {

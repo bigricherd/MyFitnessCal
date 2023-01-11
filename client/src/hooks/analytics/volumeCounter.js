@@ -71,7 +71,7 @@ export default function useForm({ initialValues, muscleGroups }) {
         // Instead we pass filter parameters through the query string and they are read on the backend through req.query
         try {
             const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
-            const res = await fetch(`${homeUrl}/api/stats/setsPerMuscle?fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}&muscleGroup=${muscleGroup}`, {
+            const res = await fetch(`/api/stats/setsPerMuscle?fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}&muscleGroup=${muscleGroup}`, {
                 credentials: "include",
                 headers: {
                     "Content-Type": "application/json",

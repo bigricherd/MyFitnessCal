@@ -29,7 +29,7 @@ function ProgressTracker(props) {
 
     const fetchExercises = async () => {
         const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
-        const res = await fetch(`${homeUrl}/api/stats/exercisesGrouped`, {
+        const res = await fetch(`/api/stats/exercisesGrouped`, {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",

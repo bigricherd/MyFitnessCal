@@ -35,7 +35,7 @@ export default function useForm({ initialValues }) {
             const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'DELETE',
-                url: `${homeUrl}/api/exercises/?nameandmusclegroup=${exercise}`,
+                url: `/api/exercises/?nameandmusclegroup=${exercise}`,
                 withCredentials: true
 
             }).then(res => {
