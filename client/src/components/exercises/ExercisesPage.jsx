@@ -102,7 +102,7 @@ function ExercisesPage(props) {
             </Stack>
 
             {/* List of user's exercises with delete functionality */}
-            {exercisesByUser.length > 0 &&
+            {
             <MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />}
 
             <Stack justifyContent="center" alignItems="center">

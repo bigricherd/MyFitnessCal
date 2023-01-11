@@ -212,11 +212,13 @@ function MyExercises(props) {
         <Stack justifyContent="center" alignItems="center" spacing={1}>
 
             {/* List of exercises (main component content) */}
-            <Typography
-                variant="h5"
-            >
-                My Exercises
-            </Typography>
+            {props.exercisesByUser.length > 0 &&
+                <Typography
+                    variant="h5"
+                >
+                    My Exercises
+                </Typography>
+            }
 
             <Stack justifyContent="center" alignItems="center">
 
