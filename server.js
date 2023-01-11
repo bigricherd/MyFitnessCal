@@ -19,7 +19,7 @@ const corsConfig = {
         if (whitelist.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
         } else {
-            callback(new Error("Not allowed by CORS"));
+            callback(new Error("Not allowed by CORS. Origin: ", origin));
         }
     },
     credentials: true,
@@ -44,6 +44,7 @@ if (process.env.NODE_ENV === "production") {
     const store = new pgSession({
         pool,
         createTableIfMissing: true,
+        tableName: "user_sessions",
         pruneSessionInterval: false
     });
     app.set('trust proxy', 1); // trust first proxy
