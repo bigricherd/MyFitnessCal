@@ -51,10 +51,11 @@ export default function useForm({ initialValues, slug, timezones }) {
             setError("Invalid time zone.");
             return false;
         }
-        else if (slug === "api/auth/register" && !regex.test(password)) {
-            setError("Password is not strong enough.");
-            return false;
-        }
+        // NOTE PASSWORD STRENGTH REQUIREMENT REMOVED FOR DEVELOPMENT
+        // else if (slug === "api/auth/register" && !regex.test(password)) {
+        //     setError("Password is not strong enough.");
+        //     return false;
+        // }
 
         return true;
     }

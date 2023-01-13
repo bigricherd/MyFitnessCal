@@ -31,10 +31,10 @@ const validateInputs = (values, next) => {
     else if (username.length > 30) {
         return next(new Error("Username is too long"));
     }
-    // Password requirements: at least 6 characters, one digit, one lowercase letter, one uppercase letter, one symbol -- FIX overkill?
-    else if (!regex.test(password)) {
-        return next(new Error('Password is not strong enough.'));
-    }
+    // Password requirements: at least 6 characters, one digit, one lowercase letter, one uppercase letter, one symbol
+    // else if (!regex.test(password)) {
+    //     return next(new Error('Password is not strong enough.'));
+    // }
 
     return true;
 };

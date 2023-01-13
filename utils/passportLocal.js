@@ -17,7 +17,6 @@ const verifyPassword = async (password, hash) => {
 const verifyCallback = async (req, username, password, done) => {
     try {
         const query = `SELECT * FROM appUser WHERE username = '${username}'`;
-        console.log(username);
         const res = await performQuery(query);
         const user = res.rows[0];
 
