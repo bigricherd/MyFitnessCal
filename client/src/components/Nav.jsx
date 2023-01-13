@@ -1,4 +1,4 @@
-import { AppBar, Drawer, Box, Toolbar, Button, IconButton, List, ListItem, Container, Typography, Divider, Stack, Tooltip } from '@mui/material';
+import { AppBar, Drawer, Box, Toolbar, Button, IconButton, List, ListItem, Container, Typography, Divider, Stack, Tooltip, Switch } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // This is what we are using right now, as MUILink refreshes the page and logs the user out. Seems like a session problem.
@@ -8,6 +8,7 @@ const navItems = ['Sessions', 'Exercises', 'Analytics'];
 const authPages = ['Register', 'Login'];
 
 const Nav = (props) => {
+    console.log(props.units);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [pages, setPages] = useState(authPages);
 
@@ -15,6 +16,15 @@ const Nav = (props) => {
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+    }
+
+    const handleToggleUnits = (e) => {
+        let checked = e.target.checked;
+        if (checked) {
+            props.setUnits("kg");
+        } else {;
+            props.setUnits("lb");
+        }
     }
 
     const handleLogout = async (e) => {
@@ -44,6 +54,11 @@ const Nav = (props) => {
                 textDecoration: "none"
             }}>Account</Link>
         </Button>
+        <Stack direction="row" spacing={0} alignItems="center">
+        <Typography>lb</Typography>
+        <Switch checked={(props.units === "kg")} onChange={handleToggleUnits}/>
+        <Typography>kg</Typography>
+      </Stack>
         <Button sx={{ color: '#f44336' }} onClick={handleLogout}>
             Logout
         </Button>

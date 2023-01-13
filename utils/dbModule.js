@@ -4,7 +4,16 @@ const { Pool } = require("pg");
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config({ path: '.env.dev' }); // .env.dev in top-level directory "app"
 }
+
 const devConfig = {
+    host: "localhost",
+    port: 5432,
+    user: "postgres",
+    database: "mfc-2"
+}
+
+// Connecting to PROD DB on Dev Environment; for DB testing
+const stageConfig = {
     host: process.env.INSTANCE_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
@@ -27,12 +36,12 @@ pool.on('error', (e) => {
 });
 
 // DEBUG database connection
-// pool.on('connect', (res) => {
-//     console.log('Connected to database');
-//     if (process.env.NODE_ENV === "production") { 
-//         console.log(prodConfig);
-//     } else console.log(devConfig);
-// })
+pool.on('connect', (res) => {
+    console.log('Connected to database');
+    if (process.env.NODE_ENV === "production") { 
+        console.log(prodConfig);
+    } else console.log(devConfig);
+})
 
 module.exports = {
     performQuery: (text) => {

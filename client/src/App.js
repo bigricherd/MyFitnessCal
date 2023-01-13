@@ -30,7 +30,8 @@ const basename = document.querySelector('base')?.getAttribute('href') ?? '/';
 function App() {
     const [message, setMessage] = useState(null);
     const [isFetching, setIsFetching] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(true);
+    const [units, setUnits] = useState("lb"); // "pounds" or "kg"
 
     const theme = createTheme({
         palette: {
@@ -80,7 +81,6 @@ function App() {
 
     useEffect(() => {
         setIsFetching(true);
-        console.log('About to call fetchUser');
         fetchUser();
     }, [fetchUser, firstVisit]);
 
@@ -105,7 +105,13 @@ function App() {
             <Router basename={basename}>
                 <div className="App">
                     <header className="App-header">
-                        <Nav user={user} darkMode={darkMode} toggleDarkMode={() => { setDarkMode(!darkMode) }} />
+                        <Nav 
+                            user={user}
+                            darkMode={darkMode}
+                            toggleDarkMode={() => { setDarkMode(!darkMode) }}
+                            units={units}
+                            setUnits={setUnits}
+                        />
                         <Routes>
                             <Route
                                 exact
@@ -118,6 +124,7 @@ function App() {
                                     setFirstVisit={setFirstVisit}
                                     muscleGroups={muscleGroups}
                                     darkMode={darkMode}
+                                    units={units}
                                 /> : <LoginPage />}
                             />
                             <Route
@@ -132,6 +139,7 @@ function App() {
                                         setFirstVisit={setFirstVisit}
                                         muscleGroups={muscleGroups}
                                         darkMode={darkMode}
+                                        units={units}
                                     />
                                     : <LoginPage />}
                             />
@@ -154,6 +162,7 @@ function App() {
                                     <AnalyticsPage
                                         user={user}
                                         muscleGroups={muscleGroupsForAnalytics}
+                                        units={units}
                                     />
                                     : <LoginPage />}
                             />
