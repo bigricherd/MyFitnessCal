@@ -1,7 +1,7 @@
 <h2> Overview </h2>
 A React app with a calendar to visualize your training periodization and features to track your training volume and progress on lifts. Built with a PERN stack, Passport.js for authentication, and MUI for styles. </br> </br>
 Developed and maintained by Chino Rodriguez with the help of Tricia Cu. </br> </br>
-Try it here: https://myfitnesscal.herokuapp.com
+Try it here: https://myfitnesscal.uw.r.appspot.com/
 
 <h2> Preview </h2>
 <img src="https://user-images.githubusercontent.com/106716130/199653581-8cc5e829-e8b7-4ad0-9423-894b3a58f078.png"/>
@@ -105,5 +105,6 @@ Try it here: https://myfitnesscal.herokuapp.com
 <h2> Known Bugs </h2>
   <ul>
         <li> Changing a user's time zone only updates calendar event rendering, not the start / end time attributes of that Session in the database.</li>
+  <li> Calendar sometimes does not update existing Sessions (events) after add or delete. Repro steps are unclear; under investigation. </li>
   </ul>
     
