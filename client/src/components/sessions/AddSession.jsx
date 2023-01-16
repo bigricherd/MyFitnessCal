@@ -116,7 +116,7 @@ function AddSession(props) {
         setValues({
             ...values,
             ["units"]: props.units
-        })
+        });
     }, [props.units]);
 
     useEffect(() => {
