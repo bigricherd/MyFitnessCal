@@ -41,24 +41,28 @@ const Nav = (props) => {
         setPages(props.user ? navItems : authPages);
     }, [props]);
 
-    const authSettings = <Stack direction="column" alignItems="center" justifyContent="center">
+    const authSettings =
+    <Stack direction="column" alignItems="center" justifyContent="center">
         <Button
             onClick={props.toggleDarkMode}
             sx={{ color: "white" }}
         >
             {props.darkMode ? "Light mode" : "Dark mode"}
         </Button>
+
         <Button>
             <Link to="/settings" style={{
                 color: "white",
                 textDecoration: "none"
             }}>Account</Link>
         </Button>
+
         <Stack direction="row" spacing={0} alignItems="center">
-        <Typography>lb</Typography>
-        <Switch checked={(props.units === "kg")} onChange={handleToggleUnits}/>
-        <Typography>kg</Typography>
-      </Stack>
+            <Typography>lb</Typography>
+            <Switch checked={(props.units === "kg")} onChange={handleToggleUnits}/>
+            <Typography>kg</Typography>
+        </Stack>
+
         <Button sx={{ color: '#f44336' }} onClick={handleLogout}>
             Logout
         </Button>
@@ -119,6 +123,20 @@ const Nav = (props) => {
                     </ListItem>
                 </>
                 : null}
+
+            {/* Toggle units switch */}
+            <ListItem>
+                <Stack direction="row" spacing={0} alignItems="center" sx={{marginLeft: "0.4rem"}}>
+                    <Typography sx={{
+                        fontSize: "0.94rem"
+                    }}>lb</Typography>
+                    <Switch checked={(props.units === "kg")} onChange={handleToggleUnits}/>
+                    <Typography sx={{
+                        fontSize: "0.94rem"
+                    }}>kg</Typography>
+                </Stack>
+            </ListItem>
+            
 
             {/* Toggle theme button */}
             <ListItem>
