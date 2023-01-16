@@ -187,7 +187,7 @@ function ShowSetsCollapse(props) {
                                                 set.weight :
                                                 (Math.round(parseInt(set.weight) / 2.20462262)).toString()
                                                 }
-                                                </TableCell> 
+                                            </TableCell> 
                                             <TableCell align="center">{set.reps}</TableCell>
 
                                             {/* Delete button */}
