@@ -139,6 +139,7 @@ function AddSetsCollapse(props) {
                                                         value={sets[i]}
                                                         handleChange={handleSetChange}
                                                         onDelete={removeSet}
+                                                        units={props.units}
                                                     />
                                                 </TableCell>
                                             </TableRow>

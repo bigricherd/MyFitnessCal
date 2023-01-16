@@ -87,7 +87,8 @@ function AddSession(props) {
             date: '',
             startdatetime: '',
             enddatetime: '',
-            sets: []
+            sets: [],
+            units: props.units
         }
     });
 
@@ -110,6 +111,13 @@ function AddSession(props) {
             props.onClose();
         }
     };
+    
+    useEffect(() => {
+        setValues({
+            ...values,
+            ["units"]: props.units
+        })
+    }, [props.units]);
 
     useEffect(() => {
         props.liftState(numSessions);
@@ -124,7 +132,6 @@ function AddSession(props) {
         setShowError(false);
     }
 
-    // BUG MIGHT BE HERE FIX 
     useEffect(() => {
         if (error) {
             setAttempted(true);
@@ -323,6 +330,7 @@ function AddSession(props) {
                                             onChange={handleExerciseChange}
                                             onDelete={removeExercise}
                                             attempted={attempted}
+                                            units={props.units}
                                         />
                                     ))}
                                 </TableBody>

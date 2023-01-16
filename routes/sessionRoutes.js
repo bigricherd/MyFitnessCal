@@ -165,7 +165,7 @@ router.get("/", async (req, res) => {
 // Add a new session
 router.post("/add", isLoggedIn, async (req, res, next) => {
     await getEnums(); // we need these for creating sets
-    const { title, date, startdatetime, enddatetime, comments = "", sets = [] } = req.body;
+    const { title, date, startdatetime, enddatetime, comments = "", sets = [], units } = req.body;
 
     if (validateAdd({
         title,

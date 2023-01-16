@@ -84,7 +84,7 @@ export default function useForm({ initialValues }) {
     //send data to database
     const submitData = async (formValues) => {
         const dataObject = formValues.values;
-        let { title, comments, date, startdatetime, enddatetime, sets } = dataObject;
+        let { title, comments, date, startdatetime, enddatetime, sets, units } = dataObject;
 
         try {
             // Sets start and end times to be on the selected date; necessary because it defaults to today.
@@ -96,6 +96,12 @@ export default function useForm({ initialValues }) {
 
             startdatetime.setFullYear(date.getFullYear());
             enddatetime.setFullYear(date.getFullYear());
+
+            if (units === "kg") {
+                for (let set of sets) {
+                    set["weight"] = (parseInt(set.weight) * 2.2046).toString()
+                }
+            }
 
             const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({

@@ -35,7 +35,7 @@ function AddSetRow(props) {
                     <TextField
                         id="weight"
                         name={`weight_${props.index}`}
-                        label="Weight (lb)"
+                        label={`Weight (${props.units === "lb" ? "lb" : "kg"})`}
                         type="text"
                         value={props.value.weight}
                         onChange={props.handleChange}

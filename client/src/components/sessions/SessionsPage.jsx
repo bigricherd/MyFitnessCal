@@ -159,6 +159,7 @@ function SessionsPage(props) {
                 //exercises={exercises}
                 exercisesByUser={exercisesByUser}
                 liftState={setNumSessions}
+                units={props.units}
             />
 
             {/* Suggested Exercises (dialog) */}
