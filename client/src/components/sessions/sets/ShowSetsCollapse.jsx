@@ -184,8 +184,8 @@ function ShowSetsCollapse(props) {
                                         <TableRow key={set.id} sx={{ '& > *': { border: '0px solid' } }}>
                                             <TableCell align="center">
                                                 {props.units === "lb" ?
-                                                set.weight :
-                                                (Math.round(parseInt(set.weight) / 2.20462262)).toString()
+                                                    set.weight :
+                                                    (Math.round(parseInt(set.weight) / 2.20462262)).toString()
                                                 }
                                             </TableCell> 
                                             <TableCell align="center">{set.reps}</TableCell>
