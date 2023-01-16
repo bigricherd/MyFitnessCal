@@ -58,9 +58,19 @@ export default function useForm({ initialValues }) {
     //send data to database
     const submitData = async (formValues) => {
         const dataObject = formValues.values;
-        let { sets, sessionId, date } = dataObject;
+        let { sets, sessionId, date, units } = dataObject;
 
         try {
+
+            console.log(units === "lb");
+            console.log(units === "kg")
+
+            if (units === "kg") {
+                for (let set of sets) {
+                    set["weight"] = (parseInt(set.weight) * 2.2046).toString();
+                }
+            }
+
             const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'POST',

@@ -108,7 +108,7 @@ function SessionData(props) {
 
 
                 {/* Popup that is triggered when "Add Sets" button (above) is clicked */}
-                {session && <AddSetsToSessionPopup session={session} open={showAddSetsPopup} setOpen={setShowAddSetsPopup} liftState={props.liftNumSets} exercisesByUser={props.exercisesByUser} />}
+                {session && <AddSetsToSessionPopup session={session} open={showAddSetsPopup} setOpen={setShowAddSetsPopup} liftState={props.liftNumSets} exercisesByUser={props.exercisesByUser} units={props.units}/>}
 
                 {session && <EditSessionPopup session={session} open={showEditSessionPopup} setOpen={setShowEditSessionPopup} liftState={props.liftEdited} />}
 

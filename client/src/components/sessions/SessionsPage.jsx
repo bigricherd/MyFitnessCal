@@ -76,8 +76,6 @@ function SessionsPage(props) {
         });
         const json = await data.json();
         convertToCalendarEvents(json);
-        // console.log(calEvents);
-        // console.log(dbEvents);
     };
 
     const convertToCalendarEvents = (sessions) => {
@@ -186,6 +184,7 @@ function SessionsPage(props) {
                 exercisesByUser={exercisesByUser}
                 timezone={props.timezone}
                 darkMode={props.darkMode}
+                units={props.units}
             />
         </>
     );

@@ -232,10 +232,12 @@ router.delete("/set", isLoggedIn, async (req, res, next) => {
 // Add sets to an existing session
 router.post("/addSets", isLoggedIn, async (req, res, next) => {
     await getEnums();
-    const { sets, sessionId, date } = req.body;
+    const { sets, sessionId, date, units } = req.body;
     const userId = req.user.id;
 
     if (await validateAddSets({ sets, sessionId, date }, userId, next)) {
+
+        console.log(sets);
 
         addManySets(sessionId, userId, sets, date);
 

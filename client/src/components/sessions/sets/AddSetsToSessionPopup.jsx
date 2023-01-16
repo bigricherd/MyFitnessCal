@@ -85,9 +85,17 @@ function AddSetsToSessionPopup(props) {
         initialValues: {
             sets: [],
             sessionId: props.session ? props.session.id : null,
-            date: props.session ? formatDateHyphens(props.session.date) : null
+            date: props.session ? formatDateHyphens(props.session.date) : null,
+            units: props.units
         }
     });
+
+    useEffect(() => {
+        setValues({
+            ...values,
+            ["units"]: props.units
+        })
+    }, [props.units])
 
     // Lift numSets to SessionData
     useEffect(() => {
@@ -146,7 +154,9 @@ function AddSetsToSessionPopup(props) {
                                         exercises={exercises}
                                         setExercises={setExercises}
                                         onChange={handleExerciseChange}
-                                        onDelete={removeExercise} />
+                                        onDelete={removeExercise}
+                                        units={props.units}
+                                        />
                                 ))}
                             </TableBody>
                         </Table>
