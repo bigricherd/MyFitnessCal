@@ -64,7 +64,7 @@ function VolumeCollapse(props) {
                         <Box>
                             {exercises && (
                                 exercises.length > 0 ?
-                                    <ExerciseBreakdownTable data={exercises} />
+                                    <ExerciseBreakdownTable data={exercises} units={props.units}/>
                                     :
                                     <Table>
                                         <TableBody>

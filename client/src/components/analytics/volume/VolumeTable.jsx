@@ -53,12 +53,13 @@ function VolumeTable(props) {
                                         key={item[0]}
                                         volume={[item[0], item[1]]}
                                         exercises={item[2]}
+                                        units={props.units}
                                     />
                                     : null
                             ))
                             :
                             // A single muscle group was selected
-                            <VolumeCollapse key={data[0][0]} volume={[data[0][0], data[0][1]]} exercises={data[0][2]} />
+                            <VolumeCollapse key={data[0][0]} volume={[data[0][0], data[0][1]]} exercises={data[0][2]} units={props.units} />
                         )
                     }
 

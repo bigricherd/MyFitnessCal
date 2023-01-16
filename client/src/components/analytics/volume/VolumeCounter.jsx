@@ -175,6 +175,7 @@ function VolumeCounter(props) {
                     {data && (
                         <VolumeTable
                             data={data}
+                            units={props.units}
                             className="mb-2"
                         />
                     )}
