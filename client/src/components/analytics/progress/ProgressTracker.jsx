@@ -210,7 +210,7 @@ function ProgressTracker(props) {
 
                     {/* Results */}
                     <Stack>
-                        {data && <ProgressTable data={data} exercise={values.exercise} />}
+                        {data && <ProgressTable data={data} exercise={values.exercise} units={props.units}/>}
                         {/* <Typography variant="h5">No sets found for that exercise.</Typography> */}
                     </Stack>
 

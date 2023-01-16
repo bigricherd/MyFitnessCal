@@ -48,11 +48,11 @@ function AnalyticsPage(props) {
                     </Box>
 
                     <TabPanel value={"0"}>
-                        <VolumeCounter muscleGroups={muscleGroups} />
+                        <VolumeCounter muscleGroups={muscleGroups} units={props.units}/>
                     </TabPanel>
 
                     <TabPanel value={"1"}>
-                        <ProgressTracker muscleGroups={muscleGroups} />
+                        <ProgressTracker muscleGroups={muscleGroups} units={props.units}/>
                     </TabPanel>
                 </TabContext>
             </Box>

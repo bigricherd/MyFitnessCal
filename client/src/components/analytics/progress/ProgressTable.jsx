@@ -45,6 +45,7 @@ function ProgressTable(props) {
                             <ProgressCollapse
                                 key={item[0]}
                                 data={item[1]}
+                                units={props.units}
                             />
                         ))
                     }
