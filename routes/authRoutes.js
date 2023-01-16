@@ -32,9 +32,9 @@ const validateInputs = (values, next) => {
         return next(new Error("Username is too long"));
     }
     // Password requirements: at least 6 characters, one digit, one lowercase letter, one uppercase letter, one symbol
-    // else if (!regex.test(password)) {
-    //     return next(new Error('Password is not strong enough.'));
-    // }
+    else if (!regex.test(password)) {
+        return next(new Error('Password is not strong enough.'));
+    }
 
     return true;
 };
