@@ -67,7 +67,7 @@ export default function useForm({ initialValues }) {
 
             if (units === "kg") {
                 for (let set of sets) {
-                    set["weight"] = (parseInt(set.weight) * 2.2046).toString();
+                    set["weight"] = (parseInt(set.weight) * 2.20462262).toString();
                 }
             }
 
