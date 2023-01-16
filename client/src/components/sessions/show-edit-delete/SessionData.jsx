@@ -140,7 +140,7 @@ function SessionData(props) {
                             {/* Array of collapsibles, one per exercise, each showing the sets of that exercise */}
                             <TableBody>
                                 {session && exercises.map((exercise, index) =>
-                                    <ShowSetsCollapse key={index} exercise={exercise} sets={session.sets[exercise]} session={session} liftState={props.liftNumSets} />
+                                    <ShowSetsCollapse key={index} exercise={exercise} sets={session.sets[exercise]} session={session} liftState={props.liftNumSets} units={props.units} />
                                 )
                                 }
                             </TableBody>

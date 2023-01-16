@@ -162,7 +162,11 @@ function ShowSetsCollapse(props) {
                                 {/* Table header */}
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="center">Weight</TableCell>
+                                        <TableCell align="center">
+                                            {
+                                                props.units === "lb" ? "Weight (lb)" : "Weight (kg)"
+                                            }
+                                        </TableCell>
                                         <TableCell align="center">Reps</TableCell>
 
                                         {/* Filler cell as heading of the column of delete buttons */}
@@ -178,7 +182,12 @@ function ShowSetsCollapse(props) {
                                 <TableBody>
                                     {sets && sets.map((set) =>
                                         <TableRow key={set.id} sx={{ '& > *': { border: '0px solid' } }}>
-                                            <TableCell align="center">{set.weight}</TableCell>
+                                            <TableCell align="center">
+                                                {props.units === "lb" ?
+                                                set.weight :
+                                                (Math.round(parseInt(set.weight) / 2.20462262)).toString()
+                                                }
+                                                </TableCell> 
                                             <TableCell align="center">{set.reps}</TableCell>
 
                                             {/* Delete button */}
