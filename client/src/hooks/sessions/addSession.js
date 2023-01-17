@@ -61,11 +61,23 @@ export default function useForm({ initialValues }) {
 
     const validateSets = (sets) => {
         for (let set of sets) {
-            if (parseInt(set.reps) <= 0 || set.reps === "") {
+            let { exercise } = set;
+            let muscleGroup = exercise.split(":")[1];
+            
+            console.log(muscleGroup);
+            console.log(set);
+                        
+            if (muscleGroup !== "cardio" && (parseInt(set.reps) <= 0 || set.reps === "")) {
                 setError("Minimum reps for a set is 1.");
                 return false;
-            } else if (parseInt(set.weight) < 0 || set.weight === "") {
+            } else if (muscleGroup !== "cardio" && (parseInt(set.weight) < 0 || set.weight === "")) {
                 setError("Weight cannot be negative.");
+                return false;
+            } else if (muscleGroup === "cardio" && (parseInt(set.distance <= 0) || set.distance === "")) {
+                setError("Distance must be greater than 0.");
+                return false;
+            } else if (muscleGroup === "cardio" && (parseInt(set.duration <= 0) || set.duration === "")) {
+                setError("Duration must be greater than 0 minutes.");
                 return false;
             }
         };

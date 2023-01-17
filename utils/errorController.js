@@ -43,6 +43,8 @@ module.exports = (err, req, res, next) => {
         // SETS
         if (err.message === "Weight cannot be negative. BE") return res.status(409).send({ message: err.message });
         if (err.message === "Minimum reps for a set is 1. BE") return res.status(409).send({ message: err.message });
+        if (err.message === "Distance must be greater than zero. BE") return res.status(409).send({ message: err.message });
+        if (err.message === "Minimum duration for a set is 1. BE") return res.status(409).send({ message: err.message });
         if (err.message === "Please add at least one set. BE") return res.status(409).send({ message: err.message });
 
         // DELETE / EDIT

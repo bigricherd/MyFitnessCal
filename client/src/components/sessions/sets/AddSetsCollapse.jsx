@@ -26,11 +26,23 @@ function AddSetsCollapse(props) {
     let exercises = props.exercises.slice();
 
     const addSet = () => {
-        const emptySet = {
+        console.log(props.exercise.name);
+
+        let emptySet = {
             'reps': 0,
             'weight': 0,
             exercise: props.exercise.name || ''
         }
+
+        if (props.exercise.name.split(":")[1] === "cardio") {
+            emptySet = {
+                'distance': 0.0,
+                'duration': 0,
+                exercise: props.exercise.name
+            }
+        }
+
+        
 
         if (sets.length === 0) {
             exercises[props.index]['sets'] = [emptySet];
@@ -140,6 +152,7 @@ function AddSetsCollapse(props) {
                                                         handleChange={handleSetChange}
                                                         onDelete={removeSet}
                                                         units={props.units}
+                                                        type={props.exercise.name.split(":")[1]}
                                                     />
                                                 </TableCell>
                                             </TableRow>

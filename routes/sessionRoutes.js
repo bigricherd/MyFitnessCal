@@ -19,13 +19,23 @@ const getEnums = async () => {
 
 // ---------- HELPERS: ADD SETS ----------
 const addSet = async (sessionId, userId, set, date) => {
-    const { reps, weight, exercise } = set;
+    const { reps, weight, distance, duration, exercise } = set;
     let key = `${exercise}:${userId}`;
     const id = uuid();
 
-    const muscleGroup = exercise.split(":")[1];
+    console.log(set);
 
-    const query = `INSERT INTO set(id, reps, weight, date, exercise, musclegroup, owner, session) VALUES ('${id}', ${reps}, ${weight}, '${date}', '${key}', '${muscleGroup}', '${userId}', '${sessionId}')`;
+    const muscleGroup = exercise.split(":")[1];
+    console.log(muscleGroup);
+
+    let query = "";
+
+    if (muscleGroup === "cardio") {
+        query = `INSERT INTO set(id, distance, duration, date, exercise, musclegroup, owner, session) VALUES ('${id}', ${distance}, ${duration}, '${date}', '${key}', '${muscleGroup}', '${userId}', '${sessionId}')`;
+    } else {
+        query = `INSERT INTO set(id, reps, weight, date, exercise, musclegroup, owner, session) VALUES ('${id}', ${reps}, ${weight}, '${date}', '${key}', '${muscleGroup}', '${userId}', '${sessionId}')`;
+    }
+
     await performQuery(query);
 };
 
@@ -55,11 +65,26 @@ const validateFields = (values, next) => {
 
 const validateSets = (sets, next) => {
     for (let set of sets) {
-        if ((!set.weight && set.weight !== 0) || parseInt(set.weight) < 0) {
-            return next(new Error("Weight cannot be negative. BE"));
-        } else if (!set.reps || parseInt(set.reps) <= 0) {
-            return next(new Error("Minimum reps for a set is 1. BE"));
+        let { exercise } = set;
+        let muscleGroup = exercise.split(":")[1];
+        console.log(muscleGroup);
+
+        if (muscleGroup !== "cardio") {
+            // Resistance training sets validation
+            if ((!set.weight && set.weight !== 0) || parseInt(set.weight) < 0) {
+                return next(new Error("Weight cannot be negative. BE"));
+            } else if (!set.reps || parseInt(set.reps) <= 0) {
+                return next(new Error("Minimum reps for a set is 1. BE"));
+            }
+        } else {
+            console.log('hello from validator')
+            if ((!set.distance && set.distance !== 0) || parseInt(set.distance) <= 0) {
+                return next(new Error("Distance must be greater than zero. BE"));
+            } else if (!set.duration || parseInt(set.duration) <= 0) {
+                return next(new Error("Minimum duration for a set is 1. BE"));
+            }
         }
+        
     }
     return true;
 }
@@ -95,7 +120,7 @@ const validateAddSets = async (values, user, next) => {
     const { sets, sessionId: id } = values;
     if (await authorizeEdit(id, user, next)) {
         if (sets.length === 0) {
-            return next(new Error("Please add at least one set. BE"));
+            return next(new Error("Please add at least one set."));
         }
         return validateSets(sets, next);
     }
