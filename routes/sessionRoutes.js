@@ -23,10 +23,7 @@ const addSet = async (sessionId, userId, set, date) => {
     let key = `${exercise}:${userId}`;
     const id = uuid();
 
-    console.log(set);
-
     const muscleGroup = exercise.split(":")[1];
-    console.log(muscleGroup);
 
     let query = "";
 
@@ -77,7 +74,6 @@ const validateSets = (sets, next) => {
                 return next(new Error("Minimum reps for a set is 1. BE"));
             }
         } else {
-            console.log('hello from validator')
             if ((!set.distance && set.distance !== 0) || parseInt(set.distance) <= 0) {
                 return next(new Error("Distance must be greater than zero. BE"));
             } else if (!set.duration || parseInt(set.duration) <= 0) {
@@ -157,7 +153,7 @@ router.get("/", async (req, res) => {
     const all = await performQuery(query);
     const session = all.rows[0];
 
-    const getSets = `SELECT id, reps, weight, exercise from set WHERE session = '${id}' ORDER BY exercise`;
+    const getSets = `SELECT id, reps, weight, distance, duration, exercise from set WHERE session = '${id}' ORDER BY exercise`;
     const sets = await performQuery(getSets);
 
     const s = {
@@ -171,10 +167,13 @@ router.get("/", async (req, res) => {
 
     const setsData = {};
     for (let set of sets.rows) {
+        console.log(set);
         const obj = {
             id: set.id,
             reps: set.reps,
-            weight: set.weight
+            weight: set.weight,
+            distance: set.distance,
+            duration: set.duration
         }
 
         if (set.exercise in setsData) {

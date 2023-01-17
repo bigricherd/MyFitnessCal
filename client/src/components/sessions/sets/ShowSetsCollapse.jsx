@@ -18,7 +18,10 @@ import deleteSet from '../../../hooks/sessions/sets/deleteSet';
 import formatExercise from '../../../helpers/formatExercise';
 
 function ShowSetsCollapse(props) {
+    console.log(props.exercise);
+    console.log(props.exercise.split(":")[1] !== "cardio");
     const [sets, setSets] = useState(props.sets);
+    const [exercise, setExercise] = useState(props.exercise)
     const [open, setOpen] = useState(false);
     const [prevOpen, setPrevOpen] = useState(false);
     const [editing, setEditing] = useState(false);
@@ -28,6 +31,9 @@ function ShowSetsCollapse(props) {
     useEffect(() => {
         if (props.sets) {
             setSets(props.sets);
+        }
+        if (props.exercise) {
+            setExercise(props.exercise);
         }
     }, [props]);
 
@@ -162,12 +168,27 @@ function ShowSetsCollapse(props) {
                                 {/* Table header */}
                                 <TableHead>
                                     <TableRow>
+
+                                        {props.exercise.split(":")[1] !== "cardio" ? 
+                                        <>
                                         <TableCell align="center">
                                             {
                                                 props.units === "lb" ? "Weight (lb)" : "Weight (kg)"
                                             }
                                         </TableCell>
                                         <TableCell align="center">Reps</TableCell>
+                                        </>
+                                        :
+                                        <>
+                                        <TableCell align="center">
+                                            {/* TODO support km and miles */}
+                                            {
+                                                props.units === "lb" ? "Distance" : "Distance"
+                                            }
+                                        </TableCell>
+                                        <TableCell align="center">Duration</TableCell>
+                                        </>
+}
 
                                         {/* Filler cell as heading of the column of delete buttons */}
                                         {
@@ -182,6 +203,9 @@ function ShowSetsCollapse(props) {
                                 <TableBody>
                                     {sets && sets.map((set) =>
                                         <TableRow key={set.id} sx={{ '& > *': { border: '0px solid' } }}>
+
+                                            {props.exercise.split(":")[1] !== "cardio" ? 
+                                            <>
                                             <TableCell align="center">
                                                 {props.units === "lb" ?
                                                     set.weight :
@@ -189,6 +213,18 @@ function ShowSetsCollapse(props) {
                                                 }
                                             </TableCell> 
                                             <TableCell align="center">{set.reps}</TableCell>
+                                            </>
+                                            :
+                                            <>
+                                            <TableCell align="center">
+                                                {props.units === "lb" ?
+                                                    set.distance :
+                                                    set.distance
+                                                }
+                                            </TableCell> 
+                                            <TableCell align="center">{set.duration}</TableCell>
+                                            </>
+}
 
                                             {/* Delete button */}
                                             {editing ?
