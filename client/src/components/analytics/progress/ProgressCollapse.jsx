@@ -65,18 +65,37 @@ function ProgressCollapse(props) {
                                 {/* Table header */}
                                 <TableHead>
                                     <TableRow>
+                                        { props.exercise.split(":")[1] !== "cardio" ?
+                                        /* Resistance training headers */
+                                        <>
                                         <TableCell align="center">
                                             { props.units === "lb" ?"Weight (lb)" : "Weight (kg)" }
                                         </TableCell>
-                                        <TableCell align="center">Reps</TableCell>
+                                        <TableCell align="center">
+                                            Reps
+                                        </TableCell>
+                                        </>
+                                        :
+                                        <>
+                                        {/* Cardio headers */}
+                                        <TableCell align="center">
+                                            Distance
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            Duration
+                                        </TableCell>
+                                        </>
+                                        }
                                     </TableRow>
                                 </TableHead>
 
                                 {/* Sets performed in this session, shown as rows */}
                                 <TableBody>
                                     {sets && sets.map((set) =>
+                                    
                                         <TableRow key={set.id} sx={{ '& > *': { border: '0px solid' } }}>
-                                            {/* TODO support display in kg if props.units === "kg" */}
+                                        {  props.exercise.split(":")[1] !== "cardio" ?
+                                            <>
                                             <TableCell align="center">
                                                 {props.units === "lb" ?
                                                     set.weight :
@@ -84,6 +103,17 @@ function ProgressCollapse(props) {
                                                 }
                                             </TableCell> 
                                             <TableCell align="center">{set.reps}</TableCell>
+                                            </>
+                                            :
+                                            <>
+                                            <TableCell align="center">
+                                                {set.distance}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                                {set.duration}
+                                            </TableCell>
+                                            </>
+                                        } 
 
                                         </TableRow>
                                     )}

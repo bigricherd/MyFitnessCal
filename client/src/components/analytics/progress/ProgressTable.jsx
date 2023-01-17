@@ -15,6 +15,7 @@ import formatExercise from '../../../helpers/formatExercise';
 function ProgressTable(props) {
     const [data, setData] = useState(Object.entries(props.data));
     const [exercise, setExercise] = useState(formatExercise(props.exercise.split(":")[0]));
+    console.log(Object.entries(props.data));
 
     useEffect(() => {
         setData(Object.entries(props.data));
@@ -46,6 +47,7 @@ function ProgressTable(props) {
                                 key={item[0]}
                                 data={item[1]}
                                 units={props.units}
+                                exercise={props.exercise}
                             />
                         ))
                     }
