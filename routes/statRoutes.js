@@ -92,21 +92,47 @@ router.get("/setsPerMuscle", isLoggedIn, async (req, res, next) => {
 
             for (let exercise of exerciseList) {
                 let key = `${exercise}:${userId}`;
-                const query = `SELECT count(*), AVG(weight), MAX(weight) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${key}') AND owner = '${userId}'`;
-                const data = await performQuery(query);
-                const count = data.rows[0].count;
-                const avgWeight = parseInt(data.rows[0].avg); // Round to integer
-                const maxWeight = data.rows[0].max;
+                exercise = exercise.split('_').join(' ');
 
-                const avgRepsQuery = `SELECT AVG(reps) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${key}') AND owner = '${userId}'`;
-                const avgRepsData = await performQuery(avgRepsQuery);
-                const avgReps = parseFloat(avgRepsData.rows[0].avg).toFixed(1);
+                if (exercise.split(":")[1] !== "cardio") {
+                    const data = await performQuery(`SELECT count(*), AVG(weight), MAX(weight) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${key}') AND owner = '${userId}'`);
+                    const count = data.rows[0].count;
+                    const avgWeight = parseInt(data.rows[0].avg); // Round to integer
+                    const maxWeight = data.rows[0].max;
 
-                // Only include an exercise if user did at least one set of it
-                if (count > 0) {
-                    exercise = exercise.split(':')[0];
-                    exercise = exercise.split('_').join(' ');
-                    result[groupTemp]['exercises'][exercise] = { count, avgWeight, maxWeight, avgReps };
+                    const avgRepsQuery = `SELECT AVG(reps) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${key}') AND owner = '${userId}'`;
+                    const avgRepsData = await performQuery(avgRepsQuery);
+                    const avgReps = parseFloat(avgRepsData.rows[0].avg).toFixed(1);
+
+                    // Only include an exercise if user did at least one set of it
+                    if (count > 0) {
+                        result[groupTemp]['exercises'][exercise] = { count, avgWeight, maxWeight, avgReps };
+                    }
+                } else {
+                    // TODO CARDIO ANALYTICS: MAX, AVG, MEDIAN DISTANCE AND DURATION
+                    const q1 = await performQuery(`SELECT count(*), AVG(distance), MAX(distance), SUM(distance) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${key}') AND owner = '${userId}'`);
+                    const distance = q1.rows[0];
+
+                    const q2 = await performQuery(`SELECT AVG(duration), MAX(duration), SUM(duration) FROM set WHERE ((date >= '${fromDate}' AND date <= '${toDate}') AND exercise = '${key}') AND owner = '${userId}'`)
+                    const duration = q2.rows[0]
+
+                    if (distance.count > 0) {
+                        let obj = {
+                            count: distance.count,
+                            distance: {
+                                avg: parseFloat(distance.avg).toFixed(2),
+                                max: distance.max,
+                                sum: distance.sum
+                            },
+                            duration: {
+                                avg: parseFloat(duration.avg).toFixed(2),
+                                max: duration.max,
+                                sum: duration.sum
+                            }
+                        }
+                        result[groupTemp]['exercises'][exercise] = obj;
+                    }
+
                 }
             }
         }
@@ -139,6 +165,8 @@ router.get('/setsOfExercise', isLoggedIn, async (req, res, next) => {
                 id: row.id,
                 reps: row.reps,
                 weight: row.weight,
+                distance: row.distance,
+                duration: row.duration
             }
 
             if (sets[row.session]) {
