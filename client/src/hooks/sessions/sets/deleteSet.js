@@ -30,7 +30,6 @@ export default function useForm({ initialValues }) {
         const dataObject = formValues.values;
         let { setId, sessionId } = dataObject;
         try {
-            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'DELETE',
                 url: `/api/sessions/set?setId=${setId}&sessionId=${sessionId}`,

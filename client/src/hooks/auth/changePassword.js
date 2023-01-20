@@ -55,7 +55,6 @@ export default function useForm({ initialValues, timezones, setTimezone }) {
         let { userId, oldPassword, newPassword } = dataObject;
 
         try {
-            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'PATCH',
                 url: `/api/auth/keyChange`,

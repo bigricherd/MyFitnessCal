@@ -57,7 +57,6 @@ export default function useForm({ initialValues, muscleGroups = [], setExercises
         const dataObject = formValues.values;
         const { exercises } = dataObject;
         try {
-            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: "POST",
                 url: `/api/exercises/addMany`,

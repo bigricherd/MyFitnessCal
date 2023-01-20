@@ -63,7 +63,6 @@ export default function useForm({ initialValues, muscleGroups }) {
         const dataObject = formValues.values;
         const { exercise, muscleGroup } = dataObject;
         try {
-            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: "POST",
                 url: `/api/exercises/add`,

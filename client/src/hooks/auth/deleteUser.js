@@ -29,7 +29,6 @@ export default function useForm({ initialValues }) {
         let { userId } = dataObject;
 
         try {
-            const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
             await axios({
                 method: 'DELETE',
                 url: `/api/auth/user?userId=${userId}`,
