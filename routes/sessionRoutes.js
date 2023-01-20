@@ -64,7 +64,6 @@ const validateSets = (sets, next) => {
     for (let set of sets) {
         let { exercise } = set;
         let muscleGroup = exercise.split(":")[1];
-        console.log(muscleGroup);
 
         if (muscleGroup !== "cardio") {
             // Resistance training sets validation
@@ -167,7 +166,6 @@ router.get("/", async (req, res) => {
 
     const setsData = {};
     for (let set of sets.rows) {
-        console.log(set);
         const obj = {
             id: set.id,
             reps: set.reps,
@@ -260,8 +258,6 @@ router.post("/addSets", isLoggedIn, async (req, res, next) => {
     const userId = req.user.id;
 
     if (await validateAddSets({ sets, sessionId, date }, userId, next)) {
-
-        console.log(sets);
 
         addManySets(sessionId, userId, sets, date);
 

@@ -38,9 +38,6 @@ export default function useForm({ initialValues }) {
             let { exercise } = set;
             let muscleGroup = exercise.split(":")[1];
 
-            console.log(muscleGroup);
-            console.log(set);
-                        
             if (muscleGroup !== "cardio" && (parseInt(set.reps) <= 0 || set.reps === "")) {
                 setError("Minimum reps for a set is 1.");
                 return false;
@@ -74,9 +71,6 @@ export default function useForm({ initialValues }) {
 
         try {
 
-            console.log(units === "lb");
-            console.log(units === "kg")
-
             if (units === "kg") {
                 for (let set of sets) {
                     set["weight"] = (parseInt(set.weight) * 2.20462262).toString();
@@ -101,7 +95,6 @@ export default function useForm({ initialValues }) {
                 return true;
             })
         } catch (err) {
-            console.log(err);
             if (!prevError || (error !== prevError)) {
                 setPrevError(error);
             } else {

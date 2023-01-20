@@ -68,12 +68,12 @@ function SuggestedExercises(props) {
         }
     }, [error, prevError]);
 
-    // UPDATE values.exercises every time the state variable changes
+    // Update values.exercises every time the state variable changes
     useEffect(() => {
         values.exercises = exercises;
     }, [exercises]);
 
-    // SETTING SUCCESS MESSAGE IN PARENT (SessionsPage or ExercisesPage)
+    // Set success message in parent component (SessionsPage or ExercisesPage)
     useEffect(() => {
         props.setSuccessMsg(successMsg);
         props.setPrevSuccessMsg(prevSuccessMsg);
@@ -81,7 +81,7 @@ function SuggestedExercises(props) {
         setExercises([]);
     }, [successMsg, prevSuccessMsg]);
 
-    // FOR SESSIONS VERSION
+    // For the SessionsPage version only
     useEffect(() => {
         if (!firstVisit) {
             props.setFirstVisit(firstVisit);
@@ -89,7 +89,7 @@ function SuggestedExercises(props) {
         }
     }, [firstVisit]);
 
-    // FOR EXERCISES VERSION
+    // For the ExercisesPage version
     useEffect(() => {
         props.setCount(count);
         setExercises([]);

@@ -63,9 +63,6 @@ export default function useForm({ initialValues }) {
         for (let set of sets) {
             let { exercise } = set;
             let muscleGroup = exercise.split(":")[1];
-            
-            console.log(muscleGroup);
-            console.log(set);
                         
             if (muscleGroup !== "cardio" && (parseInt(set.reps) <= 0 || set.reps === "")) {
                 setError("Minimum reps for a set is 1.");

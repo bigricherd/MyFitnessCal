@@ -29,7 +29,6 @@ export default function useForm({ initialValues, timezones, setTimezone }) {
     };
 
     const validateInputs = (values) => {
-        console.log(values.timezone);
         if (timezones.indexOf(values.timezone) === -1) {
             setError("Invalid time zone.");
             return false;
@@ -41,8 +40,6 @@ export default function useForm({ initialValues, timezones, setTimezone }) {
     const handleSubmit = event => {
         event.preventDefault();
         if (validateInputs(values)) {
-            console.log('valid tz');
-            console.log(values);
             submitData({ values });
         }
     };

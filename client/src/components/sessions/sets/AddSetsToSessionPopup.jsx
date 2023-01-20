@@ -128,7 +128,7 @@ function AddSetsToSessionPopup(props) {
                 </DialogTitle>
 
                 <DialogContent>
-                    {/* Add a new collapse containing SetRows (AddSetsCollapse)  */}
+                    {/* Add a new AddSetsCollapse */}
                     <Stack justifyContent="center" alignItems="center">
                         <Button
                             type="submit"

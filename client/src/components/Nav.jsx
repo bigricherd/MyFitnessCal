@@ -1,18 +1,14 @@
 import { AppBar, Drawer, Box, Toolbar, Button, IconButton, List, ListItem, Container, Typography, Divider, Stack, Tooltip, Switch } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // This is what we are using right now, as MUILink refreshes the page and logs the user out. Seems like a session problem.
+import { Link } from 'react-router-dom';
 
-//const drawerWidth = 240;
 const navItems = ['Sessions', 'Exercises', 'Analytics'];
 const authPages = ['Register', 'Login'];
 
 const Nav = (props) => {
-    console.log(props.units);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [pages, setPages] = useState(authPages);
-
-    const [showAuthTooltip, setShowAuthTooltip] = useState(false);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -29,7 +25,6 @@ const Nav = (props) => {
 
     const handleLogout = async (e) => {
         e.preventDefault();
-        const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
         const res = await fetch(`/api/auth/logout`, { credentials: "include" });
         if (res.ok) {
             window.location = '/';

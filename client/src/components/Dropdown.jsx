@@ -3,8 +3,8 @@ import { MenuItem, Tooltip, TextField, Typography } from "@mui/material";
 import formatExercise from '../helpers/formatExercise';
 
 // Returns a <select> element to be used in a form as a dropdown
-// Used in AddExercise, MuscleGroupFilter to show muscleGroups
-// Used in AddSet to show Exercises
+// Used in AddExercise, Volume Counter, Progress Tracker to show muscle groups
+// Used in AddSetsCollapse, Progress Tracker to show Exercises
 function Dropdown(props) {
     const [options, setOptions] = useState(props.options);
 
@@ -64,7 +64,6 @@ function Dropdown(props) {
                     onChange={props.onChange}
                     onKeyDown={props.onKeyDown}
                     error={props.error}
-                    // sx={{ display: "block" }}
                     required
                     fullWidth
                 >
@@ -75,7 +74,6 @@ function Dropdown(props) {
 
     } else return (
         <>
-            {/* <InputLabel id="dropdown-label">{dropdownLabel}</InputLabel> */}
             <TextField select
                 rules={{ required: true }}
                 name={props.name}

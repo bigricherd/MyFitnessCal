@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import DefaultCalendarView from "./CalendarView";
-import axios from 'axios';
 import {
     Button,
-    // Tab,
-    Box,
     Alert,
     Stack
 } from "@mui/material";
@@ -30,21 +27,7 @@ function SessionsPage(props) {
     // To detect changes in child components
     const [numSessions, setNumSessions] = useState(null);
     const [numEdits, setNumEdits] = useState(0);
-    const [count, setCount] = useState(0); // exercisesByUser.length
-
-    // // Fetch all exercises
-    // let exercisesArr = [];
-    // const [exercises, setExercises] = useState([]);
-    // const fetchExercises = async () => {
-    //     const data = await fetch(`/api/exercises/all`);
-    //     const json = await data.json();
-    //     exercisesArr = json.exercises;
-    //     setExercises(exercisesArr);
-    // };
-
-    // useEffect(() => {
-    //     fetchExercises();
-    // }, []);
+    const [count, setCount] = useState(0); // meant to hold exercisesByUser.length
 
     // Fetch exercises by current user
     const [exercisesByUser, setExercisesByUser] = useState([]);
@@ -66,7 +49,6 @@ function SessionsPage(props) {
 
 
     const getAllSessions = async () => {
-        const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
         const data = await fetch(`/api/sessions/all`, {
             credentials: "include",
             headers: {
@@ -94,7 +76,6 @@ function SessionsPage(props) {
         getAllSessions();
         setUser(props.user);
         setUserId(props.userId);
-        //fetchExercises();
         fetchExercisesByUser(props.userId);
     }, [props, view]);
 
@@ -154,7 +135,6 @@ function SessionsPage(props) {
                 open={showAddSession}
                 onClose={() => setShowAddSession(false)}
                 setShow={setShowAddSession}
-                //exercises={exercises}
                 exercisesByUser={exercisesByUser}
                 liftState={setNumSessions}
                 units={props.units}

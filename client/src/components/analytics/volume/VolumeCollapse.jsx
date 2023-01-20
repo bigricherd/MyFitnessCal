@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'react';
 import {
-    Button,
     Box,
     Collapse,
-    Grid,
     IconButton,
     Typography,
-    TableContainer,
     Table,
-    TableHead,
     TableRow,
     TableCell,
-    TableBody,
-    Stack
+    TableBody
 } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import formatExercise from '../../../helpers/formatExercise';
@@ -64,7 +59,7 @@ function VolumeCollapse(props) {
                         <Box>
                             {exercises && (
                                 exercises.length > 0 ?
-                                    <ExerciseBreakdownTable data={exercises} units={props.units}/>
+                                    <ExerciseBreakdownTable data={exercises} units={props.units} muscleGroup={props.volume[0]}/>
                                     :
                                     <Table>
                                         <TableBody>

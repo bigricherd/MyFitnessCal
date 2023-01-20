@@ -56,8 +56,6 @@ function App() {
     const [firstVisit, setFirstVisit] = useState(false);
     const [timezone, setTimezone] = useState(null);
 
-    const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
-
     const fetchUserUrl = `/api/auth/getUser`;
     const fetchUser = useCallback(async () => {
         const response = await fetch(`/api/auth/getUser`, { credentials: "include" });
@@ -66,7 +64,6 @@ function App() {
         }
         try {
             const json = await response.json();
-            console.log(json.user);
             setMessage(json.message);
             setUser(json.user);
             setUserId(json.id);
@@ -184,7 +181,6 @@ function App() {
                             <Route exact path="/login" element={<LoginPage />} />
                             <Route path="*" element={<NotFoundPage />} />
                         </Routes>
-                        {debugText}
                     </header>
                 </div>
             </Router>

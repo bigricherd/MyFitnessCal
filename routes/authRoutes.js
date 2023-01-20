@@ -139,8 +139,6 @@ router.get('/login-success', (req, res) => {
 
 // Fetch currently logged in user
 router.get('/getUser', (req, res) => {
-    console.log('/api/auth/getUser ROUTE HANDLER');
-    console.log(req.user);
     const data = {
         message: "No user logged in",
         user: null
@@ -165,7 +163,6 @@ router.patch('/timezone', async (req, res, next) => {
             await performQuery(`UPDATE appUser SET timezone='${timezone}' WHERE id = '${userId}'`);
 
             const updated = await performQuery(`SELECT timezone FROM appUser WHERE id = '${userId}'`);
-            console.log(updated.rows[0]);
 
             if (updated.rows.length === 1 && updated.rows[0].timezone === timezone) {
                 response.success = `Successfully changed timezone to ${timezone}.`;
@@ -193,7 +190,6 @@ router.patch('/timezone', async (req, res, next) => {
 // Delete user
 router.delete('/user', async (req, res, next) => {
     const { userId } = req.query;
-    console.log(userId);
     const user = req.user.id;
     const response = {};
 
@@ -203,12 +199,10 @@ router.delete('/user', async (req, res, next) => {
             req.logout((err, next) => {
                 if (err) return next(err);
             });
-            console.log(`Logged out user ${username}`);
 
             await performQuery(`DELETE FROM appuser WHERE id='${userId}'`);
 
             const rows = await performQuery(`SELECT * FROM appuser WHERE id='${userId}'`);
-            console.log(rows.rows);
             if (rows.rows.length !== 0) {
                 return next(new Error("User account was not deactivated. Please try again."));
             } else {
@@ -217,8 +211,6 @@ router.delete('/user', async (req, res, next) => {
             }
         }
     }
-
-    console.log(response);
     res.send(response);
 });
 

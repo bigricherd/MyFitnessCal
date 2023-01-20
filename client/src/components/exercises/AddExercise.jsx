@@ -13,8 +13,6 @@ import {
     Stack
 } from "@mui/material";
 
-// TODO store muscle Groups array here
-
 function AddExercise(props) {
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 

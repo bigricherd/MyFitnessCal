@@ -310,13 +310,7 @@ function AddSession(props) {
 
                     {/* Table containing an array of AddSetsCollapses */}
                     <Grid item xs={12}>
-                        <TableContainer
-                        // TODO this is a desktop style; needs to actually be limited on mobile
-                        // sx={{
-                        //     maxWidth: "80%",
-                        //     margin: "auto"
-                        // }}
-                        >
+                        <TableContainer>
                             <Table>
                                 <TableBody>
                                     {exercises.map((exercise, index) => (

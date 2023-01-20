@@ -17,9 +17,7 @@ import deleteUser from "../../hooks/auth/deleteUser";
 
 function DeleteUserPopup(props) {
 
-    const [userId, setUserId] = useState(props.userId);
-
-    const { values, handleSubmit, error, prevError } = deleteUser({
+    const { handleSubmit, error, prevError } = deleteUser({
         initialValues: {
             userId: props.userId,
         },

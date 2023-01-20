@@ -45,8 +45,6 @@ export default function useForm({ initialValues, timezones, setTimezone }) {
     const handleSubmit = event => {
         event.preventDefault();
         if (validateInputs(values)) {
-            console.log('valid pass');
-            console.log(values);
             submitData({ values });
         }
     };

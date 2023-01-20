@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import formatExercise from '../../helpers/formatExercise';
 import {
     Button,
@@ -12,10 +12,8 @@ import {
     Stack
 } from '@mui/material';
 import { DeleteOutline } from '@mui/icons-material/';
-//import Dropdown from '../Dropdown';
 import deleteExercise from '../../hooks/exercises/deleteExercise';
 import DeleteExercisePopup from './DeleteExercisePopup';
-//import editExercise from '../hooks/editExercise';
 
 function MyExercises(props) {
 
@@ -55,49 +53,7 @@ function MyExercises(props) {
         setOpen(false);
     }
 
-    // ------ EDIT EXERCISE ------
-
-    // Edit form hook and handler
-    // const { editValues, handleEdit, handleChangeEdit, handleKeyDownEdit, exercisesPostEdit, editError, prevEditError, editSuccessMsg, prevEditSuccessMsg } = editExercise(
-    //     {
-    //         initialValues: {
-    //             exercise: '',
-    //             newName: '',
-    //             newMuscleGroup: ''
-    //         }
-    //     }
-    // )
-
-    // const customHandleEdit = (e) => {
-    //     editValues.exercise = props.exercisesByUser[indexOfEditing];
-    //     handleEdit(e);
-    //     handleCloseEdit();
-    // }
-
-    // // State variable that represents visibility of 'Edit' dialog; handlers follow
-    // const [editing, setEditing] = useState(false);
-    // const [indexOfEditing, setIndexOfEditing] = useState(null);
-    // const handleClickEdit = (e, i) => {
-    //     e.persist();
-    //     editValues.newName = props.exercisesByUser[i];
-    //     console.log(editValues);
-    //     setIndexOfEditing(i);
-    //     setEditing(true);
-    //     console.log(`Going to show edit dialog for item at index ${i}, named ${props.exercisesByUser[i]}`);
-    // }
-
-    // const handleCloseEdit = () => {
-    //     // editValues.exercise = '';
-    //     // editValues.newName = '';
-    //     // editValues.newMuscleGroup = '';
-    //     setEditing(false);
-    //     setIndexOfEditing(null);
-    //     console.log('Setting index of editing to null');
-    // }
-
-
     // ------ LIST OF EXERCISES ------
-
     const [exercisesByUser, setExercisesByUser] = useState([]);
 
     useEffect(() => {
@@ -108,15 +64,12 @@ function MyExercises(props) {
 
     useEffect(() => {
         setList(exercisesByUser.map((item, index) =>
-            // TODO style for desktop
             <TableRow key={index} className="myExercisesItem" >
 
                 {/* Exercise name */}
                 <TableCell colSpan={4} align="center">
                     {(formatExercise(item.split(':')[0]))}
                 </TableCell>
-
-                {/* <Button component={Grid} item xs={3} sm={2} fullWidth variant="contained" color='info' onClick={(e) => handleClickEdit(e, index)}>Edit</Button> */}
 
                 {/* Delete button */}
                 <TableCell colSpan={3} align="right">
@@ -129,8 +82,7 @@ function MyExercises(props) {
                 </TableCell>
             </TableRow >
         ));
-        // setMuscleGroups(props.muscleGroups);
-    }, [exercisesByUser]); // React complains that onDeleteClick is a missing dependency, but adding it results in "maximum update depth exceeded"
+    }, [exercisesByUser]);
 
     useEffect(() => {
         props.liftState(exercisesPostDelete);
@@ -168,47 +120,6 @@ function MyExercises(props) {
     }, [error, prevError]);
 
     return (
-        //     {/* Edit dialog  */ }
-        // {/* <Dialog
-        //             open={editing}
-        //             onClose={handleCloseEdit}
-        //         >
-        //             <DialogTitle>Edit exercise {props.exercisesByUser[indexOfEditing]}</DialogTitle>
-        //             <DialogContent>
-        //                 <Box component="form" onSubmit={(e) => customHandleEdit(e)}>
-        //                     <FormControl fullWidth>
-        //                         <FormLabel>Name</FormLabel>
-        //                         <TextField
-        //                             name="newName"
-        //                             id="newName"
-        //                             value={props.exercisesByUser[indexOfEditing]}
-        //                             onChange={handleChangeEdit}
-        //                             onKeyDown={handleKeyDownEdit}
-        //                         ></TextField>
-        //                     </FormControl>
-
-        //                     <FormControl fullWidth>
-        //                         <FormLabel>Muscle Group</FormLabel>
-        //                         <Dropdown
-        //                             name="newMuscleGroup"
-        //                             id="newMuscleGroup"
-        //                             options={muscleGroups}
-        //                             value={editValues.newMuscleGroup}
-        //                             onChange={handleChangeEdit}
-        //                             onKeyDown={handleKeyDownEdit}
-        //                         />
-        //                     </FormControl>
-        //                     <Button
-        //                         type="submit"
-        //                         variant="contained"
-        //                         onClick={(e) => { customHandleEdit(e) }}
-        //                     >Save Changes</Button>
-        //                 </Box>
-        //             </DialogContent>
-        //             <DialogActions>
-        //                 <Button onClick={handleCloseEdit}>Back</Button>
-        //             </DialogActions>
-        //         </Dialog> */}
         <Stack justifyContent="center" alignItems="center" spacing={1}>
 
             {/* List of exercises (main component content) */}

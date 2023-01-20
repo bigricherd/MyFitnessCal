@@ -49,13 +49,9 @@ function DefaultCalendarView(props) {
 
     // Nice to have: Edit Session start and end times on event drag
     const onEventDragFinish = (prevEvent, updatedEvent) => {
-        // console.log('an event was dragged');
-        // console.log(prevEvent);
-        // console.log(updatedEvent);
     }
 
     return (
-        // temporary styles, will fix later
         <div
             style={{
                 backgroundColor: props.darkMode ? "black" : "white",
@@ -86,7 +82,6 @@ function DefaultCalendarView(props) {
                 onPageChange={onPageChange}
                 timeFormat={"24"}
                 weekDayStart={"Monday"}
-                //timezone={"America/Los_Angeles"}
                 timezone={props.timezone}
                 language={"en"}
                 showTimeLine={true}

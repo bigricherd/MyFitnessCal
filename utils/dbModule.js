@@ -29,20 +29,21 @@ const prodConfig = {
 };
 
 // const pool = new Pool(process.env.NODE_ENV === "production" ? prodConfig : devConfig);
-const pool = new Pool();
-
-pool.on('error', (e) => {
-    console.log('Postgres  Pool error')
-    console.log(e, e.stack, e.message);
-});
+const pool = new Pool(process.env.NODE_ENV === "production" ? {} : devConfig);
 
 // DEBUG database connection
-pool.on('connect', (res) => {
-    console.log('Connected to database');
-    if (process.env.NODE_ENV === "production") {
-        console.log(prodConfig);
-    } else console.log(devConfig);
-})
+// pool.on('error', (e) => {
+//     console.log('Postgres  Pool error')
+//     console.log(e, e.stack, e.message);
+// });
+
+
+// pool.on('connect', (res) => {
+//     console.log('Connected to database');
+//     if (process.env.NODE_ENV === "production") {
+//         console.log(prodConfig);
+//     } else console.log(devConfig);
+// })
 
 module.exports = {
     performQuery: (text) => {

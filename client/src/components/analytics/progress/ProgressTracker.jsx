@@ -16,9 +16,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Dropdown from '../../Dropdown';
 import progressTracker from '../../../hooks/analytics/progressTracker';
 import ProgressTable from './ProgressTable';
-import ProgressChart from './ProgressChart';
-
-// TODO store muscle Groups array here
 
 function ProgressTracker(props) {
     const [exercises, setExercises] = useState(null);
@@ -28,7 +25,6 @@ function ProgressTracker(props) {
     const [attempted, setAttempted] = useState(false);
 
     const fetchExercises = async () => {
-        const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
         const res = await fetch(`/api/stats/exercisesGrouped`, {
             credentials: "include",
             headers: {
@@ -103,7 +99,7 @@ function ProgressTracker(props) {
                     spacing={2}
                 >
                     {/* Heading */}
-                    <Typography variant="h5" gutterBottom> Progress Tracker for Lifts </Typography>
+                    <Typography variant="h5" gutterBottom> Progress Tracker</Typography>
 
                     {/* Form */}
                     <Box
@@ -211,14 +207,9 @@ function ProgressTracker(props) {
                     {/* Results */}
                     <Stack>
                         {data && <ProgressTable data={data} exercise={values.exercise} units={props.units}/>}
-                        {/* <Typography variant="h5">No sets found for that exercise.</Typography> */}
                     </Stack>
 
                 </Stack>
-
-
-
-                {/* {data && <ProgressChart data={data} exercise={values.exercise} />} */}
             </Container>
         </>
     )

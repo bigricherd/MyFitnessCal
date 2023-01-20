@@ -26,8 +26,6 @@ function AddSetsCollapse(props) {
     let exercises = props.exercises.slice();
 
     const addSet = () => {
-        console.log(props.exercise.name);
-
         let emptySet = {
             'reps': 0,
             'weight': 0,

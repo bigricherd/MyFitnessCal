@@ -7,7 +7,6 @@ import {
     Alert
 } from "@mui/material";
 import Dropdown from "../Dropdown";
-//import ChangePasswordPopup from "./ChangePasswordPopup";
 import DeleteUserPopup from './DeleteUserPopup';
 import editTimezone from "../../hooks/auth/editTimezone";
 
@@ -16,7 +15,6 @@ function SettingsPage(props) {
     const [userId, setUserId] = useState(props.userId);
     const [timezone, setTimezone] = useState(props.timezone);
 
-    const [showChangePasswordPopup, setShowChangePasswordPopup] = useState(false);
     const [showDeactivatePopup, setShowDeactivatePopup] = useState(false);
 
     const { values, handleChange, handleKeyDown, handleSubmit, success, prevSuccess, setSuccess, error, prevError } = editTimezone({
@@ -132,13 +130,13 @@ function SettingsPage(props) {
             </Stack> */}
 
             <Stack>
-                <Typography variant="h5">Account</Typography>
+                {/* <Typography variant="h5">Account</Typography> */}
                 <Button
                     onClick={() => { setShowDeactivatePopup(true) }}
                     color="error"
                     variant="outlined"
                 >
-                    DEACTIVATE
+                    DEACTIVATE ACCOUNT
                 </Button>
 
                 <DeleteUserPopup

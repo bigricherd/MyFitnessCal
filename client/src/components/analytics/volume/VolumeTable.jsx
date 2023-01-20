@@ -15,6 +15,7 @@ function VolumeTable(props) {
 
     const entries = Object.entries(props.data);
 
+    // TODO refactor the shape of this object. Not sure why I used an array here, that was dumb, but it works for now.
     const [data, setData] = useState(entries.map((item) =>
         [item[0], item[1].count, item[1].exercises]
     ));
@@ -38,8 +39,13 @@ function VolumeTable(props) {
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
-                        <TableCell className="px-3">Muscle Group</TableCell>
-                        <TableCell className="px-3"># Sets</TableCell>
+                        <TableCell className="px-3">
+                            Muscle Group
+                        </TableCell>
+                        <TableCell className="px-3">
+                            # Sets
+                        </TableCell>
+
                     </TableRow>
                 </TableHead>
 

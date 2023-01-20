@@ -18,8 +18,6 @@ import deleteSet from '../../../hooks/sessions/sets/deleteSet';
 import formatExercise from '../../../helpers/formatExercise';
 
 function ShowSetsCollapse(props) {
-    console.log(props.exercise);
-    console.log(props.exercise.split(":")[1] !== "cardio");
     const [sets, setSets] = useState(props.sets);
     const [exercise, setExercise] = useState(props.exercise)
     const [open, setOpen] = useState(false);

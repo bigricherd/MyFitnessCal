@@ -6,7 +6,6 @@ import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 function AnalyticsPage(props) {
-    const [user, setUser] = useState(props.user);
     const [muscleGroups, setMuscleGroups] = useState(props.muscleGroups);
 
     // Views
@@ -17,21 +16,10 @@ function AnalyticsPage(props) {
 
     // Update state every time props.user is updated
     useEffect(() => {
-        setUser(props.user);
         setMuscleGroups(props.muscleGroups);
     }, [props])
 
-    // // If there is no logged in user, show the prompt with links to Login and Register pages
-    // if (!user) {
-    //     return (
-    //         <>
-    //             <p><Link to={'/register'} className="text-decoration-none">Register</Link> or <Link to={'/login'} className="text-decoration-none">Login</Link> first</p>
-    //         </>
-    //     )
-    // }
-
     // // Show the user a form to assess their volume (# of sets performed) for some date range, filtered by muscle group 
-    // else
     return (
         <>
             <Box

@@ -14,7 +14,6 @@ const homeUrl = process.env.REACT_APP_HOME_URL || "http://localhost:3000";
 const whitelist = [homeUrl, process.env.REACT_APP_HOME_URL_SECURE, "http://localhost:3000", "http://localhost:5000"];
 const corsConfig = {
     origin: function (origin, callback) {
-        console.log(origin);
         if (whitelist.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
         } else {
@@ -39,7 +38,6 @@ const sessionConfig = {
 
 // ---------- CONNECT TO DATABASE ----------
 if (process.env.NODE_ENV === "production") {
-    console.log('PROD DB Config');
     const { pool } = require('./utils/dbModule')
     const store = new pgSession({
         pool,
@@ -75,9 +73,6 @@ app.use(errorController);
 app.use((err, req, res, next) => {
     if (!err.statusCode) err.statusCode = 500;
     if (!err.message) err.message = "Something went wrong";
-    console.log("you hit the catch-all error middleware");
-    console.log(err.statusCode, err.message);
-    console.log(err.name);
     return res.status(err.statusCode).send({ messages: err.message });
 });
 
@@ -94,5 +89,4 @@ app.get("*", (req, res) => {
 // ---------- START SERVER ----------
 const port = process.env.PORT || 5000;
 app.listen(port, (req, res) => {
-    console.log(`Listening on port ${port} `);
 });

@@ -58,7 +58,7 @@ function AddSetRow(props) {
                             type="text"
                             value={props.value.distance}
                             onChange={props.handleChange}
-                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // TODO allow decimals
+                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         />
                     </FormControl>
                     <FormControl>

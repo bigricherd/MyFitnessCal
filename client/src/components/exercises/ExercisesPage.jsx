@@ -64,17 +64,6 @@ function ExercisesPage(props) {
         }
     }, [successMsg, prevSuccessMsg]);
 
-
-    // // If there is no logged in user, show the prompt with links to Login and Register pages
-    // if (!user) {
-    //     return (
-    //         <div>
-    //             <p><Link to={'/register'} className="text-decoration-none">Register</Link> or <Link to={'/login'} className="text-decoration-none">Login</Link> first</p>
-    //         </div>
-    //     )
-    // }
-
-    // else
     return (
         <Stack
             direction="column"
@@ -102,8 +91,7 @@ function ExercisesPage(props) {
             </Stack>
 
             {/* List of user's exercises with delete functionality */}
-            {
-            <MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />}
+            {<MyExercises exercisesByUser={exercisesByUser} muscleGroups={muscleGroups} liftState={setExercisesByUser} />}
 
             <Stack justifyContent="center" alignItems="center">
                 {/* Feedback messages */}
