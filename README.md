@@ -1,7 +1,7 @@
 <h2> Overview </h2>
 A React app with a calendar to visualize your training periodization and features to track your training volume and progress on lifts. Built with a PERN stack, Passport.js for authentication, and MUI for styles. </br> </br>
 Developed and maintained by Chino Rodriguez with the help of Tricia Cu. </br> </br>
-Try it here: https://myfitnesscal.uw.r.appspot.com/
+Try it <a href="https://myfitnesscal.uw.r.appspot.com/">here</a>.
 
 <h2> Preview </h2>
 <img src="https://user-images.githubusercontent.com/106716130/199653581-8cc5e829-e8b7-4ad0-9423-894b3a58f078.png"/>
