@@ -92,10 +92,7 @@ Try it <a href="https://myfitnesscal.uw.r.appspot.com/">here</a> with the userna
   <h2> Current Limitations </h2>
   <ul>
   <li>
-  Cardio exercises are not supported.
-  </li>
-  <li>
-  Weight units are assumed to be in pounds and no validation is being done on this front.
+  While cardio exercises are supported, distances are assumed to be in km and all times are displayed in minutes.
   </li>
   <li>
   A separate list of exercises is maintained for each user. That is, "Push ups" for user A and "Push ups" for user B would occupy two separate rows in the database. This would not scale well and would have to be redesigned if the app were to grow past tens of users.
