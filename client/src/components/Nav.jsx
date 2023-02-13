@@ -1,14 +1,32 @@
 import { AppBar, Drawer, Box, Toolbar, Button, IconButton, List, ListItem, Container, Typography, Divider, Stack, Tooltip, Switch } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import { Menu } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const navItems = ['Sessions', 'Exercises', 'Analytics'];
-const authPages = ['Register', 'Login'];
+const navItems = ['sessions', 'exercises', 'analytics'];
+const authPages = ['register', 'login'];
+const possibleRoutes = [...navItems, 'settings']
 
 const Nav = (props) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [pages, setPages] = useState(authPages);
+    const location = useLocation();
+    const [heading, setHeading] = useState("MyFitnessCal");
+
+    useEffect(() => {
+        if (props.user && location.pathname === "/") {
+            setHeading("Sessions");
+        } else if (possibleRoutes.indexOf(location.pathname.slice(1)) !== -1) {
+            let loc = location.pathname.slice(1);
+            loc = loc.slice(0,1).toUpperCase() + loc.slice(1);
+            setHeading(loc);
+        } else if (location.pathname === "/register" || location.pathname === "/login") {
+            setHeading("MyFitnessCal")
+        } else if ((possibleRoutes.indexOf(location.pathname.slice(1)) === -1) && (location.pathname !== "/")) {
+            setHeading("Error")
+        }
+    }, [location.pathname]);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -159,7 +177,7 @@ const Nav = (props) => {
 
                         {/* Title */}
                         <Typography variant='h6' component='div' sx={{ flexGrow: 1, display: { xs: 'block' } }}>
-                            MyFitnessCal
+                            {heading}
                         </Typography>
 
                         {/* Row of pages shown when expanded. */}
