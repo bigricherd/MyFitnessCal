@@ -6,23 +6,17 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const devConfig = {
-    host: "localhost",
-    port: 5432,
-    user: "postgres",
-    database: "mfc-2"
+    hostname: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD
 }
 
 // Connecting to PROD DB on Dev Environment; for DB testing
 const stageConfig = {
     host: process.env.INSTANCE_HOST,
     port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-};
-
-const prodConfig = {
-    host: process.env.INSTANCE_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
