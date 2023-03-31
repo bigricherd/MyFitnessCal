@@ -1,7 +1,9 @@
 <h2> Overview </h2>
 A React app with a calendar to visualize your training periodization and features to track your training volume and progress on lifts. Built with a PERN stack, Passport.js for authentication, and MUI for styles. </br> </br>
 Developed and maintained by Chino Rodriguez with the help of Tricia Cu. </br> </br>
-Try it <a href="https://myfitnesscal.uw.r.appspot.com/">here</a> with the username "test" and password "Testing123". Note that you must be on https for the application to work. Non-secure cookies will not be sent to the server.
+Try it <a href="https://myfitnesscal.herokuapp.com/">here</a> with the username "test" and password "Testing123". Note that you must be on https for the application to work. Non-secure cookies will not be sent to the server.
+
+This application was recently migrated from GCP to Heroku. Old hyperlinks may have directed you to "https://myfitnesscal.uw.r.appspot.com". Please use the hyerlink above to access the application on Heroku.
 
 <h2> Preview </h2>
 <img src="https://user-images.githubusercontent.com/106716130/199653581-8cc5e829-e8b7-4ad0-9423-894b3a58f078.png"/>
